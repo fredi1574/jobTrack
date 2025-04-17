@@ -71,13 +71,19 @@ export default function DashboardClient({ initialApplications }) {
                   scope="col"
                   className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
                 >
-                  Status
+                  city
                 </th>
                 <th
                   scope="col"
                   className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
                 >
                   Date
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
+                >
+                  Status
                 </th>
                 <th scope="col" className="relative px-6 py-3">
                   <span className="sr-only">Actions</span>
@@ -96,6 +102,12 @@ export default function DashboardClient({ initialApplications }) {
                   <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">
                     {application.company}
                   </td>
+                  <td>{application.city}</td>
+                  <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">
+                    {new Date(application.appliedAt).toLocaleDateString(
+                      "en-IL",
+                    )}
+                  </td>
                   <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">
                     <span
                       className={`inline-flex rounded-full px-2 text-xs leading-5 font-semibold ${
@@ -112,13 +124,6 @@ export default function DashboardClient({ initialApplications }) {
                     >
                       {application.status}
                     </span>
-                  </td>
-                  <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">
-                    {application.appliedAt
-                      ? new Date(application.appliedAt).toLocaleDateString(
-                          "en-IL",
-                        )
-                      : "N/A"}
                   </td>
                   <td className="px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
                     <Link

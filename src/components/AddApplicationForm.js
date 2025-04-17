@@ -72,6 +72,15 @@ export default function AddApplicationForm({ onSuccess }) {
         )}
       </div>
       <div className="space-y-1.5">
+        <Label htmlFor="position">City</Label>
+        <Input id="city" name="city" required />
+        {state?.fieldErrors?.city && (
+          <p className="text-xs text-red-600">
+            {state.fieldErrors.city.join(", ")}
+          </p>
+        )}
+      </div>
+      <div className="space-y-1.5">
         <Label htmlFor="status">Status</Label>
         <Select name="status" required>
           <SelectTrigger id="status">

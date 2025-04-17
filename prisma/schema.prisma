@@ -29,6 +29,7 @@ model Application {
   UserId    String
   company   String
   position  String
+  city      String
   status    String
   notes     String?
   appliedAt DateTime? @default(now())
