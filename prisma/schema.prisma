@@ -30,6 +30,7 @@ model Application {
   company   String
   position  String
   city      String
+  url       String?
   status    String
   notes     String?
   appliedAt DateTime? @default(now())

@@ -12,7 +12,9 @@ export async function createApplication(previousState, formData) {
 
   const company = formData.get("company").toString().trim();
   const position = formData.get("position").toString().trim();
+  const city = formData.get("city").toString().trim();
   const status = formData.get("status").toString().trim();
+  const url = formData.get("url").toString().trim();
   const notes = formData.get("notes").toString().trim();
 
   if (!company || !position || !status) {
@@ -38,6 +40,8 @@ export async function createApplication(previousState, formData) {
         company,
         position,
         status,
+        url,
+        city,
         appliedAt: new Date(),
         notes,
         User: { connect: { id: session.user.id } },
