@@ -55,3 +55,36 @@ export async function createApplication(previousState, formData) {
   revalidatePath("/");
   return { message: "Application saved successfully", success: true };
 }
+
+export async function deleteApplication(id) {
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  try {
+    const application = await prisma.application.findFirst({
+      where: {
+        id: id,
+        UserId: session.user.id,
+      },
+    });
+
+    if (!application) {
+      return {
+        success: false,
+        error: "Application not found or permission denied.",
+      };
+    }
+
+    await prisma.application.delete({
+      where: { id: application.id },
+    });
+
+    revalidatePath("/");
+    return { success: true };
+  } catch (dbError) {
+    console.error("Database error during delete:", dbError);
+    return { success: false, error: "Database error during delete" };
+  }
+}
