@@ -23,7 +23,12 @@ const initialState = {
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" disabled={pending} aria-disabled={pending}>
+    <Button
+      type="submit"
+      disabled={pending}
+      aria-disabled={pending}
+      className="w-full cursor-pointer bg-sky-300 text-sky-950 hover:bg-sky-400"
+    >
       {pending ? "Adding..." : "Add Application"}
     </Button>
   );
@@ -44,7 +49,6 @@ export default function AddApplicationForm({ onSuccess }) {
     // The action prop takes the function returned by useActionState
     // We remove the outer div/container styling as it's now inside a modal
     <form action={formAction} className="space-y-4 pt-4">
-      {" "}
       {/* Adjust padding if needed */}
       {/* Display general success/error messages */}
       {/* Success messages might be less needed if modal closes automatically */}
@@ -72,9 +76,18 @@ export default function AddApplicationForm({ onSuccess }) {
         )}
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="position">City</Label>
+        <Label htmlFor="city">City</Label>
         <Input id="city" name="city" required />
         {state?.fieldErrors?.city && (
+          <p className="text-xs text-red-600">
+            {state.fieldErrors.city.join(", ")}
+          </p>
+        )}
+      </div>
+      <div className="space-y-1.5">
+        <Label htmlFor="url">Link</Label>
+        <Input id="url" name="url" required />
+        {state?.fieldErrors?.url && (
           <p className="text-xs text-red-600">
             {state.fieldErrors.city.join(", ")}
           </p>
@@ -88,7 +101,7 @@ export default function AddApplicationForm({ onSuccess }) {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="Applied">Applied</SelectItem>
-            <SelectItem value="Interviewing">Interview</SelectItem>
+            <SelectItem value="Interview">Interview</SelectItem>
             <SelectItem value="Offer">Offer</SelectItem>
             <SelectItem value="Rejected">Rejected</SelectItem>
           </SelectContent>
@@ -108,10 +121,7 @@ export default function AddApplicationForm({ onSuccess }) {
           </p>
         )}
       </div>
-      {/* Add other fields */}
       <div className="flex justify-end pt-2">
-        {" "}
-        {/* Adjust padding */}
         <SubmitButton />
       </div>
     </form>
