@@ -142,9 +142,11 @@ export default function DashboardClient({ initialApplications }) {
                       href={application.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="ml-2 text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"
+                      className="ml-2 text-clip text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"
                     >
-                      {application.url}
+                      {application.url
+                        ? application.url?.substring(0, 20) + "..."
+                        : ""}
                     </a>
                   </td>
                   <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">
