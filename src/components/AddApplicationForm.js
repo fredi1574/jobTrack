@@ -1,6 +1,7 @@
 import { createApplication } from "@/app/actions";
 import { useActionState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
+import { toast } from "react-toastify";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -42,8 +43,9 @@ export default function AddApplicationForm({ onSuccess }) {
       if (onSuccess) {
         onSuccess();
       }
+      toast.success("Application added successfully!");
     }
-  }, [state.success, onSuccess]);
+  }, [state?.success, onSuccess]);
 
   return (
     // The action prop takes the function returned by useActionState
@@ -113,7 +115,7 @@ export default function AddApplicationForm({ onSuccess }) {
         )}
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="notes">Notes (Optional)</Label>
+        <Label htmlFor="notes">Notes</Label>
         <Textarea id="notes" name="notes" rows={3} />
         {state?.fieldErrors?.notes && (
           <p className="text-xs text-red-600">
