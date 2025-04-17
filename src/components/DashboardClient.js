@@ -1,8 +1,11 @@
 "use client";
+import { deleteApplication } from "@/app/actions";
 import { DialogTitle } from "@radix-ui/react-dialog";
-import Link from "next/link";
-import { useState } from "react";
+import { Pencil, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import AddApplicationForm from "./AddApplicationForm";
+import NoJobApplications from "./NoJobApplications";
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -13,7 +16,6 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "./ui/dialog";
-import NoJobApplications from "./NoJobApplications";
 
 const statusColors = {
   applied: "bg-sky-100 text-sky-500",
@@ -22,13 +24,42 @@ const statusColors = {
   rejected: "bg-red-100 text-red-500",
 };
 
+// TODO: Add ability to edit application
+// TODO: Add shadcn's accordion, each row is an accordion item, when clicked, show details of application with addition of notes and resume file
 export default function DashboardClient({ initialApplications }) {
+  const [applications, setApplications] = useState(initialApplications);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const applications = initialApplications;
+  useEffect(() => {
+    setApplications(initialApplications);
+  }, [initialApplications]);
 
   const handleModalClose = () => {
     setIsModalOpen(false);
+  };
+
+  const handleDeleteApplication = async (applicationId) => {
+    if (!confirm("Are you sure you want to delete this application?")) {
+      return;
+    }
+
+    try {
+      const result = await deleteApplication(applicationId);
+
+      if (result?.success) {
+        setApplications((currentApplications) =>
+          currentApplications.filter(
+            (application) => application.id !== applicationId,
+          ),
+        );
+        toast.success("Application deleted successfully!");
+      } else {
+        toast.error(result?.error || "Failed to delete application.");
+      }
+    } catch (error) {
+      console.error("Delete failed:", error);
+      toast.error("An error occurred. Please try again.");
+    }
   };
 
   return (
@@ -144,9 +175,9 @@ export default function DashboardClient({ initialApplications }) {
                       rel="noopener noreferrer"
                       className="ml-2 text-clip text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"
                     >
-                      {application.url
+                      {application.url?.length > 20
                         ? application.url?.substring(0, 20) + "..."
-                        : ""}
+                        : application?.url}
                     </a>
                   </td>
                   <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">
@@ -159,12 +190,13 @@ export default function DashboardClient({ initialApplications }) {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
-                    <Link
-                      href={`/applications/${application.id}/edit`}
-                      className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"
-                    >
-                      Edit
-                    </Link>
+                    <div className="flex justify-end gap-4">
+                      <Pencil className="size-4 cursor-pointer" />
+                      <Trash2
+                        onClick={() => handleDeleteApplication(application.id)}
+                        className="size-4 cursor-pointer text-red-500 hover:text-red-700"
+                      />
+                    </div>
                   </td>
                 </tr>
               ))}
