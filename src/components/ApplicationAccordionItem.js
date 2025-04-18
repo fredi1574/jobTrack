@@ -7,6 +7,7 @@ import {
 
 const statusColors = {
   applied: "bg-sky-100 text-sky-500",
+  assessment: "bg-yellow-100 text-yellow-500",
   interview: "bg-purple-100 text-purple-500",
   offer: "bg-green-100 text-green-500",
   rejected: "bg-red-100 text-red-500",
