@@ -43,7 +43,7 @@ export default function AddApplicationForm({ onSuccess }) {
       if (onSuccess) {
         onSuccess();
       }
-      toast.success("Application added successfully!");
+      toast.success("Application added successfully!", { icon: "➕" });
     }
   }, [state?.success, onSuccess]);
 
@@ -88,7 +88,7 @@ export default function AddApplicationForm({ onSuccess }) {
       </div>
       <div className="space-y-1.5">
         <Label htmlFor="url">Link</Label>
-        <Input id="url" name="url" required />
+        <Input id="url" name="url" placeholder="https://www.example.com" />
         {state?.fieldErrors?.url && (
           <p className="text-xs text-red-600">
             {state.fieldErrors.city.join(", ")}
@@ -103,6 +103,7 @@ export default function AddApplicationForm({ onSuccess }) {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="Applied">Applied</SelectItem>
+            <SelectItem value="Assessment">Assessment</SelectItem>
             <SelectItem value="Interview">Interview</SelectItem>
             <SelectItem value="Offer">Offer</SelectItem>
             <SelectItem value="Rejected">Rejected</SelectItem>
