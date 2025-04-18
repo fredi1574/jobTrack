@@ -1,10 +1,12 @@
 "use client";
 import { deleteApplication } from "@/app/actions";
 import { DialogTitle } from "@radix-ui/react-dialog";
+import { Search } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import AddApplicationForm from "./AddApplicationForm";
 import ApplicationAccordionItem from "./ApplicationAccordionItem";
+import EditApplicationForm from "./EditApplicationForm";
 import NoJobApplications from "./NoJobApplications";
 import { Accordion } from "./ui/accordion";
 import { Button } from "./ui/button";
@@ -18,12 +20,12 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { Input } from "./ui/input";
-import { Search } from "lucide-react";
 
-// TODO: Add ability to edit application
 export default function DashboardClient({ initialApplications }) {
   const [applications, setApplications] = useState(initialApplications);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingApplication, setEditingApplication] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -38,9 +40,23 @@ export default function DashboardClient({ initialApplications }) {
     );
   });
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
+  const handleOpenEditModal = useCallback((application) => {
+    setEditingApplication(application);
+    setIsEditModalOpen(true);
+  }, []);
+
+  const handleEditModalClose = useCallback(() => {
+    setIsEditModalOpen(false);
+    setEditingApplication(null);
+  }, []);
+
+  const handleEditSuccess = useCallback(() => {
+    handleEditModalClose();
+  }, [handleEditModalClose]);
+
+  const handleAddModalClose = useCallback(() => {
+    setIsAddModalOpen(false);
+  }, []);
 
   const handleDeleteApplication = useCallback(async (applicationId) => {
     if (!confirm("Are you sure you want to delete this application?")) {
@@ -88,7 +104,7 @@ export default function DashboardClient({ initialApplications }) {
         </div>
 
         {/* Add new application button */}
-        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
           <DialogTrigger asChild>
             <Button
               className="w-full cursor-pointer hover:bg-sky-200 sm:w-auto"
@@ -106,7 +122,7 @@ export default function DashboardClient({ initialApplications }) {
                 Fill in the details for the job application you are applying for
               </DialogDescription>
             </DialogHeader>
-            <AddApplicationForm onSuccess={handleModalClose} />
+            <AddApplicationForm onSuccess={handleAddModalClose} />
             <DialogFooter>
               <DialogClose className="cursor-pointer hover:underline">
                 Cancel
@@ -115,6 +131,31 @@ export default function DashboardClient({ initialApplications }) {
           </DialogContent>
         </Dialog>
       </div>
+
+      {/* Edit application modal */}
+      <Dialog open={isEditModalOpen} onOpenChange={handleEditModalClose}>
+        <DialogContent className="sm:max-w-[425px] md:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Edit Application</DialogTitle>
+            <DialogDescription>
+              Update the details for this job application
+            </DialogDescription>
+          </DialogHeader>
+          {editingApplication && (
+            <EditApplicationForm
+              applicationData={editingApplication}
+              onSuccess={handleEditSuccess}
+            />
+          )}
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline" onClick={handleEditModalClose}>
+                Cancel
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* applications */}
       {filteredApplications.length > 0 ? (
@@ -145,6 +186,7 @@ export default function DashboardClient({ initialApplications }) {
                 key={application.id}
                 application={application}
                 onDelete={handleDeleteApplication}
+                onEdit={handleOpenEditModal}
               />
             ))}
           </Accordion>

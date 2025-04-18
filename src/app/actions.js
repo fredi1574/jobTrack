@@ -3,6 +3,17 @@ import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
+function ensureUrlProtocol(url) {
+  url = url.trim();
+  if (!url) {
+    return null;
+  }
+  if (!url.startsWith("http://") || !url.startsWith("https://")) {
+    return `https://${url}`;
+  }
+  return url;
+}
+
 export async function createApplication(previousState, formData) {
   const session = await getServerAuthSession();
 
@@ -14,8 +25,10 @@ export async function createApplication(previousState, formData) {
   const position = formData.get("position").toString().trim();
   const city = formData.get("city").toString().trim();
   const status = formData.get("status").toString().trim();
-  const url = formData.get("url").toString().trim();
+  const urlInput = formData.get("url").toString().trim();
   const notes = formData.get("notes").toString().trim();
+
+  const url = ensureUrlProtocol(urlInput);
 
   if (!company || !position || !status) {
     console.log("Basic validation error: missing required fields", {
@@ -54,6 +67,68 @@ export async function createApplication(previousState, formData) {
 
   revalidatePath("/");
   return { message: "Application saved successfully", success: true };
+}
+
+export async function updateApplication(previousState, formData) {
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  const id = formData.get("id")?.toString();
+  if (!id) {
+    return { success: false, error: "Application ID is missing." };
+  }
+
+  const company = formData.get("company")?.toString().trim();
+  const position = formData.get("position")?.toString().trim();
+  const status = formData.get("status")?.toString().trim();
+  const urlInput = formData.get("url")?.toString().trim();
+  const city = formData.get("city")?.toString().trim();
+  const notes = formData.get("notes")?.toString().trim();
+
+  const url = ensureUrlProtocol(urlInput);
+
+  if (!company || !position || !status || !city) {
+    return {
+      success: false,
+      error: "Company, Position, City, and Status are required.",
+    };
+  }
+
+  try {
+    const application = await prisma.application.findFirst({
+      where: {
+        id: id,
+        UserId: session.user.id,
+      },
+    });
+
+    if (!application) {
+      return {
+        success: false,
+        error: "Application not found or permission denied.",
+      };
+    }
+
+    await prisma.application.update({
+      where: { id: application.id },
+      data: {
+        company,
+        position,
+        status,
+        url: url || null,
+        city,
+        notes: notes || null,
+      },
+    });
+
+    revalidatePath("/");
+    return { success: true, message: "Application updated successfully!" };
+  } catch (dbError) {
+    console.error("Database error during update:", dbError);
+    return { success: false, error: "Database error during update" };
+  }
 }
 
 export async function deleteApplication(id) {

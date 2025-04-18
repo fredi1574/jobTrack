@@ -12,7 +12,11 @@ const statusColors = {
   rejected: "bg-red-100 text-red-500",
 };
 
-export default function ApplicationAccordionItem({ application, onDelete }) {
+export default function ApplicationAccordionItem({
+  application,
+  onDelete,
+  onEdit,
+}) {
   const formattedDate = application.appliedAt
     ? new Date(application.appliedAt).toLocaleDateString("en-IL")
     : "N/A";
@@ -21,9 +25,9 @@ export default function ApplicationAccordionItem({ application, onDelete }) {
     statusColors[application.status.toLowerCase()] ||
     "bg-gray-100 text-gray-500";
 
-  const handleEditClick = () => {
-    // Handle edit button click here
-    console.log("Edit button clicked for application:", application);
+  const handleEditClick = (event) => {
+    event.stopPropagation();
+    onEdit(application);
   };
 
   const handleDeleteClick = () => {
