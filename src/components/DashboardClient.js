@@ -17,16 +17,26 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "./ui/dialog";
+import { Input } from "./ui/input";
+import { Search } from "lucide-react";
 
 // TODO: Add ability to edit application
-// TODO: Add shadcn's accordion, each row is an accordion item, when clicked, show details of application with addition of notes and resume file
 export default function DashboardClient({ initialApplications }) {
   const [applications, setApplications] = useState(initialApplications);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     setApplications(initialApplications);
   }, [initialApplications]);
+
+  const filteredApplications = applications.filter((application) => {
+    return (
+      application.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      application.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      application.city.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
 
   const handleModalClose = () => {
     setIsModalOpen(false);
@@ -57,22 +67,38 @@ export default function DashboardClient({ initialApplications }) {
   }, []);
 
   return (
-    <div className="container mx-auto p-4 md:p-10">
+    <div className="container mx-auto p-4 md:p-6 lg:p-10">
       <div className="mb-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-bold md:text-3xl">
           Your Job Applications
         </h1>
 
+        {/* Search bar */}
+        <div className="flex w-full flex-col gap-4 sm:w-auto sm:flex-row sm:items-center">
+          <div className="relative w-full sm:w-64 md:w-72">
+            <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+            <Input
+              type="text"
+              placeholder="Search applications..."
+              className="pl-10"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {/* Add new application button */}
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogTrigger asChild>
             <Button
-              className="cursor-pointer hover:bg-sky-200"
+              className="w-full cursor-pointer hover:bg-sky-200 sm:w-auto"
               variant="outline"
             >
               Add new Application
             </Button>
           </DialogTrigger>
 
+          {/* Add new application form */}
           <DialogContent className="sm:max-w-[425px] md:max-w-lg">
             <DialogHeader>
               <DialogTitle>Add new Application</DialogTitle>
@@ -90,53 +116,31 @@ export default function DashboardClient({ initialApplications }) {
         </Dialog>
       </div>
 
-      <div className="">
-        <table className="w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr className="divide-x divide-gray-200">
-              <th
-                scope="col"
-                className="px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
-              >
-                Company
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
-              >
-                Position
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
-              >
-                Location
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
-              >
-                Date
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
-              >
-                Status
-              </th>
+      {/* applications */}
+      {filteredApplications.length > 0 ? (
+        <div className="border">
+          <div className="hidden w-full items-center justify-between gap-4 border-b bg-gray-50 px-4 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase sm:flex dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">
+            <div className="flex flex-1 items-center gap-4 overflow-hidden">
+              <span className="sm:w-1/5">Company</span>
+              <span className="sm:w-1/5">Position</span>
+              <span className="sm:w-1/6">Location</span>
+              <span className="sm:w-1/6">Date</span>
+              <span className="text-center sm:w-1/6">Status</span>
+              <span className="w-auto shrink-0" aria-hidden="true">
+                <div className="size-4"></div>
+              </span>
+            </div>
+            <div className="flex shrink-0 items-center gap-3 pl-2">
+              <span className="text-right">Actions</span>
+            </div>
+          </div>
 
-              <th scope="col" className="relative px-6 py-3">
-                <span className="sr-only">Actions</span>
-              </th>
-            </tr>
-          </thead>
-        </table>
-      </div>
-
-      {applications.length > 0 ? (
-        <div className="rounded-lg border shadow-md">
-          <Accordion type="single" collapsible className="w-full">
-            {applications.map((application) => (
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full border border-gray-200 shadow-md"
+          >
+            {filteredApplications.map((application) => (
               <ApplicationAccordionItem
                 key={application.id}
                 application={application}
@@ -145,9 +149,11 @@ export default function DashboardClient({ initialApplications }) {
             ))}
           </Accordion>
         </div>
+      ) : searchTerm ? (
+        <p className="mt-10 text-center text-gray-500">
+          No applications match your search term &quot;{searchTerm}&quot;.
+        </p>
       ) : (
-        //
-        // ) :
         <NoJobApplications />
       )}
     </div>

@@ -17,12 +17,6 @@ export default function ApplicationAccordionItem({ application, onDelete }) {
     ? new Date(application.appliedAt).toLocaleDateString("en-IL")
     : "N/A";
 
-  const displayURL = application.url
-    ? application.url.length > 20
-      ? `${application.url.substring(0, 20)}...`
-      : application.url
-    : "";
-
   const statusColor =
     statusColors[application.status.toLowerCase()] ||
     "bg-gray-100 text-gray-500";
@@ -39,42 +33,63 @@ export default function ApplicationAccordionItem({ application, onDelete }) {
   return (
     <AccordionItem value={application.id}>
       <AccordionTrigger
-        className={`flex w-full items-center rounded-none pr-4 hover:bg-gray-100 hover:no-underline ${application.status.toLowerCase() === "rejected" || application.status.toLowerCase() === "offer" ? statusColor : ""}`}
+        className={`flex w-full items-center justify-between gap-2 rounded-none px-4 py-3 text-sm hover:bg-gray-100 hover:no-underline dark:hover:bg-gray-800/50 ${
+          application.status.toLowerCase() === "rejected"
+            ? "bg-red-100 line-through opacity-70 dark:text-gray-600"
+            : application.status.toLowerCase() === "offer"
+              ? "bg-green-100"
+              : ""
+        }`}
       >
-        <div className="flex flex-1 items-center gap-4 overflow-hidden px-4">
-          <span className="w-1/5 truncate font-medium text-gray-900">
-            {application.company}
-          </span>
-          <span className="w-1/5 truncate text-gray-700">
-            {application.position}
-          </span>
-          <span className="w-1/6 truncate text-gray-700">
+        <div className="flex flex-1 flex-col items-start gap-1 overflow-hidden sm:flex-row sm:items-center sm:gap-4">
+          <div className="flex w-full flex-col sm:w-2/5 sm:flex-row sm:gap-4">
+            <span className="w-full truncate font-semibold text-gray-900 sm:w-1/2 dark:text-gray-100">
+              {application.company}
+            </span>
+            <span className="w-full truncate text-gray-700 sm:w-1/2 dark:text-gray-300">
+              {application.position}
+            </span>
+          </div>
+
+          <span className="hidden w-1/6 truncate text-gray-500 sm:inline-block dark:text-gray-400">
             {application.city}
           </span>
-          <span className="w-1/6 truncate text-gray-700">{formattedDate}</span>
+          <span className="hidden w-1/6 truncate text-gray-500 sm:inline-block dark:text-gray-400">
+            {formattedDate}
+          </span>
+
           <span
-            className={`text-center ${statusColor} inline-flex items-center rounded-lg px-2.5 py-0.5 text-xs font-semibold`}
+            className={`mt-1 w-auto text-center sm:mt-0 sm:w-1/6 ${statusColor} inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-xs font-semibold`}
           >
             {application.status}
           </span>
+
           {application.url && (
             <a
               href={application.url}
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="w-auto shrink-0 text-indigo-600 hover:text-indigo-900"
+              className="hidden w-auto shrink-0 text-indigo-600 hover:text-indigo-900 sm:inline-block dark:text-indigo-400 dark:hover:text-indigo-300"
               title={application.url}
             >
               <LinkIcon className="size-4" />
             </a>
           )}
+          {!application.url && (
+            <span
+              className="hidden w-auto shrink-0 sm:inline-block"
+              aria-hidden="true"
+            >
+              <div className="size-4" />
+            </span>
+          )}
         </div>
-        <div className="flex shrink-0 items-center gap-3 pl-2">
+        <div className="flex shrink-0 items-center gap-2 pl-1 sm:gap-3 sm:pl-2">
           <Pencil
             onClick={handleEditClick}
-            className="size-4 cursor-pointer text-gray-500 hover:text-blue-600"
-            aria-label="Edit application"
+            className="size-4 cursor-pointer text-gray-500 hover:text-blue-600 dark:hover:text-blue-400"
+            aria-label="Edit Application"
           />
           <Trash2
             onClick={handleDeleteClick}
@@ -96,19 +111,24 @@ export default function ApplicationAccordionItem({ application, onDelete }) {
         )}
 
         <div className="mt-4">
-          <h4 className="mb-1 font-semibold text-gray-700">Resume:</h4>
+          <h4 className="mb-1 font-semibold text-gray-700 dark:text-gray-300">
+            Resume:
+          </h4>
           <p className="italic">
             Resume upload/link functionality not yet implemented.
           </p>
         </div>
+
         {application.url && (
           <div className="mt-4">
-            <h4 className="mb-1 font-semibold text-gray-700">URL:</h4>
+            <h4 className="mb-1 font-semibold text-gray-700 dark:text-gray-300">
+              Link:
+            </h4>
             <a
               href={application.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-indigo-500 hover:text-indigo-800"
+              className="break-all text-indigo-600 hover:underline dark:text-indigo-400"
             >
               {application.url}
             </a>
