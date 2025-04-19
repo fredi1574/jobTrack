@@ -265,3 +265,35 @@ export async function removeResume(id) {
     return { success: false, error: "Database error during delete" };
   }
 }
+
+export async function updateApplicationStatus(id, status) {
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  try {
+    const application = await prisma.application.findFirst({
+      where: { id: id, UserId: session.user.id },
+      select: {
+        id: true,
+      },
+    });
+    if (!application) {
+      return {
+        success: false,
+        error: "Application not found or permission denied.",
+      };
+    }
+
+    await prisma.application.update({
+      where: { id: application.id },
+      data: { status: status },
+    });
+    revalidatePath("/");
+    return { success: true };
+  } catch (dbError) {
+    console.error("Database error during update:", dbError);
+    return { success: false, error: "Database error during update" };
+  }
+}

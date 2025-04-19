@@ -1,6 +1,7 @@
 "use client";
-import { removeResume } from "@/app/actions";
+import { removeResume, updateApplicationStatus } from "@/app/actions";
 import {
+  Check,
   ClipboardList,
   Download,
   FileText,
@@ -9,25 +10,50 @@ import {
   Trash,
   Trash2,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { toast } from "react-toastify";
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 const statusColors = {
-  applied: "bg-sky-100 text-sky-500",
-  assessment: "bg-yellow-100 text-yellow-500",
-  interview: "bg-purple-100 text-purple-500",
-  offer: "bg-green-100 text-green-500",
-  rejected: "bg-red-100 text-red-500",
+  applied:
+    "bg-sky-100 text-sky-500 hover:bg-sky-200 hover:text-sky-600 border border-sky-300",
+  assessment:
+    "bg-yellow-100 text-yellow-500 hover:bg-yellow-200 hover:text-yellow-600 border border-yellow-300",
+  interview:
+    "bg-purple-100 text-purple-500 hover:bg-purple-200 hover:text-purple-600 border border-purple-300",
+  offer:
+    "bg-green-100 text-green-500 hover:bg-green-200 hover:text-green-600 border border-green-300",
+  rejected:
+    "bg-red-100 text-red-500 hover:bg-red-200 hover:text-red-600 border border-red-300",
 };
+
+const possibleStatuses = [
+  "Applied",
+  "Assessment",
+  "Interview",
+  "Offer",
+  "Rejected",
+];
 
 export default function ApplicationAccordionItem({
   application,
   onDelete,
   onEdit,
 }) {
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+
   const formattedDate = application.appliedAt
     ? new Date(application.appliedAt).toLocaleDateString("en-IL")
     : "N/A";
@@ -45,6 +71,23 @@ export default function ApplicationAccordionItem({
     onDelete(application.id);
   };
 
+  const handleStatusChange = (newStatus) => {
+    startTransition(async () => {
+      try {
+        const result = await updateApplicationStatus(application.id, newStatus);
+        if (result?.success) {
+          toast.success(`Status updated to ${newStatus}`);
+          router.refresh();
+        } else {
+          toast.error(result?.error || "Failed to update status.");
+        }
+      } catch (error) {
+        console.error("Error updating status:", error);
+        toast.error("Failed to update status.");
+      }
+    });
+  };
+
   const handleDeleteResumeClick = () => {
     removeResume(application.id);
   };
@@ -52,14 +95,15 @@ export default function ApplicationAccordionItem({
   return (
     <AccordionItem value={application.id}>
       <AccordionTrigger
-        className={`flex w-full items-center justify-between gap-2 rounded-none px-4 py-3 text-sm hover:bg-gray-100 hover:no-underline dark:hover:bg-gray-800/50 ${
-          application.status.toLowerCase() === "rejected"
-            ? "bg-red-100 line-through opacity-70 dark:text-gray-600"
-            : application.status.toLowerCase() === "offer"
-              ? "bg-green-100"
+        className={`flex w-full items-center justify-between gap-2 rounded-none px-4 py-3 text-sm hover:bg-gray-50 hover:no-underline dark:hover:bg-gray-800/50 ${
+          application.status.toLowerCase() === "offer"
+            ? "bg-green-50"
+            : application.status.toLowerCase() === "rejected"
+              ? "bg-red-50 text-gray-400 line-through opacity-70 dark:text-gray-600"
               : ""
         }`}
       >
+        {/* Main content div */}
         <div className="flex flex-1 flex-col items-start gap-1 overflow-hidden sm:flex-row sm:items-center sm:gap-4">
           <div className="flex w-full flex-col sm:w-2/5 sm:flex-row sm:gap-4">
             <span className="w-full truncate font-semibold text-gray-900 sm:w-1/2 dark:text-gray-100">
@@ -77,11 +121,38 @@ export default function ApplicationAccordionItem({
             {formattedDate}
           </span>
 
-          <span
-            className={`mt-1 w-auto text-center sm:mt-0 sm:w-1/6 ${statusColor} inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-xs font-semibold`}
+          {/* Status Dropdown */}
+          <div
+            className="mt-1 w-auto sm:mt-0 sm:w-1/6"
+            onClick={(e) => e.stopPropagation()}
           >
-            {application.status}
-          </span>
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                className={`${statusColor} w-full cursor-pointer rounded-lg px-2 transition-colors`}
+              >
+                {application.status}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="bg-sky-50 p-2">
+                <div className={`flex flex-row flex-wrap`}>
+                  {possibleStatuses.map((statusOption) => (
+                    <DropdownMenuItem
+                      key={statusOption}
+                      disabled={
+                        isPending || application.status === statusOption
+                      }
+                      onSelect={() => handleStatusChange(statusOption)}
+                      className={`flex items-center justify-between ${statusColors[statusOption.toLowerCase()]} mx-0.5 h-5 cursor-pointer rounded-lg px-2 transition-colors`}
+                    >
+                      {statusOption}
+                      {application.status === statusOption && (
+                        <Check className="ml-2 size-4" />
+                      )}
+                    </DropdownMenuItem>
+                  ))}
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
 
           {application.url && (
             <a
