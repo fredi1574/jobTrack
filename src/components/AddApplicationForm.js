@@ -95,6 +95,19 @@ export default function AddApplicationForm({ onSuccess }) {
           </p>
         )}
       </div>
+
+      {/* File Upload */}
+      <div className="space-y-1.5">
+        <Label htmlFor="resumeFile">Resume (PDF, DOCX)</Label>
+        <Input
+          id="resumeFile"
+          name="resumeFile"
+          type="file"
+          accept=".pdf,.docx"
+          className="file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
+        />
+      </div>
+
       <div className="space-y-1.5">
         <Label htmlFor="status">Status</Label>
         <Select name="status" required>
