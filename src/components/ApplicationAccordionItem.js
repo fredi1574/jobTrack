@@ -1,11 +1,12 @@
 "use client";
-
+import { removeResume } from "@/app/actions";
 import {
   ClipboardList,
   Download,
   FileText,
   LinkIcon,
   Pencil,
+  Trash,
   Trash2,
 } from "lucide-react";
 import {
@@ -42,6 +43,10 @@ export default function ApplicationAccordionItem({
 
   const handleDeleteClick = () => {
     onDelete(application.id);
+  };
+
+  const handleDeleteResumeClick = () => {
+    removeResume(application.id);
   };
 
   return (
@@ -151,16 +156,22 @@ export default function ApplicationAccordionItem({
                 Resume
               </h4>
               {application.resumeUrl ? (
-                <a
-                  href={application.resumeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  download
-                  className="inline-flex items-center gap-2 text-blue-600 transition-colors hover:text-blue-700 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
-                >
-                  <Download className="size-4" />
-                  View Resume
-                </a>
+                <div className="flex items-center justify-between">
+                  <a
+                    href={application.resumeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    download
+                    className="inline-flex items-center gap-2 text-blue-600 transition-colors hover:text-blue-700 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
+                  >
+                    <Download className="size-4" />
+                    View Resume
+                  </a>
+                  <Trash
+                    onClick={handleDeleteResumeClick}
+                    className="ml-2 size-4 cursor-pointer text-gray-500 hover:text-red-600"
+                  />
+                </div>
               ) : (
                 <p className="text-gray-500 italic dark:text-gray-400">
                   No resume uploaded.
