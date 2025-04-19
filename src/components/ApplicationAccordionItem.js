@@ -1,4 +1,13 @@
-import { LinkIcon, Pencil, Trash2 } from "lucide-react";
+"use client";
+
+import {
+  ClipboardList,
+  Download,
+  FileText,
+  LinkIcon,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 import {
   AccordionContent,
   AccordionItem,
@@ -104,41 +113,96 @@ export default function ApplicationAccordionItem({
         </div>
       </AccordionTrigger>
       <AccordionContent
-        className={`px-4 pt-2 pb-4 text-sm text-gray-600 ${application.status.toLowerCase() === "rejected" ? "bg-red-50 text-red-500 line-through" : application.status.toLowerCase() === "offer" ? "bg-green-50 text-green-500" : ""}`}
+        className={`px-0 pt-0 pb-0 text-sm ${
+          application.status.toLowerCase() === "rejected"
+            ? "bg-red-50/50 text-gray-600"
+            : application.status.toLowerCase() === "offer"
+              ? "bg-green-50/50 text-gray-600"
+              : "bg-gray-50/50 text-gray-600 dark:bg-gray-800/20 dark:text-gray-300"
+        }`}
       >
-        {application.notes ? (
-          <div>
-            <h4 className="mb-1 font-semibold text-gray-700">Notes:</h4>
-            <p className="whitespace-pre-wrap">{application.notes}</p>
+        <div className="space-y-4 rounded-b-lg p-5">
+          {application.notes ? (
+            <div className="rounded-lg border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+              <h4 className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                <ClipboardList className="size-4" />
+                Notes
+              </h4>
+              <div className="pl-1 whitespace-pre-wrap text-gray-700 dark:text-gray-300">
+                {application.notes}
+              </div>
+            </div>
+          ) : (
+            <div className="rounded-lg border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+              <h4 className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                <ClipboardList className="size-4" />
+                Notes
+              </h4>
+              <p className="pl-1 text-gray-500 italic dark:text-gray-400">
+                No notes added.
+              </p>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="rounded-lg border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+              <h4 className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                <FileText className="size-4" />
+                Resume
+              </h4>
+              {application.resumeUrl ? (
+                <a
+                  href={application.resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download
+                  className="inline-flex items-center gap-2 text-blue-600 transition-colors hover:text-blue-700 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
+                >
+                  <Download className="size-4" />
+                  View Resume
+                </a>
+              ) : (
+                <p className="text-gray-500 italic dark:text-gray-400">
+                  No resume uploaded.
+                </p>
+              )}
+            </div>
+
+            {application.url && (
+              <div className="rounded-lg border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                <h4 className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                  <LinkIcon className="size-4" />
+                  Job Link
+                </h4>
+                <a
+                  href={application.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="break-all text-blue-600 transition-colors hover:text-blue-700 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
+                >
+                  {application.url}
+                </a>
+              </div>
+            )}
           </div>
-        ) : (
-          <p className="whitespace-pre-wrap">No notes added.</p>
-        )}
 
-        <div className="mt-4">
-          <h4 className="mb-1 font-semibold text-gray-700 dark:text-gray-300">
-            Resume:
-          </h4>
-          <p className="italic">
-            Resume upload/link functionality not yet implemented.
-          </p>
-        </div>
-
-        {application.url && (
-          <div className="mt-4">
-            <h4 className="mb-1 font-semibold text-gray-700 dark:text-gray-300">
-              Link:
-            </h4>
-            <a
-              href={application.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="break-all text-indigo-600 hover:underline dark:text-indigo-400"
+          <div className="flex justify-end gap-2 pt-2">
+            <button
+              onClick={handleEditClick}
+              className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-600 transition-colors hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30"
             >
-              {application.url}
-            </a>
+              <Pencil className="size-3" />
+              Edit
+            </button>
+            <button
+              onClick={handleDeleteClick}
+              className="inline-flex items-center gap-1 rounded-md bg-red-50 px-3 py-1.5 text-xs font-medium text-red-600 transition-colors hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30"
+            >
+              <Trash2 className="size-3" />
+              Delete
+            </button>
           </div>
-        )}
+        </div>
       </AccordionContent>
     </AccordionItem>
   );
