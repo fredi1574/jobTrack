@@ -78,11 +78,11 @@ export default function AddApplicationForm({ onSuccess }) {
         )}
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="city">City</Label>
-        <Input id="city" name="city" required />
-        {state?.fieldErrors?.city && (
+        <Label htmlFor="location">Location</Label>
+        <Input id="location" name="location" required />
+        {state?.fieldErrors?.location && (
           <p className="text-xs text-red-600">
-            {state.fieldErrors.city.join(", ")}
+            {state.fieldErrors.location.join(", ")}
           </p>
         )}
       </div>
@@ -91,7 +91,7 @@ export default function AddApplicationForm({ onSuccess }) {
         <Input id="url" name="url" placeholder="https://www.example.com" />
         {state?.fieldErrors?.url && (
           <p className="text-xs text-red-600">
-            {state.fieldErrors.city.join(", ")}
+            {state.fieldErrors.url.join(", ")}
           </p>
         )}
       </div>

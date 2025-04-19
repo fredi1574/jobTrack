@@ -96,12 +96,12 @@ export default function EditApplicationForm({ applicationData, onSuccess }) {
         />
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="city">City</Label>
+        <Label htmlFor="location">Location</Label>
         <Input
-          id="city"
-          name="city"
+          id="location"
+          name="location"
           required
-          defaultValue={applicationData.city}
+          defaultValue={applicationData.location}
         />
       </div>
       <div className="space-y-1.5">

@@ -57,7 +57,7 @@ export default function ApplicationAccordionItem({
           </div>
 
           <span className="hidden w-1/6 truncate text-gray-500 sm:inline-block dark:text-gray-400">
-            {application.city}
+            {application.location}
           </span>
           <span className="hidden w-1/6 truncate text-gray-500 sm:inline-block dark:text-gray-400">
             {formattedDate}

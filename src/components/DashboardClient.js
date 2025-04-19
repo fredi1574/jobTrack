@@ -36,7 +36,7 @@ export default function DashboardClient({ initialApplications }) {
     return (
       application.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
       application.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      application.city.toLowerCase().includes(searchTerm.toLowerCase())
+      application.location.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
 
@@ -72,7 +72,7 @@ export default function DashboardClient({ initialApplications }) {
             (application) => application.id !== applicationId,
           ),
         );
-        toast.success("Application deleted successfully!");
+        toast.success("Application deleted successfully!", { icon: "🚮" });
       } else {
         toast.error(result?.error || "Failed to delete application.");
       }

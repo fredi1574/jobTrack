@@ -23,7 +23,7 @@ export async function createApplication(previousState, formData) {
 
   const company = formData.get("company").toString().trim();
   const position = formData.get("position").toString().trim();
-  const city = formData.get("city").toString().trim();
+  const location = formData.get("location").toString().trim();
   const status = formData.get("status").toString().trim();
   const urlInput = formData.get("url").toString().trim();
   const notes = formData.get("notes").toString().trim();
@@ -54,7 +54,7 @@ export async function createApplication(previousState, formData) {
         position,
         status,
         url,
-        city,
+        location,
         appliedAt: new Date(),
         notes,
         User: { connect: { id: session.user.id } },
@@ -84,15 +84,15 @@ export async function updateApplication(previousState, formData) {
   const position = formData.get("position")?.toString().trim();
   const status = formData.get("status")?.toString().trim();
   const urlInput = formData.get("url")?.toString().trim();
-  const city = formData.get("city")?.toString().trim();
+  const location = formData.get("location")?.toString().trim();
   const notes = formData.get("notes")?.toString().trim();
 
   const url = ensureUrlProtocol(urlInput);
 
-  if (!company || !position || !status || !city) {
+  if (!company || !position || !status || !location) {
     return {
       success: false,
-      error: "Company, Position, City, and Status are required.",
+      error: "Company, Position, Location, and Status are required.",
     };
   }
 
@@ -118,7 +118,7 @@ export async function updateApplication(previousState, formData) {
         position,
         status,
         url: url || null,
-        city,
+        location,
         notes: notes || null,
       },
     });
