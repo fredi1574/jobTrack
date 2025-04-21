@@ -159,8 +159,8 @@ export default function DashboardClient({ initialApplications }) {
 
       {/* applications */}
       {filteredApplications.length > 0 ? (
-        <div className="border">
-          <div className="hidden w-full items-center justify-between gap-4 border-b bg-gray-50 px-4 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase sm:flex dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">
+        <div>
+          <div className="hidden w-full items-center justify-between gap-4 border border-b bg-gray-50 px-4 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase sm:flex dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">
             <div className="flex flex-1 items-center gap-4 overflow-hidden">
               <span className="sm:w-1/5">Company</span>
               <span className="sm:w-1/5">Position</span>
@@ -179,7 +179,7 @@ export default function DashboardClient({ initialApplications }) {
           <Accordion
             type="single"
             collapsible
-            className="w-full border border-gray-200 shadow-md"
+            className="w-full border border-gray-200 shadow-md dark:border-gray-700"
           >
             {filteredApplications.map((application) => (
               <ApplicationAccordionItem
