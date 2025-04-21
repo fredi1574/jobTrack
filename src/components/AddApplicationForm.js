@@ -1,6 +1,13 @@
 "use client";
-
 import { createApplication } from "@/app/actions";
+import {
+  Briefcase,
+  FileText,
+  FileUp,
+  LinkIcon,
+  MapPin,
+  MessageSquare,
+} from "lucide-react";
 import { useActionState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
 import { toast } from "react-toastify";
@@ -15,14 +22,6 @@ import {
   SelectValue,
 } from "./ui/select";
 import { Textarea } from "./ui/textarea";
-import {
-  FileUp,
-  Briefcase,
-  MapPin,
-  LinkIcon,
-  FileText,
-  MessageSquare,
-} from "lucide-react";
 
 const initialState = {
   message: null,
@@ -174,7 +173,7 @@ export default function AddApplicationForm({ onSuccess }) {
                 and drop
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                PDF or DOCX (Max 10MB)
+                PDF or DOCX (Max 5MB)
               </p>
             </div>
             <Input

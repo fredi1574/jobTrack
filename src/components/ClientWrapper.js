@@ -1,9 +1,9 @@
 "use client";
 import { SessionProvider } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import Header from "./Header";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Header from "./Header";
 
 const NO_HEADER_PAGES = ["/login", "/register"];
 

@@ -1,12 +1,11 @@
 "use client";
-
-import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Switch } from "./ui/switch";
 import { Moon, Sun } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Switch } from "./ui/switch";
 
 export default function Header() {
   const { data: session, status } = useSession();

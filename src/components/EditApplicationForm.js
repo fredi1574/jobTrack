@@ -1,6 +1,14 @@
 "use client";
-
 import { updateApplication } from "@/app/actions";
+import {
+  Briefcase,
+  FileText,
+  FileUp,
+  LinkIcon,
+  MapPin,
+  MessageSquare,
+  Save,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
@@ -16,15 +24,6 @@ import {
   SelectValue,
 } from "./ui/select";
 import { Textarea } from "./ui/textarea";
-import {
-  FileUp,
-  Briefcase,
-  MapPin,
-  LinkIcon,
-  FileText,
-  MessageSquare,
-  Save,
-} from "lucide-react";
 
 const initialEditState = {
   message: null,
@@ -230,7 +229,7 @@ export default function EditApplicationForm({ applicationData, onSuccess }) {
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 {applicationData.resumeUrl
                   ? "Replace current resume"
-                  : "PDF or DOCX (Max 10MB)"}
+                  : "PDF or DOCX (Max 5MB)"}
               </p>
             </div>
             <Input
