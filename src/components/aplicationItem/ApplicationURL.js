@@ -14,5 +14,5 @@ export default function ApplicationURL({ applicationUrl }) {
         <LinkIcon className="size-4" />
       </a>
     );
-  } else return <span className="hidden w-4 shrink-0 sm:inline-block" />;
+  } else return <span className="hidden w-auto shrink-0 sm:inline-block" />;
 }

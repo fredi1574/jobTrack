@@ -1,11 +1,13 @@
 "use client";
 import { deleteApplication } from "@/app/actions";
+import { useSortableData } from "@/hooks/useSortableData";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { Search } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import AddApplicationForm from "./AddApplicationForm";
 import ApplicationAccordionItem from "./ApplicationAccordionItem";
+import ApplicationsHeader from "./ApplicationsHeader";
 import EditApplicationForm from "./EditApplicationForm";
 import NoJobApplications from "./NoJobApplications";
 import { Accordion } from "./ui/accordion";
@@ -39,6 +41,13 @@ export default function DashboardClient({ initialApplications }) {
       application.location.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
+
+  const {
+    sortedData: sortedApplications,
+    sortColumn,
+    sortDirection,
+    handleSort,
+  } = useSortableData(filteredApplications, "appliedAt", "desc");
 
   const handleOpenEditModal = useCallback((application) => {
     setEditingApplication(application);
@@ -159,29 +168,15 @@ export default function DashboardClient({ initialApplications }) {
 
       {/* applications */}
       {filteredApplications.length > 0 ? (
-        <div>
-          <div className="hidden w-full items-center justify-between gap-4 border border-b bg-gray-50 px-4 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase sm:flex dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">
-            <div className="flex flex-1 items-center gap-4 overflow-hidden">
-              <span className="sm:w-1/5">Company</span>
-              <span className="sm:w-1/5">Position</span>
-              <span className="sm:w-1/6">Location</span>
-              <span className="sm:w-1/6">Date</span>
-              <span className="text-center sm:w-1/6">Status</span>
-              <span className="w-auto shrink-0" aria-hidden="true">
-                <div className="size-4"></div>
-              </span>
-            </div>
-            <div className="flex shrink-0 items-center gap-3 pl-2">
-              <span className="text-right">Actions</span>
-            </div>
-          </div>
+        <div className="shadow-lg">
+          <ApplicationsHeader
+            sortColumn={sortColumn}
+            sortDirection={sortDirection}
+            onSort={handleSort}
+          />
 
-          <Accordion
-            type="single"
-            collapsible
-            className="w-full border border-gray-200 shadow-md dark:border-gray-700"
-          >
-            {filteredApplications.map((application) => (
+          <Accordion type="single" collapsible className="w-full">
+            {sortedApplications.map((application) => (
               <ApplicationAccordionItem
                 key={application.id}
                 application={application}

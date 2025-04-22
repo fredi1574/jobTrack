@@ -59,7 +59,7 @@ export default function ApplicationAccordionItem({
         }`}
       >
         {/* Main content div */}
-        <div className="flex flex-1 flex-col items-start gap-1 overflow-hidden sm:flex-row sm:items-center sm:gap-4">
+        <div className="flex flex-1 items-center gap-4 overflow-hidden">
           <ApplicationInfo application={application} />
 
           <StatusDropdown application={application} />

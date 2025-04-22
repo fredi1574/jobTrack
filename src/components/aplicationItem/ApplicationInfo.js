@@ -1,19 +1,26 @@
 export default function ApplicationInfo({ application }) {
-  return (
-    <div className="flex w-full items-center justify-between">
-      <span className="w-full font-semibold text-gray-900 sm:w-1/2 dark:text-gray-100">
-        {application.company}
-      </span>
-      <span className="w-full text-gray-700 sm:w-1/2 dark:text-gray-300">
-        {application.position}
-      </span>
+  const formattedDate = application.appliedAt
+    ? new Date(application.appliedAt).toLocaleDateString("en-IL")
+    : "N/A";
 
-      <span className="hidden w-1/6 text-gray-500 sm:inline-block dark:text-gray-400">
+  return (
+    <>
+      <div className="flex w-full flex-col sm:w-2/5 sm:flex-row sm:gap-4">
+        <span className="w-full truncate font-semibold text-gray-900 sm:w-1/2 dark:text-gray-100">
+          {application.company}
+        </span>
+        <span className="w-full truncate text-gray-700 sm:w-1/2 dark:text-gray-300">
+          {application.position}
+        </span>
+      </div>
+
+      <span className="hidden w-1/6 truncate text-gray-500 sm:inline-block dark:text-gray-400">
         {application.location}
       </span>
-      <span className="hidden w-1/6 text-gray-500 sm:inline-block dark:text-gray-400">
-        {application.appliedAt.toLocaleDateString("en-IL")}
+
+      <span className="hidden w-1/6 truncate text-gray-500 sm:inline-block dark:text-gray-400">
+        {formattedDate}
       </span>
-    </div>
+    </>
   );
 }
