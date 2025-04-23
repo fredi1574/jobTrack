@@ -100,15 +100,6 @@ export default function AddApplicationForm({
     }
   };
 
-  const handleRemoveFile = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    setSelectedFile(null);
-
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
-
   return (
     <form action={formAction} className="space-y-6 pt-4">
       {state?.error && !state.fieldErrors && (
