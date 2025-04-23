@@ -89,9 +89,9 @@ export default function StatusDropdown({
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="center"
-          className="bg-sky-50 p-2 dark:bg-indigo-950"
+          className="overflow-x-scroll bg-sky-50 p-2 dark:bg-indigo-950"
         >
-          <div className={`flex flex-row flex-wrap`}>
+          <div className="flex w-full max-w-[90vw] flex-row flex-nowrap">
             {possibleStatuses.map((statusOption) => (
               <DropdownMenuItem
                 inset={true}
