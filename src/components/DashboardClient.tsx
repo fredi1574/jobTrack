@@ -140,17 +140,26 @@ export default function DashboardClient({
           </DialogTrigger>
 
           {/* Add new application form */}
-          <DialogContent className="sm:max-w-[425px] md:max-w-lg">
+          <DialogContent className="flex max-h-[85vh] flex-col overflow-y-auto sm:max-h-[90vh] sm:max-w-lg">
             <DialogHeader className="">
               <DialogTitle>Add new Application</DialogTitle>
               <DialogDescription className="">
                 Fill in the details for the job application you are applying for
               </DialogDescription>
             </DialogHeader>
-            <AddApplicationForm onSuccess={handleAddModalClose} />
+            <div className="flex-grow py-4 pr-6 pl-1">
+              <AddApplicationForm onSuccess={handleAddModalClose} />
+            </div>
             <DialogFooter className="">
-              <DialogClose className="cursor-pointer hover:underline">
-                Cancel
+              <DialogClose asChild>
+                <Button
+                  className=""
+                  size=""
+                  variant="outline"
+                  onClick={handleEditModalClose}
+                >
+                  Cancel
+                </Button>
               </DialogClose>
             </DialogFooter>
           </DialogContent>
@@ -159,19 +168,21 @@ export default function DashboardClient({
 
       {/* Edit application modal */}
       <Dialog open={isEditModalOpen} onOpenChange={handleEditModalClose}>
-        <DialogContent className="sm:max-w-[425px] md:max-w-lg">
+        <DialogContent className="flex max-h-[85vh] flex-col overflow-y-auto sm:max-h-[90vh] sm:max-w-lg">
           <DialogHeader className="">
             <DialogTitle>Edit Application</DialogTitle>
             <DialogDescription className="">
               Update the details for this job application
             </DialogDescription>
           </DialogHeader>
-          {editingApplication && (
-            <EditApplicationForm
-              applicationData={editingApplication}
-              onSuccess={handleEditSuccess}
-            />
-          )}
+          <div className="flex-grow py-4 pr-6 pl-1">
+            {editingApplication && (
+              <EditApplicationForm
+                applicationData={editingApplication}
+                onSuccess={handleEditSuccess}
+              />
+            )}
+          </div>
           <DialogFooter className="">
             <DialogClose asChild>
               <Button
