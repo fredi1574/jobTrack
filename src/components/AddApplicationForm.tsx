@@ -2,13 +2,15 @@
 import { createApplication } from "@/app/actions";
 import {
   Briefcase,
+  CircleCheck,
   FileText,
   FileUp,
   LinkIcon,
   MapPin,
   MessageSquare,
+  XCircle,
 } from "lucide-react";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { toast } from "react-toastify";
 import { Button } from "./ui/button";
@@ -22,18 +24,28 @@ import {
   SelectValue,
 } from "./ui/select";
 import { Textarea } from "./ui/textarea";
+import FileUploadDropzone from "./FileUploadDropzone";
 
-const initialState = {
-  message: null,
-  error: null,
-  fieldErrors: null,
+interface ActionResult {
+  success: boolean;
+  message?: string;
+  error?: string;
+  fieldErrors?: Record<string, string[]>;
+}
+
+const initialState: ActionResult = {
+  message: undefined,
+  error: undefined,
+  fieldErrors: undefined,
   success: false,
 };
 
-function SubmitButton() {
+function SubmitButton(): React.ReactElement {
   const { pending } = useFormStatus();
   return (
     <Button
+      size="sm"
+      variant="outline"
       type="submit"
       disabled={pending}
       aria-disabled={pending}
@@ -44,17 +56,58 @@ function SubmitButton() {
   );
 }
 
-export default function AddApplicationForm({ onSuccess }) {
+interface AddApplicationFormProps {
+  onSuccess?: () => void;
+}
+
+export default function AddApplicationForm({
+  onSuccess,
+}: AddApplicationFormProps): React.ReactElement {
   const [state, formAction] = useActionState(createApplication, initialState);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (state?.success) {
       if (onSuccess) {
         onSuccess();
       }
-      toast.success("Application added successfully!", { icon: "➕" });
+      toast.success("Application added successfully!", {
+        icon: <span>➕</span>,
+      });
     }
   }, [state?.success, onSuccess]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const allowedTypes = [
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      ];
+      if (!allowedTypes.includes(file.type)) {
+        toast.error("Please upload a PDF, DOC, or DOCX file.");
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+        setSelectedFile(null);
+        return;
+      }
+      setSelectedFile(file);
+    } else {
+      setSelectedFile(null);
+    }
+  };
+
+  const handleRemoveFile = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setSelectedFile(null);
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
 
   return (
     <form action={formAction} className="space-y-6 pt-4">
@@ -74,6 +127,7 @@ export default function AddApplicationForm({ onSuccess }) {
             Company Name
           </Label>
           <Input
+            type="text"
             id="company"
             name="company"
             required
@@ -96,6 +150,7 @@ export default function AddApplicationForm({ onSuccess }) {
             Position / Job Title
           </Label>
           <Input
+            type="text"
             id="position"
             name="position"
             required
@@ -118,6 +173,7 @@ export default function AddApplicationForm({ onSuccess }) {
             Location
           </Label>
           <Input
+            type="text"
             id="location"
             name="location"
             required
@@ -140,6 +196,7 @@ export default function AddApplicationForm({ onSuccess }) {
             Job Link
           </Label>
           <Input
+            type="url"
             id="url"
             name="url"
             placeholder="https://www.example.com/job"
@@ -153,39 +210,13 @@ export default function AddApplicationForm({ onSuccess }) {
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label
-          htmlFor="resumeFile"
-          className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
-        >
-          <FileUp className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-          Resume (PDF, DOCX)
-        </Label>
-        <div className="flex w-full items-center justify-center">
-          <label
-            htmlFor="resumeFile"
-            className="flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 transition-colors hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700/30 dark:hover:bg-gray-700/50"
-          >
-            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-              <FileUp className="mb-3 h-8 w-8 text-gray-400" />
-              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-semibold">Click to upload</span> or drag
-                and drop
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                PDF or DOCX (Max 5MB)
-              </p>
-            </div>
-            <Input
-              id="resumeFile"
-              name="resumeFile"
-              type="file"
-              accept=".pdf,.docx"
-              className="hidden"
-            />
-          </label>
-        </div>
-      </div>
+      <FileUploadDropzone
+        id="resume"
+        name="resume"
+        label="Resume"
+        accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        maxSizeMB={5}
+      />
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div className="space-y-2">
@@ -193,21 +224,7 @@ export default function AddApplicationForm({ onSuccess }) {
             htmlFor="status"
             className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-gray-500 dark:text-gray-400"
-            >
-              <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
-              <path d="m9 12 2 2 4-4"></path>
-            </svg>
+            <CircleCheck className="h-4 w-4 text-gray-500 dark:text-gray-400" />
             Application Status
           </Label>
           <Select name="status" required>
@@ -217,12 +234,22 @@ export default function AddApplicationForm({ onSuccess }) {
             >
               <SelectValue placeholder="Select status" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Applied">Applied</SelectItem>
-              <SelectItem value="Assessment">Assessment</SelectItem>
-              <SelectItem value="Interview">Interview</SelectItem>
-              <SelectItem value="Offer">Offer</SelectItem>
-              <SelectItem value="Rejected">Rejected</SelectItem>
+            <SelectContent className="">
+              <SelectItem className="" value="Applied">
+                Applied
+              </SelectItem>
+              <SelectItem className="" value="Assessment">
+                Assessment
+              </SelectItem>
+              <SelectItem className="" value="Interview">
+                Interview
+              </SelectItem>
+              <SelectItem className="" value="Offer">
+                Offer
+              </SelectItem>
+              <SelectItem className="" value="Rejected">
+                Rejected
+              </SelectItem>
             </SelectContent>
           </Select>
           {state?.fieldErrors?.status && (

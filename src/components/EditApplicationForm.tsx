@@ -24,11 +24,20 @@ import {
   SelectValue,
 } from "./ui/select";
 import { Textarea } from "./ui/textarea";
+import { Application as PrismaApplication } from "@prisma/client";
+import FileUploadDropzone from "./FileUploadDropzone";
 
-const initialEditState = {
-  message: null,
-  error: null,
-  fieldErrors: null,
+interface ActionResult {
+  success: boolean;
+  message?: string;
+  error?: string;
+  fieldErrors?: Record<string, string[]>;
+}
+
+const initialEditState: ActionResult = {
+  message: undefined,
+  error: undefined,
+  fieldErrors: undefined,
   success: false,
 };
 
@@ -36,6 +45,8 @@ function UpdateButton() {
   const { pending } = useFormStatus();
   return (
     <Button
+      size="sm"
+      variant="outline"
       type="submit"
       disabled={pending}
       aria-disabled={pending}
@@ -75,7 +86,15 @@ function UpdateButton() {
   );
 }
 
-export default function EditApplicationForm({ applicationData, onSuccess }) {
+interface EditApplicationFormProps {
+  applicationData: PrismaApplication;
+  onSuccess?: () => void;
+}
+
+export default function EditApplicationForm({
+  applicationData,
+  onSuccess,
+}: EditApplicationFormProps): React.ReactElement {
   const [state, formAction] = useActionState(
     updateApplication,
     initialEditState,
@@ -88,7 +107,9 @@ export default function EditApplicationForm({ applicationData, onSuccess }) {
         onSuccess();
       }
       router.refresh();
-      toast.info("Application updated successfully!", { icon: "✏️" });
+      toast.info("Application updated successfully!", {
+        icon: <span>✏️</span>,
+      });
     }
     if (state?.error && !state.fieldErrors) {
       toast.error(state.error);
@@ -128,6 +149,7 @@ export default function EditApplicationForm({ applicationData, onSuccess }) {
             Company Name
           </Label>
           <Input
+            type="text"
             id="company"
             name="company"
             required
@@ -150,6 +172,7 @@ export default function EditApplicationForm({ applicationData, onSuccess }) {
             Position / Job Title
           </Label>
           <Input
+            type="text"
             id="position"
             name="position"
             required
@@ -172,6 +195,7 @@ export default function EditApplicationForm({ applicationData, onSuccess }) {
             Location
           </Label>
           <Input
+            type="text"
             id="location"
             name="location"
             required
@@ -194,6 +218,7 @@ export default function EditApplicationForm({ applicationData, onSuccess }) {
             Job Link
           </Label>
           <Input
+            type="url"
             id="url"
             name="url"
             defaultValue={applicationData.url ?? ""}
@@ -207,55 +232,15 @@ export default function EditApplicationForm({ applicationData, onSuccess }) {
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label
-          htmlFor="resumeFile"
-          className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
-        >
-          <FileUp className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-          Resume (PDF, DOCX)
-        </Label>
-        <div className="flex w-full items-center justify-center">
-          <label
-            htmlFor="resumeFile"
-            className="flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 transition-colors hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700/30 dark:hover:bg-gray-700/50"
-          >
-            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-              <FileUp className="mb-3 h-8 w-8 text-gray-400" />
-              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-semibold">Click to upload</span> or drag
-                and drop
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                {applicationData.resumeUrl
-                  ? "Replace current resume"
-                  : "PDF or DOCX (Max 5MB)"}
-              </p>
-            </div>
-            <Input
-              id="resumeFile"
-              name="resumeFile"
-              type="file"
-              accept=".pdf,.docx"
-              className="hidden"
-            />
-          </label>
-        </div>
-        {applicationData.resumeUrl && (
-          <div className="mt-2 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-            <FileText className="h-4 w-4" />
-            <span>Current resume: </span>
-            <a
-              href={applicationData.resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:text-blue-700 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
-            >
-              View current resume
-            </a>
-          </div>
-        )}
-      </div>
+      <FileUploadDropzone
+        id="resume"
+        name="resumeFile"
+        label="Resume"
+        accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        maxSizeMB={5}
+        currentFileUrl={applicationData.resumeUrl}
+        currentFileName="View current resume"
+      />
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div className="space-y-2">
@@ -287,12 +272,22 @@ export default function EditApplicationForm({ applicationData, onSuccess }) {
             >
               <SelectValue placeholder="Select status" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Applied">Applied</SelectItem>
-              <SelectItem value="Assessment">Assessment</SelectItem>
-              <SelectItem value="Interview">Interview</SelectItem>
-              <SelectItem value="Offer">Offer</SelectItem>
-              <SelectItem value="Rejected">Rejected</SelectItem>
+            <SelectContent className="">
+              <SelectItem className="" value="Applied">
+                Applied
+              </SelectItem>
+              <SelectItem className="" value="Assessment">
+                Assessment
+              </SelectItem>
+              <SelectItem className="" value="Interview">
+                Interview
+              </SelectItem>
+              <SelectItem className="" value="Offer">
+                Offer
+              </SelectItem>
+              <SelectItem className="" value="Rejected">
+                Rejected
+              </SelectItem>
             </SelectContent>
           </Select>
           {state?.fieldErrors?.status && (

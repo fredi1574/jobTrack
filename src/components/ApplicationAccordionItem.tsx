@@ -1,6 +1,6 @@
 "use client";
 import { removeResume } from "@/app/actions";
-import StatusDropdown from "@/components/aplicationItem/StatusDropdown";
+import StatusDropdown from "@/components/applicationItem/StatusDropdown";
 import {
   ClipboardList,
   Download,
@@ -10,21 +10,27 @@ import {
   Trash,
   Trash2,
 } from "lucide-react";
-import ApplicationActions from "./aplicationItem/ApplicationActions";
-import ApplicationInfo from "./aplicationItem/ApplicationInfo";
-import ApplicationURL from "./aplicationItem/ApplicationURL";
+import ApplicationActions from "./applicationItem/ApplicationActions";
+import ApplicationInfo from "./applicationItem/ApplicationInfo";
+import ApplicationURL from "./applicationItem/ApplicationURL";
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion";
 
+interface ApplicationAccordionItemProps {
+  application: any;
+  onDelete: (id: string) => void;
+  onEdit: (application: any) => void;
+}
+
 export default function ApplicationAccordionItem({
   application,
   onDelete,
   onEdit,
-}) {
-  const handleEditClick = (event) => {
+}: ApplicationAccordionItemProps) {
+  const handleEditClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     onEdit(application);
   };

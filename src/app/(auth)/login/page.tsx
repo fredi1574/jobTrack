@@ -1,18 +1,18 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -21,8 +21,8 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async (event: React.FormEvent) => {
+    event.preventDefault();
     setError("");
     setLoading(true);
 
@@ -51,30 +51,42 @@ export default function LoginPage() {
       <Card className="w-full max-w-sm shadow-lg">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
-          <CardDescription>Access your Job Application Tracker</CardDescription>
+          <CardDescription className="">
+            Access your Job Application Tracker
+          </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="">
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label className="" htmlFor="email">
+                Email
+              </Label>
               <Input
+                className=""
                 id="email"
                 type="email"
                 placeholder="you@example.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  setEmail(event.target.value)
+                }
                 required
                 disabled={loading}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label className="" htmlFor="password">
+                Password
+              </Label>
               <Input
+                className=""
                 id="password"
                 type="password"
                 placeholder="••••••••"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  setPassword(event.target.value)
+                }
                 required
                 disabled={loading}
               />
@@ -82,7 +94,13 @@ export default function LoginPage() {
             {error && (
               <p className="text-sm text-red-600 dark:text-red-500">{error}</p>
             )}
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button
+              variant="default"
+              size="lg"
+              type="submit"
+              className="w-full"
+              disabled={loading}
+            >
               {loading ? "Signing In..." : "Sign In"}
             </Button>
             <p className="text-center text-sm text-gray-600 dark:text-gray-400">

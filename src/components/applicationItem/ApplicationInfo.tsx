@@ -1,4 +1,12 @@
-export default function ApplicationInfo({ application }) {
+import type { Application as PrismaApplication } from "@prisma/client";
+
+interface ApplicationInfoProps {
+  application: PrismaApplication;
+}
+
+export default function ApplicationInfo({
+  application,
+}: ApplicationInfoProps): React.ReactElement | null {
   const formattedDate = application.appliedAt
     ? new Date(application.appliedAt).toLocaleDateString("en-IL")
     : "N/A";

@@ -4,39 +4,53 @@ import { prisma } from "@/lib/prisma";
 import { del, put } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
 
+export interface ActionResult {
+  success: boolean;
+  message?: string;
+  error?: string;
+  fieldErrors?: Record<string, string[]>;
+}
+
 const allowedTypes = [
   "application/pdf",
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
 
-function ensureUrlProtocol(url) {
-  url = url.trim();
-  if (!url) {
+function ensureUrlProtocol(url: string | null | undefined): string | null {
+  const trimmedUrl = url?.trim();
+  if (!trimmedUrl) {
     return null;
   }
-  if (!url.startsWith("http://") && !url.startsWith("https://")) {
-    return `https://${url}`;
+  const lowerUrl = trimmedUrl.toLowerCase();
+  if (!lowerUrl.startsWith("http://") && !lowerUrl.startsWith("https://")) {
+    return `https://${trimmedUrl}`;
   }
-  return url;
+  return trimmedUrl;
 }
 
-export async function createApplication(previousState, formData) {
+type FormState = ActionResult | undefined | null;
+
+export async function createApplication(
+  previousState: FormState,
+  formData: FormData,
+): Promise<ActionResult> {
   const session = await getServerAuthSession();
 
   if (!session?.user?.id) {
-    return { error: "Unauthorized" };
+    return { success: false, error: "Unauthorized" };
   }
 
-  const company = formData.get("company").toString().trim();
-  const position = formData.get("position").toString().trim();
-  const location = formData.get("location").toString().trim();
-  const status = formData.get("status").toString().trim();
-  const urlInput = formData.get("url").toString().trim();
-  const notes = formData.get("notes").toString().trim();
-  const resumeFile = formData.get("resumeFile");
+  const company = formData.get("company")?.toString().trim() ?? "";
+  const position = formData.get("position")?.toString().trim() ?? "";
+  const location = formData.get("location")?.toString().trim() ?? "";
+  const status = formData.get("status")?.toString().trim() ?? "";
+  const urlInput = formData.get("url")?.toString().trim() ?? "";
+  const notes = formData.get("notes")?.toString().trim() ?? "";
+  const resumeFileValue = formData.get("resumeFile");
 
-  let resumeBlobUrl = null;
+  const resumeFile = resumeFileValue instanceof File ? resumeFileValue : null;
+  let resumeBlobUrl: string | null = null;
 
   const url = ensureUrlProtocol(urlInput);
 
@@ -48,11 +62,7 @@ export async function createApplication(previousState, formData) {
       notes,
     });
     return {
-      fieldErrors: {
-        company: !company ? ["Company is required"] : undefined,
-        position: !position ? ["Position is required"] : undefined,
-        status: !status ? ["Status is required"] : undefined,
-      },
+      error: "Company, Position, Location/City, and Status are required.",
       success: false,
     };
   }
@@ -88,24 +98,27 @@ export async function createApplication(previousState, formData) {
         company,
         position,
         status,
-        url,
+        url: url,
         location,
         appliedAt: new Date(),
-        notes,
+        notes: notes || null,
         resumeUrl: resumeBlobUrl,
         User: { connect: { id: session.user.id } },
       },
     });
   } catch (dbError) {
     console.error("Database error:", dbError);
-    return { error: "Failed to save application to database" };
+    return { success: false, error: "Failed to save application to database" };
   }
 
   revalidatePath("/");
   return { message: "Application saved successfully", success: true };
 }
 
-export async function updateApplication(previousState, formData) {
+export async function updateApplication(
+  previousState: FormState,
+  formData: FormData,
+): Promise<ActionResult> {
   const session = await getServerAuthSession();
   if (!session?.user?.id) {
     return { success: false, error: "Unauthorized" };
@@ -116,15 +129,16 @@ export async function updateApplication(previousState, formData) {
     return { success: false, error: "Application ID is missing." };
   }
 
-  const company = formData.get("company")?.toString().trim();
-  const position = formData.get("position")?.toString().trim();
-  const status = formData.get("status")?.toString().trim();
-  const urlInput = formData.get("url")?.toString().trim();
-  const location = formData.get("location")?.toString().trim();
-  const notes = formData.get("notes")?.toString().trim();
-  const resumeFile = formData.get("resumeFile");
+  const company = formData.get("company")?.toString().trim() ?? "";
+  const position = formData.get("position")?.toString().trim() ?? "";
+  const status = formData.get("status")?.toString().trim() ?? "";
+  const urlInput = formData.get("url")?.toString().trim() ?? "";
+  const location = formData.get("location")?.toString().trim() ?? "";
+  const notes = formData.get("notes")?.toString().trim() ?? "";
+  const resumeFileValue = formData.get("resumeFile");
 
-  let newResumeBlobUrl = undefined;
+  const resumeFile = resumeFileValue instanceof File ? resumeFileValue : null;
+  let newResumeBlobUrl: string | undefined | null = undefined;
 
   const url = ensureUrlProtocol(urlInput);
 
@@ -193,7 +207,9 @@ export async function updateApplication(previousState, formData) {
   }
 }
 
-export async function deleteApplication(id) {
+export async function deleteApplication(
+  id: string,
+): Promise<{ success: boolean; error?: string }> {
   const session = await getServerAuthSession();
   if (!session?.user?.id) {
     return { success: false, error: "Unauthorized" };
@@ -228,7 +244,9 @@ export async function deleteApplication(id) {
   }
 }
 
-export async function removeResume(id) {
+export async function removeResume(
+  id: string,
+): Promise<{ success: boolean; error?: string }> {
   const session = await getServerAuthSession();
   if (!session?.user?.id) {
     return { success: false, error: "Unauthorized" };
@@ -266,7 +284,10 @@ export async function removeResume(id) {
   }
 }
 
-export async function updateApplicationStatus(id, status) {
+export async function updateApplicationStatus(
+  id: string,
+  status: string,
+): Promise<{ success: boolean; error?: string }> {
   const session = await getServerAuthSession();
   if (!session?.user?.id) {
     return { success: false, error: "Unauthorized" };

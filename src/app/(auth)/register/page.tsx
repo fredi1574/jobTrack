@@ -20,12 +20,12 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     setError("");
     setLoading(true);
 
@@ -80,13 +80,19 @@ export default function RegisterPage() {
       <Card className="w-full max-w-sm shadow-lg">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Register</CardTitle>
-          <CardDescription>Create your Job Tracker account</CardDescription>
+          <CardDescription className="">
+            Create your Job Tracker account
+          </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Name (Optional)</Label>
+              <Label className="" htmlFor="name">
+                Name (Optional)
+              </Label>
               <Input
+                type="text"
+                className=""
                 id="name"
                 name="name"
                 value={form.name}
@@ -96,8 +102,11 @@ export default function RegisterPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label className="" htmlFor="email">
+                Email
+              </Label>
               <Input
+                className=""
                 id="email"
                 name="email"
                 type="email"
@@ -109,8 +118,11 @@ export default function RegisterPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label className="" htmlFor="password">
+                Password
+              </Label>
               <Input
+                className=""
                 id="password"
                 name="password"
                 type="password"
@@ -125,7 +137,13 @@ export default function RegisterPage() {
             {error && (
               <p className="text-sm text-red-600 dark:text-red-500">{error}</p>
             )}
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button
+              variant="outline"
+              size="lg"
+              type="submit"
+              className="w-full"
+              disabled={loading}
+            >
               {loading ? "Registering..." : "Register"}
             </Button>
             <p className="text-center text-sm text-gray-600 dark:text-gray-400">

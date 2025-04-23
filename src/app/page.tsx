@@ -3,8 +3,10 @@ import { Button } from "@/components/ui/button";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import { Application as PrismaApplication } from "@prisma/client";
+import { Session } from "next-auth";
 
-async function getApplications(userId) {
+async function getApplications(userId: string): Promise<PrismaApplication[]> {
   if (!userId) return [];
   try {
     const applications = await prisma.application.findMany({
@@ -19,7 +21,7 @@ async function getApplications(userId) {
 }
 
 export default async function HomePage() {
-  const session = await getServerAuthSession();
+  const session: Session | null = await getServerAuthSession();
   const userId = session?.user?.id;
 
   // *** Logged-in View (Dashboard) ***
@@ -41,10 +43,10 @@ export default async function HomePage() {
           companies, positions, statuses, and more, all in one place.
         </p>
         <div className="flex flex-wrap justify-center gap-4">
-          <Button asChild size="lg">
+          <Button variant="link" className="" asChild size="lg">
             <Link href="/login">Sign In</Link>
           </Button>
-          <Button asChild variant="outline" size="lg">
+          <Button className="" asChild variant="outline" size="lg">
             <Link href="/register">Register</Link>
           </Button>
         </div>

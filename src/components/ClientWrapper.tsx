@@ -4,12 +4,20 @@ import { usePathname } from "next/navigation";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./Header";
+import React from "react";
 
-const NO_HEADER_PAGES = ["/login", "/register"];
+const NO_HEADER_PAGES: string[] = ["/login", "/register"];
 
-export default function ClientWrapper({ children }) {
-  const pathname = usePathname;
-  const shouldHideHeader = NO_HEADER_PAGES.includes(pathname);
+interface ClientWrapperProps {
+  children: React.ReactNode;
+}
+
+export default function ClientWrapper({ children }: ClientWrapperProps) {
+  // FIXME: fix the pathname header issue
+  const pathname = usePathname();
+  const shouldHideHeader = pathname
+    ? NO_HEADER_PAGES.includes(pathname)
+    : false;
 
   return (
     <SessionProvider>

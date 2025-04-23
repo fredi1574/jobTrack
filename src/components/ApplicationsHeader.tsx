@@ -1,8 +1,21 @@
-import { ArrowDown, ArrowDownUp, ArrowUp } from "lucide-react";
 import { SortDirection } from "@/hooks/useSortableData";
-import { Button } from "./ui/button";
+import type { Application as PrismaApplication } from "@prisma/client";
+import { ArrowDown, ArrowDownUp, ArrowUp } from "lucide-react";
 
-const RenderSortIcon = ({ sortColumn, sortDirection, columnKey }) => {
+type SortColumnKey = keyof PrismaApplication;
+type SortDirection = typeof SortDirection.ASC | typeof SortDirection.DESC;
+
+interface RenderSortIconProps {
+  sortColumn: SortColumnKey | null;
+  sortDirection: SortDirection;
+  columnKey: SortColumnKey;
+}
+
+const RenderSortIcon = ({
+  sortColumn,
+  sortDirection,
+  columnKey,
+}: RenderSortIconProps) => {
   if (sortColumn !== columnKey) {
     return <ArrowDownUp className="ml-1 size-3 text-gray-400" />;
   }
@@ -12,18 +25,32 @@ const RenderSortIcon = ({ sortColumn, sortDirection, columnKey }) => {
   return <ArrowDown className="ml-1 size-3 text-gray-600 dark:text-gray-300" />;
 };
 
+interface ApplicationsHeaderProps {
+  sortColumn: SortColumnKey | null;
+  sortDirection: SortDirection;
+  onSort: (columnKey: SortColumnKey) => void;
+}
+
 export default function ApplicationsHeader({
   sortColumn,
   sortDirection,
   onSort,
-}) {
+}: ApplicationsHeaderProps) {
+  interface SortableHeaderProps {
+    columnKey: SortColumnKey;
+    label: string;
+    className?: string;
+    justify?: string;
+  }
+
   const SortableHeader = ({
     columnKey,
     label,
     className = "",
     justify = "justify-start",
-  }) => (
+  }: SortableHeaderProps) => (
     <button
+      type="button"
       onClick={() => onSort(columnKey)}
       className={`flex items-center hover:text-gray-700 dark:hover:text-gray-200 ${justify} ${className}`}
     >

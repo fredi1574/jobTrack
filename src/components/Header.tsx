@@ -18,7 +18,7 @@ export default function Header() {
 
   const isDarkMode = mounted && resolvedTheme === "dark";
 
-  const handleThemeChange = (isChecked) => {
+  const handleThemeChange = (isChecked: boolean) => {
     setTheme(isChecked ? "dark" : "light");
   };
 
@@ -35,6 +35,7 @@ export default function Header() {
           className={`size-5 transition-colors ${isDarkMode ? "text-orange-400/40" : "text-orange-400"}`}
         />
         <Switch
+          className=""
           id="theme-switch"
           checked={isDarkMode}
           onCheckedChange={handleThemeChange}

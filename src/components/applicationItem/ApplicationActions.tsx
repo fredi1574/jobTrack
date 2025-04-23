@@ -1,12 +1,23 @@
 import { Pencil, Trash2 } from "lucide-react";
+import { Application as PrismaApplication } from "@prisma/client";
 
-export default function ApplicationActions({ application, onEdit, onDelete }) {
-  const handleEditClick = (event) => {
+interface ApplicationActionsProps {
+  application: PrismaApplication;
+  onEdit: (application: PrismaApplication) => void;
+  onDelete: (id: string) => void;
+}
+
+export default function ApplicationActions({
+  application,
+  onEdit,
+  onDelete,
+}: ApplicationActionsProps): React.ReactElement {
+  const handleEditClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     onEdit(application);
   };
 
-  const handleDeleteClick = (event) => {
+  const handleDeleteClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     onDelete(application.id);
   };

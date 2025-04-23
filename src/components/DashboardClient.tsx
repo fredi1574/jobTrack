@@ -1,6 +1,7 @@
 "use client";
 import { deleteApplication } from "@/app/actions";
-import { useSortableData } from "@/hooks/useSortableData";
+import { useSortableData, SortDirection } from "@/hooks/useSortableData";
+import type { Application as PrismaApplication } from "@prisma/client";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { Search } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
@@ -23,11 +24,17 @@ import {
 } from "./ui/dialog";
 import { Input } from "./ui/input";
 
-export default function DashboardClient({ initialApplications }) {
-  const [applications, setApplications] = useState(initialApplications);
+export default function DashboardClient({
+  initialApplications,
+}: {
+  initialApplications: PrismaApplication[];
+}) {
+  const [applications, setApplications] =
+    useState<PrismaApplication[]>(initialApplications);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingApplication, setEditingApplication] = useState(null);
+  const [editingApplication, setEditingApplication] =
+    useState<PrismaApplication | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -47,9 +54,13 @@ export default function DashboardClient({ initialApplications }) {
     sortColumn,
     sortDirection,
     handleSort,
-  } = useSortableData(filteredApplications, "appliedAt", "desc");
+  } = useSortableData<PrismaApplication>(
+    filteredApplications,
+    "appliedAt",
+    "desc",
+  );
 
-  const handleOpenEditModal = useCallback((application) => {
+  const handleOpenEditModal = useCallback((application: PrismaApplication) => {
     setEditingApplication(application);
     setIsEditModalOpen(true);
   }, []);
@@ -67,7 +78,7 @@ export default function DashboardClient({ initialApplications }) {
     setIsAddModalOpen(false);
   }, []);
 
-  const handleDeleteApplication = useCallback(async (applicationId) => {
+  const handleDeleteApplication = useCallback(async (applicationId: string) => {
     if (!confirm("Are you sure you want to delete this application?")) {
       return;
     }
@@ -81,7 +92,9 @@ export default function DashboardClient({ initialApplications }) {
             (application) => application.id !== applicationId,
           ),
         );
-        toast.success("Application deleted successfully!", { icon: "🚮" });
+        toast.success("Application deleted successfully!", {
+          icon: <span>🚮</span>,
+        });
       } else {
         toast.error(result?.error || "Failed to delete application.");
       }
@@ -107,7 +120,9 @@ export default function DashboardClient({ initialApplications }) {
               placeholder="Search applications..."
               className="pl-10"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                setSearchTerm(event.target.value)
+              }
             />
           </div>
         </div>
@@ -116,7 +131,8 @@ export default function DashboardClient({ initialApplications }) {
         <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
           <DialogTrigger asChild>
             <Button
-              className="w-full cursor-pointer hover:bg-sky-200 sm:w-auto"
+              className="w-full cursor-pointer p-5 hover:bg-sky-200 sm:w-auto"
+              size="sm"
               variant="outline"
             >
               Add new Application
@@ -125,14 +141,14 @@ export default function DashboardClient({ initialApplications }) {
 
           {/* Add new application form */}
           <DialogContent className="sm:max-w-[425px] md:max-w-lg">
-            <DialogHeader>
+            <DialogHeader className="">
               <DialogTitle>Add new Application</DialogTitle>
-              <DialogDescription>
+              <DialogDescription className="">
                 Fill in the details for the job application you are applying for
               </DialogDescription>
             </DialogHeader>
             <AddApplicationForm onSuccess={handleAddModalClose} />
-            <DialogFooter>
+            <DialogFooter className="">
               <DialogClose className="cursor-pointer hover:underline">
                 Cancel
               </DialogClose>
@@ -144,9 +160,9 @@ export default function DashboardClient({ initialApplications }) {
       {/* Edit application modal */}
       <Dialog open={isEditModalOpen} onOpenChange={handleEditModalClose}>
         <DialogContent className="sm:max-w-[425px] md:max-w-lg">
-          <DialogHeader>
+          <DialogHeader className="">
             <DialogTitle>Edit Application</DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="">
               Update the details for this job application
             </DialogDescription>
           </DialogHeader>
@@ -156,9 +172,14 @@ export default function DashboardClient({ initialApplications }) {
               onSuccess={handleEditSuccess}
             />
           )}
-          <DialogFooter>
+          <DialogFooter className="">
             <DialogClose asChild>
-              <Button variant="outline" onClick={handleEditModalClose}>
+              <Button
+                className=""
+                size=""
+                variant="outline"
+                onClick={handleEditModalClose}
+              >
                 Cancel
               </Button>
             </DialogClose>

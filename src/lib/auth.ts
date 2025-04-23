@@ -1,10 +1,18 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { compare } from "bcryptjs";
-import { getServerSession as originalGetServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "./prisma";
+import { Session } from "next-auth";
+import NextAuth, {
+  getServerSession as originalGetServerSession,
+  type AuthOptions,
+  type DefaultSession,
+  type User as NextAuthUser,
+} from "next-auth";
+import { AdapterUser } from "next-auth/adapters";
+import { JWT } from "next-auth/jwt";
 
-export const authOptions = {
+export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   session: {
     strategy: "jwt",
@@ -16,7 +24,7 @@ export const authOptions = {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(credentials): Promise<NextAuthUser | null> {
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
@@ -25,7 +33,7 @@ export const authOptions = {
           where: { email: credentials.email },
         });
 
-        if (!user) {
+        if (!user || !user.password) {
           return null;
         }
 
@@ -43,7 +51,17 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user, trigger, session }) {
+    async jwt({
+      token,
+      user,
+      trigger,
+      session,
+    }: {
+      token: JWT;
+      user?: NextAuthUser | AdapterUser;
+      session?: any;
+      trigger?: "signIn" | "signUp" | "update" | "jwt";
+    }): Promise<JWT> {
       if (user) {
         token.id = user.id;
         token.name = user.name;
@@ -54,9 +72,15 @@ export const authOptions = {
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({
+      session,
+      token,
+    }: {
+      session: Session;
+      token: JWT;
+    }): Promise<Session> {
       if (token && session.user) {
-        session.user.id = token.id;
+        session.user.id = token.id as string;
         session.user.name = token.name;
         // Ensure email from token if needed, though usually present
         // session.user.email = token.email;
@@ -71,4 +95,5 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-export const getServerAuthSession = () => originalGetServerSession(authOptions);
+export const getServerAuthSession: () => Promise<Session | null> = () =>
+  originalGetServerSession(authOptions);

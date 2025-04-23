@@ -1,7 +1,8 @@
 import ClientWrapper from "@/components/ClientWrapper";
+import ThemeProvider from "@/components/ThemeProvider";
 import { Geist, Geist_Mono } from "next/font/google";
+import React from "react";
 import "./globals.css";
-import { ThemeProvider } from "@/components/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,7 +19,11 @@ export const metadata = {
   description: "Track your job applications easily",
 };
 
-export default function RootLayout({ children }) {
+interface RootLayoutProps {
+  children: React.ReactNode;
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
       <link rel="icon" href="/favicon.svg" />

@@ -1,8 +1,4 @@
 import { updateApplicationStatus } from "@/app/actions";
-import { Check, ChevronDown } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
-import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,8 +6,27 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Application as PrismaApplication } from "@prisma/client";
+import { Check, ChevronDown } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { toast } from "react-toastify";
 
-const statusColors = {
+type ApplicationStatus =
+  | "Applied"
+  | "Assessment"
+  | "Interview"
+  | "Offer"
+  | "Rejected";
+const possibleStatuses: ApplicationStatus[] = [
+  "Applied",
+  "Assessment",
+  "Interview",
+  "Offer",
+  "Rejected",
+];
+
+const statusColors: Record<string, string> = {
   applied:
     "bg-sky-100 text-sky-500 hover:bg-sky-200 hover:text-sky-600 border border-sky-300 dark:hover:bg-sky-800/50 dark:hover:text-sky-300",
   assessment:
@@ -24,23 +39,23 @@ const statusColors = {
     "bg-red-100 text-red-500 hover:bg-red-200 hover:text-red-600 border border-red-300 dark:hover:bg-red-800/50 dark:hover:text-red-300",
 };
 
-const possibleStatuses = [
-  "Applied",
-  "Assessment",
-  "Interview",
-  "Offer",
-  "Rejected",
-];
+interface StatusDropdownProps {
+  application: PrismaApplication;
+}
 
-export default function StatusDropdown({ application }) {
+export default function StatusDropdown({
+  application,
+}: StatusDropdownProps): React.ReactElement {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
-  const handleStatusChange = (newStatus) => {
+  const handleStatusChange = (newStatus: string) => {
     startTransition(async () => {
       try {
         const result = await updateApplicationStatus(application.id, newStatus);
         if (result?.success) {
-          toast.success(`Status updated to ${newStatus}`);
+          toast.success(`Status updated to ${newStatus}`, {
+            icon: <span>🔄</span>,
+          });
           router.refresh();
         } else {
           toast.error(result?.error || "Failed to update status.");
@@ -60,6 +75,7 @@ export default function StatusDropdown({ application }) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
+            size="sm"
             variant="outline"
             className={`h-auto ${statusColors[application.status.toLowerCase()]} w-full justify-center border-none px-2.5 py-0.5 text-sm font-semibold ${isPending ? "animate-pulse cursor-default" : "cursor-pointer"}`}
           >
@@ -78,12 +94,13 @@ export default function StatusDropdown({ application }) {
           <div className={`flex flex-row flex-wrap`}>
             {possibleStatuses.map((statusOption) => (
               <DropdownMenuItem
+                inset={true}
                 key={statusOption}
                 disabled={isPending || application.status === statusOption}
                 onSelect={() => handleStatusChange(statusOption)}
-                className={`flex items-center justify-between ${statusColors[statusOption.toLowerCase()]} mx-0.5 h-5 cursor-pointer rounded-lg px-2 transition-colors`}
+                className={`flex items-center justify-center ${statusColors[statusOption.toLowerCase()]} mx-0.5 h-5 cursor-pointer rounded-lg px-2 transition-colors`}
               >
-                {statusOption}
+                <span>{statusOption}</span>
                 {application.status === statusOption && (
                   <Check className="ml-2 size-4" />
                 )}
