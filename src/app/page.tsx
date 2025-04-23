@@ -43,7 +43,7 @@ export default async function HomePage() {
           companies, positions, statuses, and more, all in one place.
         </p>
         <div className="flex flex-wrap justify-center gap-4">
-          <Button variant="link" className="" asChild size="lg">
+          <Button variant="outline" className="" asChild size="lg">
             <Link href="/login">Sign In</Link>
           </Button>
           <Button className="" asChild variant="outline" size="lg">
