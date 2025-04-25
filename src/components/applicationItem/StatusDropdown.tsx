@@ -12,19 +12,13 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "react-toastify";
 
-type ApplicationStatus =
-  | "Applied"
-  | "Assessment"
-  | "Interview"
-  | "Offer"
-  | "Rejected";
-const possibleStatuses: ApplicationStatus[] = [
+const possibleStatuses = [
   "Applied",
   "Assessment",
   "Interview",
   "Offer",
   "Rejected",
-];
+] as const;
 
 const statusColors: Record<string, string> = {
   applied:
@@ -87,22 +81,21 @@ export default function StatusDropdown({
             )}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent
-          align="center"
-          className="overflow-x-scroll bg-sky-50 p-2 dark:bg-indigo-950"
-        >
-          <div className="flex w-full max-w-[90vw] flex-row flex-nowrap">
+        <DropdownMenuContent className="overflow-x-scroll bg-sky-50 p-2 dark:bg-indigo-950">
+          <div className="flex w-full max-w-[90vw]">
             {possibleStatuses.map((statusOption) => (
               <DropdownMenuItem
-                inset={true}
+                inset={false}
                 key={statusOption}
                 disabled={isPending || application.status === statusOption}
                 onSelect={() => handleStatusChange(statusOption)}
-                className={`flex items-center justify-center ${statusColors[statusOption.toLowerCase()]} mx-0.5 h-5 cursor-pointer rounded-lg px-2 transition-colors`}
+                className={`${statusColors[statusOption.toLowerCase()]} mx-1 h-7 w-32 cursor-pointer items-center rounded-lg px-2 text-center transition-colors`}
               >
                 <span>{statusOption}</span>
-                {application.status === statusOption && (
-                  <Check className="ml-2 size-4" />
+                {application.status === statusOption ? (
+                  <Check className="size-4" />
+                ) : (
+                  <span className="size-4" />
                 )}
               </DropdownMenuItem>
             ))}
