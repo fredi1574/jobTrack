@@ -4,16 +4,16 @@ import {
   Briefcase,
   CircleCheck,
   FileText,
-  FileUp,
   LinkIcon,
   MapPin,
   MessageSquare,
-  XCircle,
 } from "lucide-react";
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
 import { toast } from "react-toastify";
+import FileUploadDropzone from "./FileUploadDropzone";
 import { Button } from "./ui/button";
+import { DialogClose } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import {
@@ -24,7 +24,6 @@ import {
   SelectValue,
 } from "./ui/select";
 import { Textarea } from "./ui/textarea";
-import FileUploadDropzone from "./FileUploadDropzone";
 
 interface ActionResult {
   success: boolean;
@@ -56,6 +55,21 @@ function SubmitButton(): React.ReactElement {
   );
 }
 
+function CancelButton(): React.ReactElement {
+  return (
+    <DialogClose asChild>
+      <Button
+        size="sm"
+        variant="outline"
+        type="button"
+        className="w-full cursor-pointer"
+      >
+        Cancel
+      </Button>
+    </DialogClose>
+  );
+}
+
 interface AddApplicationFormProps {
   onSuccess?: () => void;
 }
@@ -64,8 +78,6 @@ export default function AddApplicationForm({
   onSuccess,
 }: AddApplicationFormProps): React.ReactElement {
   const [state, formAction] = useActionState(createApplication, initialState);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (state?.success) {
@@ -77,28 +89,6 @@ export default function AddApplicationForm({
       });
     }
   }, [state?.success, onSuccess]);
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const allowedTypes = [
-        "application/pdf",
-        "application/msword",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      ];
-      if (!allowedTypes.includes(file.type)) {
-        toast.error("Please upload a PDF, DOC, or DOCX file.");
-        if (fileInputRef.current) {
-          fileInputRef.current.value = "";
-        }
-        setSelectedFile(null);
-        return;
-      }
-      setSelectedFile(file);
-    } else {
-      setSelectedFile(null);
-    }
-  };
 
   return (
     <form action={formAction} className="space-y-6 pt-4">
@@ -273,8 +263,9 @@ export default function AddApplicationForm({
         </div>
       </div>
 
-      <div className="flex justify-end pt-4">
+      <div className="flex flex-col gap-4 pt-4">
         <SubmitButton />
+        <CancelButton />
       </div>
     </form>
   );

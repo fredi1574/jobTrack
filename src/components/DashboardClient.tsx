@@ -1,6 +1,6 @@
 "use client";
 import { deleteApplication } from "@/app/actions";
-import { useSortableData, SortDirection } from "@/hooks/useSortableData";
+import { useSortableData } from "@/hooks/useSortableData";
 import type { Application as PrismaApplication } from "@prisma/client";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { Search } from "lucide-react";
@@ -15,10 +15,8 @@ import { Accordion } from "./ui/accordion";
 import { Button } from "./ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTrigger,
 } from "./ui/dialog";
@@ -150,18 +148,6 @@ export default function DashboardClient({
             <div className="flex-grow py-4 pr-6 pl-1">
               <AddApplicationForm onSuccess={handleAddModalClose} />
             </div>
-            <DialogFooter className="">
-              <DialogClose asChild>
-                <Button
-                  className=""
-                  size=""
-                  variant="outline"
-                  onClick={handleEditModalClose}
-                >
-                  Cancel
-                </Button>
-              </DialogClose>
-            </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>
@@ -183,18 +169,6 @@ export default function DashboardClient({
               />
             )}
           </div>
-          <DialogFooter className="">
-            <DialogClose asChild>
-              <Button
-                className=""
-                size=""
-                variant="outline"
-                onClick={handleEditModalClose}
-              >
-                Cancel
-              </Button>
-            </DialogClose>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
 

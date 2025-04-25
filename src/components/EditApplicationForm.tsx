@@ -1,9 +1,9 @@
 "use client";
 import { updateApplication } from "@/app/actions";
+import { Application as PrismaApplication } from "@prisma/client";
 import {
   Briefcase,
   FileText,
-  FileUp,
   LinkIcon,
   MapPin,
   MessageSquare,
@@ -13,7 +13,9 @@ import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
 import { toast } from "react-toastify";
+import FileUploadDropzone from "./FileUploadDropzone";
 import { Button } from "./ui/button";
+import { DialogClose } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import {
@@ -24,8 +26,6 @@ import {
   SelectValue,
 } from "./ui/select";
 import { Textarea } from "./ui/textarea";
-import { Application as PrismaApplication } from "@prisma/client";
-import FileUploadDropzone from "./FileUploadDropzone";
 
 interface ActionResult {
   success: boolean;
@@ -83,6 +83,21 @@ function UpdateButton() {
         </span>
       )}
     </Button>
+  );
+}
+
+function CancelButton(): React.ReactElement {
+  return (
+    <DialogClose asChild>
+      <Button
+        size="sm"
+        variant="outline"
+        type="button"
+        className="w-full cursor-pointer"
+      >
+        Cancel
+      </Button>
+    </DialogClose>
   );
 }
 
@@ -320,8 +335,9 @@ export default function EditApplicationForm({
         </div>
       </div>
 
-      <div className="flex justify-end pt-4">
+      <div className="flex flex-col gap-4 pt-4">
         <UpdateButton />
+        <CancelButton />
       </div>
     </form>
   );
