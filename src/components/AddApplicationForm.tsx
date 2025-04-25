@@ -2,6 +2,7 @@
 import { createApplication } from "@/app/actions";
 import {
   Briefcase,
+  Calendar,
   CircleCheck,
   FileText,
   LinkIcon,
@@ -189,11 +190,32 @@ export default function AddApplicationForm({
             </p>
           )}
         </div>
+        <div className="space-y-2">
+          <Label
+            htmlFor="appliedAt"
+            className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
+          >
+            <Calendar className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+            Date Applied
+          </Label>
+          <Input
+            type="date"
+            id="appliedAt"
+            name="appliedAt"
+            defaultValue={new Date().toISOString().split("T")[0]}
+            className="w-40 border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
+          />
+          {state?.fieldErrors?.appliedAt && (
+            <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+              {state.fieldErrors.appliedAt.join(", ")}
+            </p>
+          )}
+        </div>
       </div>
 
       <FileUploadDropzone
-        id="resume"
-        name="resume"
+        id="resumeFile"
+        name="resumeFile"
         label="Resume"
         accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         maxSizeMB={5}

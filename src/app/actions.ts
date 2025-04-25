@@ -46,6 +46,7 @@ export async function createApplication(
   const location = formData.get("location")?.toString().trim() ?? "";
   const status = formData.get("status")?.toString().trim() ?? "";
   const urlInput = formData.get("url")?.toString().trim() ?? "";
+  const appliedAt = formData.get("appliedAt")?.toString().trim() ?? "";
   const notes = formData.get("notes")?.toString().trim() ?? "";
   const resumeFileValue = formData.get("resumeFile");
 
@@ -100,7 +101,7 @@ export async function createApplication(
         status,
         url: url,
         location,
-        appliedAt: new Date(),
+        appliedAt: new Date(appliedAt),
         notes: notes || null,
         resumeUrl: resumeBlobUrl,
         User: { connect: { id: session.user.id } },
@@ -133,6 +134,7 @@ export async function updateApplication(
   const position = formData.get("position")?.toString().trim() ?? "";
   const status = formData.get("status")?.toString().trim() ?? "";
   const urlInput = formData.get("url")?.toString().trim() ?? "";
+  const appliedAt = formData.get("appliedAt")?.toString().trim() ?? "";
   const location = formData.get("location")?.toString().trim() ?? "";
   const notes = formData.get("notes")?.toString().trim() ?? "";
   const resumeFileValue = formData.get("resumeFile");
@@ -190,6 +192,7 @@ export async function updateApplication(
         position,
         status,
         url: url || null,
+        appliedAt: new Date(appliedAt),
         location,
         notes: notes || null,
         resumeUrl:

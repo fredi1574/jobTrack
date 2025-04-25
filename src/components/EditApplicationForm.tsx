@@ -2,7 +2,9 @@
 import { updateApplication } from "@/app/actions";
 import { Application as PrismaApplication } from "@prisma/client";
 import {
+  BadgeCheck,
   Briefcase,
+  Calendar,
   FileText,
   LinkIcon,
   MapPin,
@@ -173,7 +175,7 @@ export default function EditApplicationForm({
           />
           {state?.fieldErrors?.company && (
             <p className="mt-1 text-xs text-red-600 dark:text-red-400">
-              {state.fieldErrors?.company.join(", ")}
+              {state.fieldErrors.company.join(", ")}
             </p>
           )}
         </div>
@@ -196,7 +198,7 @@ export default function EditApplicationForm({
           />
           {state?.fieldErrors?.position && (
             <p className="mt-1 text-xs text-red-600 dark:text-red-400">
-              {state.fieldErrors?.position.join(", ")}
+              {state.fieldErrors.position.join(", ")}
             </p>
           )}
         </div>
@@ -219,7 +221,7 @@ export default function EditApplicationForm({
           />
           {state?.fieldErrors?.location && (
             <p className="mt-1 text-xs text-red-600 dark:text-red-400">
-              {state.fieldErrors?.location.join(", ")}
+              {state.fieldErrors.location.join(", ")}
             </p>
           )}
         </div>
@@ -236,19 +238,40 @@ export default function EditApplicationForm({
             type="url"
             id="url"
             name="url"
-            defaultValue={applicationData.url ?? ""}
+            defaultValue={applicationData.url}
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
           {state?.fieldErrors?.url && (
             <p className="mt-1 text-xs text-red-600 dark:text-red-400">
-              {state.fieldErrors?.url.join(", ")}
+              {state.fieldErrors.url.join(", ")}
+            </p>
+          )}
+        </div>
+        <div className="space-y-2">
+          <Label
+            htmlFor="appliedAt"
+            className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
+          >
+            <Calendar className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+            Date Applied
+          </Label>
+          <Input
+            type="date"
+            id="appliedAt"
+            name="appliedAt"
+            defaultValue={new Date().toISOString().split("T")[0]}
+            className="w-40 border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
+          />
+          {state?.fieldErrors?.appliedAt && (
+            <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+              {state.fieldErrors.appliedAt.join(", ")}
             </p>
           )}
         </div>
       </div>
 
       <FileUploadDropzone
-        id="resume"
+        id="resumeFile"
         name="resumeFile"
         label="Resume"
         accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
@@ -263,21 +286,7 @@ export default function EditApplicationForm({
             htmlFor="status"
             className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-gray-500 dark:text-gray-400"
-            >
-              <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
-              <path d="m9 12 2 2 4-4"></path>
-            </svg>
+            <BadgeCheck className="h-4 w-4 text-gray-500 dark:text-gray-400" />
             Application Status
           </Label>
           <Select name="status" required defaultValue={applicationData.status}>
