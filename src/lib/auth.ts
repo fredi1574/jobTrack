@@ -29,8 +29,10 @@ export const authOptions: AuthOptions = {
           return null;
         }
 
+        const lowerCaseEmail = credentials.email.toLowerCase().trim();
+
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+          where: { email: lowerCaseEmail },
         });
 
         if (!user || !user.password) {
