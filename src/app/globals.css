@@ -113,6 +113,24 @@
 }
 
 @layer base {
+  :root {
+    --chart-applied: 204 93.8% 93.7%;
+    --chart-assessment: 54.9 96.7% 88%;
+    --chart-interview: 268.7 100% 95.5%;
+    --chart-offer: 140.6 84.2% 92.5%;
+    --chart-rejected: 0 93.3% 94.1%;
+    --chart-primary: 200.6 94.4% 86.1%;
+  }
+
+  .dark {
+    --chart-applied: 204 94% 35%;
+    --chart-assessment: 48 96% 45%;
+    --chart-interview: 269 100% 55%;
+    --chart-offer: 141 84% 40%;
+    --chart-rejected: 0 93% 45%;
+    --chart-primary: 201 90% 27.5%;
+  }
+
   * {
     @apply border-border outline-ring/50;
   }

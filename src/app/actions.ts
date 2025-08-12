@@ -1,6 +1,7 @@
 "use server";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { Application as PrismaApplication } from "@prisma/client";
 import { del, put } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
 
@@ -30,6 +31,22 @@ function ensureUrlProtocol(url: string | null | undefined): string | null {
 }
 
 type FormState = ActionResult | undefined | null;
+
+export async function getApplications(
+  userId: string,
+): Promise<PrismaApplication[]> {
+  if (!userId) return [];
+  try {
+    const applications = await prisma.application.findMany({
+      where: { UserId: userId },
+      orderBy: { appliedAt: "desc" },
+    });
+    return applications;
+  } catch (error) {
+    console.error("Failed to fetch applications:", error);
+    return [];
+  }
+}
 
 export async function createApplication(
   previousState: FormState,

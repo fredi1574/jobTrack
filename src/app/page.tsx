@@ -1,24 +1,9 @@
 import DashboardClient from "@/components/DashboardClient";
 import { Button } from "@/components/ui/button";
 import { getServerAuthSession } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
-import Link from "next/link";
-import { Application as PrismaApplication } from "@prisma/client";
 import { Session } from "next-auth";
-
-async function getApplications(userId: string): Promise<PrismaApplication[]> {
-  if (!userId) return [];
-  try {
-    const applications = await prisma.application.findMany({
-      where: { UserId: userId },
-      orderBy: { appliedAt: "desc" },
-    });
-    return applications;
-  } catch (error) {
-    console.error("Failed to fetch applications:", error);
-    return [];
-  }
-}
+import Link from "next/link";
+import { getApplications } from "./actions";
 
 export default async function HomePage() {
   const session: Session | null = await getServerAuthSession();
@@ -31,7 +16,7 @@ export default async function HomePage() {
     return <DashboardClient initialApplications={applications} />;
   }
 
-  // *** Logged-out View (Welcome/Landing) ***
+  // *** Logged-out View (Landing) ***
   else {
     return (
       <div className="flex min-h-[calc(100vh-var(--header-height))] flex-col items-center justify-center p-8 text-center">
