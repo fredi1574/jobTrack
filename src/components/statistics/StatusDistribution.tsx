@@ -1,6 +1,5 @@
 "use client";
 import {
-  ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -11,9 +10,17 @@ import { Application } from "@prisma/client";
 import { useMemo } from "react";
 import { Cell, Pie, PieChart } from "recharts";
 
+type ChartConfig = {
+  [key: string]: {
+    label: string;
+    color?: string;
+  };
+};
+
 const chartConfig = {
   applications: {
     label: "Applications",
+    color: "hsl(var(--chart-primary))",
   },
   Applied: {
     label: "Applied",
@@ -71,10 +78,30 @@ export default function StatusDistribution({
       <PieChart>
         <ChartTooltip
           cursor={false}
-          content={<ChartTooltipContent hideLabel />}
+          content={
+            <ChartTooltipContent
+              hideLabel
+              active={undefined}
+              payload={undefined}
+              className={undefined}
+              label={undefined}
+              labelFormatter={undefined}
+              labelClassName={undefined}
+              formatter={undefined}
+              color={undefined}
+              nameKey={undefined}
+              labelKey={undefined}
+            />
+          }
         />
         <ChartLegend
-          content={<ChartLegendContent nameKey="status" />}
+          content={
+            <ChartLegendContent
+              nameKey="status"
+              className={undefined}
+              payload={undefined}
+            />
+          }
           className="-translate-y-4 flex-wrap gap-2 *:basis-1/4 *:justify-center"
         />
         <Pie

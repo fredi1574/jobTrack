@@ -1,12 +1,14 @@
 import { Application } from "@prisma/client";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "../ui/chart";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart";
 import { useMemo } from "react";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+
+type ChartConfig = {
+  [key: string]: {
+    label: string;
+    color: string;
+  };
+};
 
 const chartConfig = {
   count: {
@@ -22,13 +24,13 @@ export default function LocationDistribution({
 }) {
   const chartData = useMemo(() => {
     const locationCounts = applications.reduce(
-      (accumolator, { location }) => {
+      (accumulator, { location }) => {
         const normalizedLocation = location.trim();
         if (normalizedLocation) {
-          accumolator[normalizedLocation] =
-            (accumolator[normalizedLocation] || 0) + 1;
+          accumulator[normalizedLocation] =
+            (accumulator[normalizedLocation] || 0) + 1;
         }
-        return accumolator;
+        return accumulator;
       },
       {} as Record<string, number>,
     );
@@ -69,7 +71,23 @@ export default function LocationDistribution({
           textAnchor="end"
         />
         <YAxis />
-        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+        <ChartTooltip
+          cursor={false}
+          content={
+            <ChartTooltipContent
+              active={undefined}
+              payload={undefined}
+              className={undefined}
+              label={undefined}
+              labelFormatter={undefined}
+              labelClassName={undefined}
+              formatter={undefined}
+              color={undefined}
+              nameKey={undefined}
+              labelKey={undefined}
+            />
+          }
+        />
         <Bar dataKey="count" fill={chartConfig.count.color} radius={6} />
       </BarChart>
     </ChartContainer>
