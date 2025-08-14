@@ -9,7 +9,7 @@ import { Switch } from "./ui/switch";
 
 export default function Header() {
   const { data: session, status } = useSession();
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -59,16 +59,32 @@ export default function Header() {
           <div className="h-6 w-20 animate-pulse rounded bg-gray-300 dark:bg-gray-700"></div>
         ) : session?.user ? (
           <>
-            <span className="hidden text-sm text-gray-600 sm:inline dark:text-white">
+            <p className="hidden text-sm text-gray-600 sm:inline dark:text-white">
               Hi, {session.user.name || session.user.email?.split("@")[0]}{" "}
-            </span>
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              className="hidden sm:inline-flex dark:bg-gray-700 dark:text-white"
+              asChild
+            >
+              <Link href="/">Table</Link>
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="dark:bg-gray-700 dark:text-white"
+              asChild
+            >
+              <Link href="/analytics">Statistics</Link>
+            </Button>
 
             {renderThemeToggle()}
 
             <Button
-              variant="outline"
+              variant="destructive"
               size="sm"
-              className="ml-4 cursor-pointer dark:bg-gray-700 dark:text-white"
+              className="cursor-pointer hover:bg-red-500 dark:text-white dark:hover:bg-red-700"
               onClick={() => signOut({ callbackUrl: "/" })}
             >
               Sign out
