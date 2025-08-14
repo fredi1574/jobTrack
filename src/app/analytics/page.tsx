@@ -15,7 +15,12 @@ export default async function DashboardPage() {
         <h1 className="mb-4 text-2xl font-bold tracking-tight md:text-3xl lg:text-4xl">
           You must be logged in to view this page.
         </h1>
-        <Button asChild>
+        <Button
+          asChild
+          className={undefined}
+          variant={undefined}
+          size={undefined}
+        >
           <Link href="/login">Login</Link>
         </Button>
       </div>
