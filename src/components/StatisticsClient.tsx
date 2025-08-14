@@ -59,7 +59,7 @@ export default function StatisticsClient({
     <div className="container mx-auto p-4 md:p-6 lg:p-10">
       <div className="flex flex-col gap-4 md:flex-row md:justify-end">
         {/* Filters */}
-        <div className="flex items-center gap-4">
+        <div className="mb-4 flex items-center gap-4">
           <div className="flex items-center gap-2">
             <Label className="" htmlFor="status-filter">
               Status
