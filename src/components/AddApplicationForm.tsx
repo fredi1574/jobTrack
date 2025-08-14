@@ -113,7 +113,7 @@ export default function AddApplicationForm({
             id="company"
             name="company"
             required
-            placeholder="e.g. Acme Inc."
+            placeholder="e.g. Google"
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
           {state?.fieldErrors?.company && (
@@ -159,7 +159,7 @@ export default function AddApplicationForm({
             id="location"
             name="location"
             required
-            placeholder="e.g. Remote, New York, NY"
+            placeholder="e.g. Tel-Aviv"
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
           {state?.fieldErrors?.location && (
