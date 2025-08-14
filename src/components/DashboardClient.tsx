@@ -11,8 +11,6 @@ import ApplicationAccordionItem from "./ApplicationAccordionItem";
 import ApplicationsHeader from "./ApplicationsHeader";
 import EditApplicationForm from "./EditApplicationForm";
 import NoJobApplications from "./NoJobApplications";
-import ApplicationNumbers from "./statistics/ApplicationNumbers";
-import StatusDistribution from "./statistics/StatusDistribution";
 import { Accordion } from "./ui/accordion";
 import { Button } from "./ui/button";
 import {
@@ -23,7 +21,6 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { Input } from "./ui/input";
-import LocationDistribution from "./statistics/LocationDistribution";
 
 export default function DashboardClient({
   initialApplications,
@@ -37,7 +34,6 @@ export default function DashboardClient({
   const [editingApplication, setEditingApplication] =
     useState<PrismaApplication | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showStatistics, setShowStatistics] = useState<boolean>(true);
 
   useEffect(() => {
     setApplications(initialApplications);
@@ -108,26 +104,6 @@ export default function DashboardClient({
 
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-10">
-      <div className="flex md:justify-end">
-        <Button
-          variant="outline"
-          size="lg"
-          className="mx-auto mb-4 md:mx-0"
-          onClick={() => setShowStatistics(!showStatistics)}
-        >
-          {showStatistics ? "Hide Statistics" : "Show Statistics"}
-        </Button>
-      </div>
-      {showStatistics && (
-        <div>
-          <ApplicationNumbers applications={applications} />
-          <div className="flex w-full flex-col gap-4 lg:flex-row">
-            <StatusDistribution applications={applications} />
-            <LocationDistribution applications={applications} />
-          </div>
-        </div>
-      )}
-
       <div className="mb-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-bold md:text-3xl">
           Your Job Applications
