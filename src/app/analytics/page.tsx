@@ -5,7 +5,7 @@ import { Session } from "next-auth";
 import Link from "next/link";
 import { getApplications } from "../actions";
 
-export default async function DashboardPage() {
+export default async function Analytics() {
   const session: Session | null = await getServerAuthSession();
   const userId = session?.user?.id;
 
