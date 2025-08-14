@@ -22,8 +22,6 @@ export default function StatisticsClient({
 }: {
   initialApplications: PrismaApplication[];
 }) {
-  const [showStatistics, setShowStatistics] = useState<boolean>(true);
-
   // State for the filters
   const [statusFilter, setStatusFilter] = useState("all");
   const [dateRangeFilter, setDateRangeFilter] = useState("all");
@@ -110,32 +108,19 @@ export default function StatisticsClient({
             </Select>
           </div>
         </div>
-
-        <Button
-          variant="outline"
-          size="lg"
-          className="mx-auto mb-4 md:mx-0"
-          onClick={() => setShowStatistics(!showStatistics)}
-        >
-          {showStatistics ? "Hide Statistics" : "Show Statistics"}
-        </Button>
       </div>
-      {showStatistics && (
-        <div>
-          <ApplicationNumbers applications={filteredApplications} />
-          <div className="flex w-full flex-col gap-4 lg:flex-row">
-            <StatusDistribution applications={filteredApplications} />
-            <LocationDistribution applications={filteredApplications} />
-          </div>
-          <div className="flex w-full flex-col gap-4 lg:flex-row">
-            <ApplicationsByPosition applications={filteredApplications} />
-            <ApplicationsByDate applications={filteredApplications} />
-          </div>
-          <div className="flex w-full flex-col gap-4 lg:flex-row">
-            <ApplicationsByCompany applications={filteredApplications} />
-          </div>
-        </div>
-      )}
+      <ApplicationNumbers applications={filteredApplications} />
+      <div className="flex w-full flex-col gap-4 lg:flex-row">
+        <StatusDistribution applications={filteredApplications} />
+        <LocationDistribution applications={filteredApplications} />
+      </div>
+      <div className="flex w-full flex-col gap-4 lg:flex-row">
+        <ApplicationsByPosition applications={filteredApplications} />
+        <ApplicationsByDate applications={filteredApplications} />
+      </div>
+      <div className="flex w-full flex-col gap-4 lg:flex-row">
+        <ApplicationsByCompany applications={filteredApplications} />
+      </div>
     </div>
   );
 }
