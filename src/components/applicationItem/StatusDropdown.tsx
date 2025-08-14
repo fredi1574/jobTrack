@@ -1,11 +1,12 @@
 import { updateApplicationStatus } from "@/app/actions";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 import { Application as PrismaApplication } from "@prisma/client";
 import { Check, ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -68,10 +69,11 @@ export default function StatusDropdown({
     >
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            size="sm"
-            variant="outline"
-            className={`h-auto ${statusColors[application.status.toLowerCase()]} w-full justify-center border-none px-2.5 py-0.5 text-sm font-semibold ${isPending ? "animate-pulse cursor-default" : "cursor-pointer"}`}
+          <div
+            className={cn(
+              buttonVariants({ variant: "outline", size: "sm" }),
+              `h-auto ${statusColors[application.status.toLowerCase()]} w-full justify-center border-none px-2.5 py-0.5 text-sm font-semibold ${isPending ? "animate-pulse cursor-default" : "cursor-pointer"}`,
+            )}
           >
             {application.status}
             {isPending ? (
@@ -79,7 +81,7 @@ export default function StatusDropdown({
             ) : (
               <ChevronDown className="ml-1 size-3 transition-transform group-data-[state=open]:rotate-180" />
             )}
-          </Button>
+          </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="overflow-x-scroll bg-sky-50 p-2 dark:bg-indigo-950">
           <div className="flex w-full max-w-[90vw]">
