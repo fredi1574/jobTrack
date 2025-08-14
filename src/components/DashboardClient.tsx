@@ -5,6 +5,7 @@ import type { Application as PrismaApplication } from "@prisma/client";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { Search } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { CSVLink } from "react-csv";
 import { toast } from "react-toastify";
 import AddApplicationForm from "./AddApplicationForm";
 import ApplicationAccordionItem from "./ApplicationAccordionItem";
@@ -34,6 +35,22 @@ export default function DashboardClient({
   const [editingApplication, setEditingApplication] =
     useState<PrismaApplication | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+
+  // Preparing the data for a CSV file
+  const dataForCsv = applications.map((application) => {
+    const { id, UserId, resumeUrl, appliedAt, updatedAt, ...restOfData } =
+      application;
+
+    return {
+      ...restOfData,
+      appliedAt: appliedAt
+        ? new Date(appliedAt).toLocaleDateString("en-IL")
+        : "",
+      updatedAt: updatedAt
+        ? new Date(updatedAt).toLocaleDateString("en-IL")
+        : "",
+    };
+  });
 
   useEffect(() => {
     setApplications(initialApplications);
@@ -104,7 +121,7 @@ export default function DashboardClient({
 
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-10">
-      <div className="mb-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-bold md:text-3xl">
           Your Job Applications
         </h1>
@@ -125,31 +142,48 @@ export default function DashboardClient({
           </div>
         </div>
 
-        {/* Add new application button */}
-        <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
-          <DialogTrigger asChild>
-            <Button
-              className="w-full cursor-pointer p-5 hover:bg-sky-200 sm:w-auto"
-              size="sm"
-              variant="outline"
+        <div className="flex w-full justify-between gap-4 md:justify-end">
+          <Button
+            variant="outline"
+            size="lg"
+            className="w-1/3 p-5 hover:bg-sky-200/50 md:absolute md:right-4 md:bottom-6 md:w-1/12"
+            asChild
+          >
+            <CSVLink
+              data={dataForCsv}
+              filename={`job-applications - ${new Date().toLocaleDateString("en-IL")} - ${new Date().toLocaleTimeString("en-IL")}.csv`}
             >
-              Add new Application
-            </Button>
-          </DialogTrigger>
+              Download CSV
+            </CSVLink>
+          </Button>
 
-          {/* Add new application form */}
-          <DialogContent className="flex max-h-[85vh] flex-col overflow-y-auto sm:max-h-[90vh] sm:max-w-lg">
-            <DialogHeader className="">
-              <DialogTitle>Add new Application</DialogTitle>
-              <DialogDescription className="">
-                Fill in the details for the job application you are applying for
-              </DialogDescription>
-            </DialogHeader>
-            <div className="flex-grow py-4 pr-6 pl-1">
-              <AddApplicationForm onSuccess={handleAddModalClose} />
-            </div>
-          </DialogContent>
-        </Dialog>
+          {/* Add new application button */}
+          <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
+            <DialogTrigger asChild>
+              <Button
+                className="w-1/2 cursor-pointer p-5 hover:bg-sky-200/50 md:w-1/4"
+                size="sm"
+                variant="outline"
+              >
+                Add new Application
+              </Button>
+            </DialogTrigger>
+
+            {/* Add new application form */}
+            <DialogContent className="flex max-h-[85vh] flex-col overflow-y-auto sm:max-h-[90vh] sm:max-w-lg">
+              <DialogHeader className="">
+                <DialogTitle>Add new Application</DialogTitle>
+                <DialogDescription className="">
+                  Fill in the details for the job application you are applying
+                  for
+                </DialogDescription>
+              </DialogHeader>
+              <div className="flex-grow py-4 pr-6 pl-1">
+                <AddApplicationForm onSuccess={handleAddModalClose} />
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       {/* Edit application modal */}
