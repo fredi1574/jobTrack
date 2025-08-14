@@ -39,7 +39,7 @@ export default function ApplicationsByPosition({
         position,
         count,
       }))
-      .sort((a, b) => b.count - a.count);
+      .sort((a: any, b: any) => b.count - a.count);
   }, [applications]);
 
   return (
@@ -74,7 +74,21 @@ export default function ApplicationsByPosition({
         <YAxis />
         <ChartTooltip
           cursor={false}
-          content={<ChartTooltipContent hideLabel />}
+          content={
+            <ChartTooltipContent
+              hideLabel
+              active={undefined}
+              payload={undefined}
+              className={undefined}
+              label={undefined}
+              labelFormatter={undefined}
+              labelClassName={undefined}
+              formatter={undefined}
+              color={undefined}
+              nameKey={undefined}
+              labelKey={undefined}
+            />
+          }
         />
         <Bar dataKey="count" fill={chartConfig.count.color} radius={6} />
       </BarChart>
