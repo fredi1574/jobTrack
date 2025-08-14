@@ -78,7 +78,21 @@ export default function ApplicationsByDate({
           <YAxis />
           <ChartTooltip
             cursor={false}
-            content={<ChartTooltipContent hideLabel />}
+            content={
+              <ChartTooltipContent
+                hideLabel
+                active={undefined}
+                payload={undefined}
+                className={undefined}
+                label={undefined}
+                labelFormatter={undefined}
+                labelClassName={undefined}
+                formatter={undefined}
+                color={undefined}
+                nameKey={undefined}
+                labelKey={undefined}
+              />
+            }
           />
           <Line
             type="monotone"

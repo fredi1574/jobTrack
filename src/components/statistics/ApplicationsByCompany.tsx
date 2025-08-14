@@ -73,7 +73,21 @@ export default function ApplicationsByCompany({
         <YAxis />
         <ChartTooltip
           cursor={false}
-          content={<ChartTooltipContent hideLabel />}
+          content={
+            <ChartTooltipContent
+              hideLabel
+              active={undefined}
+              payload={undefined}
+              className={undefined}
+              label={undefined}
+              labelFormatter={undefined}
+              labelClassName={undefined}
+              formatter={undefined}
+              color={undefined}
+              nameKey={undefined}
+              labelKey={undefined}
+            />
+          }
         />
         <Bar dataKey="count" fill={chartConfig.count.color} radius={6} />
       </BarChart>
