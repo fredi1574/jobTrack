@@ -1,7 +1,7 @@
 import { Application } from "@prisma/client";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart";
 import { useMemo } from "react";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart";
 
 type ChartConfig = {
   [key: string]: {
@@ -17,26 +17,26 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function LocationDistribution({
+export default function ApplicationsByPosition({
   applications,
 }: {
   applications: Application[];
 }) {
   const chartData = useMemo(() => {
-    const locationCounts = applications.reduce(
-      (accumulator, { location }) => {
-        const normalizedLocation = location.trim();
-        if (normalizedLocation) {
-          accumulator[normalizedLocation] =
-            (accumulator[normalizedLocation] || 0) + 1;
+    const positionCounts = applications.reduce(
+      (accumulator, { position }) => {
+        const normalizedPosition = position.trim();
+        if (normalizedPosition) {
+          accumulator[normalizedPosition] =
+            (accumulator[normalizedPosition] || 0) + 1;
         }
         return accumulator;
       },
       {} as Record<string, number>,
     );
-    return Object.entries(locationCounts)
-      .map(([location, count]) => ({
-        location,
+    return Object.entries(positionCounts)
+      .map(([position, count]) => ({
+        position,
         count,
       }))
       .sort((a, b) => b.count - a.count);
@@ -44,12 +44,12 @@ export default function LocationDistribution({
 
   return (
     <ChartContainer
-      id="location-chart"
+      id="applications-by-position-chart"
       config={chartConfig}
-      className="my-4 max-h-[300px] rounded-2xl border bg-gray-100 pb-6 lg:w-3/4 dark:bg-gray-800"
+      className="my-4 max-h-[300px] w-full rounded-2xl border bg-gray-100 p-4 dark:bg-gray-800"
     >
       <h1 className="mt-2 text-center text-xl font-bold">
-        Location Distribution
+        Applications by Position
       </h1>
       <BarChart
         accessibilityLayer
@@ -58,35 +58,23 @@ export default function LocationDistribution({
           left: 10,
           right: 10,
           top: 10,
-          bottom: 20,
+          bottom: 40,
         }}
       >
         <CartesianGrid vertical={false} />
         <XAxis
-          dataKey="location"
+          dataKey="position"
           tickLine={false}
           axisLine={false}
           tickMargin={10}
           angle={-25}
           textAnchor="end"
+          interval={0}
         />
         <YAxis />
         <ChartTooltip
           cursor={false}
-          content={
-            <ChartTooltipContent
-              active={undefined}
-              payload={undefined}
-              className={undefined}
-              label={undefined}
-              labelFormatter={undefined}
-              labelClassName={undefined}
-              formatter={undefined}
-              color={undefined}
-              nameKey={undefined}
-              labelKey={undefined}
-            />
-          }
+          content={<ChartTooltipContent hideLabel />}
         />
         <Bar dataKey="count" fill={chartConfig.count.color} radius={6} />
       </BarChart>
