@@ -1,4 +1,4 @@
-import StatisticsClient from "@/components/StatisticsClient";
+import StatisticsClient from "@/components/statistics/StatisticsClient";
 import { Button } from "@/components/ui/button";
 import { getServerAuthSession } from "@/lib/auth";
 import { Session } from "next-auth";

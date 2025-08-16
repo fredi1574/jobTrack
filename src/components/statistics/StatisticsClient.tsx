@@ -1,21 +1,21 @@
 "use client";
 import type { Application as PrismaApplication } from "@prisma/client";
 import { useMemo, useState } from "react";
-import ApplicationNumbers from "./statistics/ApplicationNumbers";
-import ApplicationsByCompany from "./statistics/ApplicationsByCompany";
-import ApplicationsByDate from "./statistics/ApplicationsByDate";
-import ApplicationsByPosition from "./statistics/ApplicationsByPosition";
-import LocationDistribution from "./statistics/LocationDistribution";
-import StatusDistribution from "./statistics/StatusDistribution";
-import { Button } from "./ui/button";
-import { Label } from "./ui/label";
+import ApplicationNumbers from "./ApplicationNumbers";
+import ApplicationsByCompany from "./ApplicationsByCompany";
+import ApplicationsByDate from "./ApplicationsByDate";
+import ApplicationsByPosition from "./ApplicationsByPosition";
+import LocationDistribution from "./LocationDistribution";
+import StatusDistribution from "./StatusDistribution";
+import { Button } from "../ui/button";
+import { Label } from "../ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
+} from "../ui/select";
 
 export default function StatisticsClient({
   initialApplications,
