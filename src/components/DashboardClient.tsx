@@ -146,7 +146,7 @@ export default function DashboardClient({
           <Button
             variant="outline"
             size="lg"
-            className="w-1/3 p-5 hover:bg-sky-200/50 md:absolute md:right-4 md:bottom-6 md:w-1/12"
+            className="p-5 hover:bg-sky-200/50"
             asChild
           >
             <CSVLink
@@ -161,7 +161,7 @@ export default function DashboardClient({
           <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
             <DialogTrigger asChild>
               <Button
-                className="w-1/2 cursor-pointer p-5 hover:bg-sky-200/50 md:w-1/4"
+                className="cursor-pointer p-5 hover:bg-sky-200/50"
                 size="sm"
                 variant="outline"
               >
