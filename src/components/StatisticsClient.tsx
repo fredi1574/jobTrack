@@ -59,7 +59,7 @@ export default function StatisticsClient({
     <div className="container mx-auto p-4 md:p-6 lg:p-10">
       <div className="flex flex-col gap-4 md:flex-row md:justify-end">
         {/* Filters */}
-        <div className="mb-4 flex items-center gap-4">
+        <div className="mb-4 flex items-center justify-center gap-4 md:justify-end">
           <div className="flex items-center gap-2">
             <Label className="" htmlFor="status-filter">
               Status
@@ -68,7 +68,7 @@ export default function StatisticsClient({
               onValueChange={(value: string) => setStatusFilter(value)}
               defaultValue="all"
             >
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="">
                 <SelectValue placeholder="Filter by status..." />
               </SelectTrigger>
               <SelectContent className="">
@@ -88,7 +88,7 @@ export default function StatisticsClient({
               onValueChange={(value: string) => setDateRangeFilter(value)}
               defaultValue="all"
             >
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="">
                 <SelectValue placeholder="Filter by date..." />
               </SelectTrigger>
               <SelectContent className="">
