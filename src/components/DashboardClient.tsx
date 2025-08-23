@@ -127,7 +127,7 @@ export default function DashboardClient({
         </h1>
 
         {/* Search bar */}
-        <div className="flex w-full flex-col gap-4 sm:w-auto sm:flex-row sm:items-center">
+        <div className="flex w-full flex-col gap-4 rounded-lg bg-white sm:w-auto sm:flex-row sm:items-center dark:bg-slate-800">
           <div className="relative w-full sm:w-64 md:w-72">
             <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
             <Input

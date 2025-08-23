@@ -80,7 +80,7 @@ export default function StatusDropdown({
 
   return (
     <div
-      className="mt-1 w-auto sm:mt-0 sm:w-1/6"
+      className="mt-1 flex w-auto items-center justify-center sm:mt-0 sm:w-1/6"
       onClick={(e) => e.stopPropagation()}
     >
       <DropdownMenu>
@@ -91,7 +91,7 @@ export default function StatusDropdown({
               `h-auto ${statusColors[application.status.toLowerCase()]} w-full justify-center border-none px-2.5 py-0.5 text-sm font-semibold ${isPending ? "animate-pulse cursor-default" : "cursor-pointer"}`,
             )}
           >
-            <div className="flex items-center gap-1">
+            <div className="flex items-center justify-center gap-1">
               {statusIcons[application.status.toLowerCase()]}
               <span>{application.status}</span>
             </div>

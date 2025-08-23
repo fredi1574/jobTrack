@@ -28,7 +28,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en" suppressHydrationWarning>
       <link rel="icon" href="/favicon.svg" />
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-gray-50 text-gray-900 antialiased dark:bg-gray-900 dark:text-gray-100`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-gray-200 text-gray-900 antialiased dark:bg-slate-900 dark:text-gray-100`}
       >
         <ThemeProvider
           attribute="class"
