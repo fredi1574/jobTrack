@@ -3,7 +3,7 @@ import { deleteApplication } from "@/app/actions";
 import { useSortableData } from "@/hooks/useSortableData";
 import type { Application as PrismaApplication } from "@prisma/client";
 import { DialogTitle } from "@radix-ui/react-dialog";
-import { Search } from "lucide-react";
+import { Download, PlusCircle, Search } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { CSVLink } from "react-csv";
 import { toast } from "react-toastify";
@@ -153,6 +153,7 @@ export default function DashboardClient({
               data={dataForCsv}
               filename={`job-applications - ${new Date().toLocaleDateString("en-IL")} - ${new Date().toLocaleTimeString("en-IL")}.csv`}
             >
+              <Download className="size-4" />
               Download CSV
             </CSVLink>
           </Button>
@@ -165,6 +166,7 @@ export default function DashboardClient({
                 size="sm"
                 variant="outline"
               >
+                <PlusCircle className="size-4" />
                 Add new Application
               </Button>
             </DialogTrigger>
