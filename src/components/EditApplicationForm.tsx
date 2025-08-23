@@ -3,6 +3,7 @@ import { updateApplication } from "@/app/actions";
 import { Application as PrismaApplication } from "@prisma/client";
 import {
   BadgeCheck,
+  BadgeX,
   Briefcase,
   Calendar,
   FileText,
@@ -12,8 +13,6 @@ import {
   Save,
   Send,
   Users,
-  Trophy,
-  X,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
@@ -317,11 +316,11 @@ export default function EditApplicationForm({
                 Interview
               </SelectItem>
               <SelectItem className="flex items-center gap-2" value="Offer">
-                <Trophy className="size-4" />
+                <BadgeCheck className="size-4" />
                 Offer
               </SelectItem>
               <SelectItem className="flex items-center gap-2" value="Rejected">
-                <X className="size-4" />
+                <BadgeX className="size-4" />
                 Rejected
               </SelectItem>
             </SelectContent>
