@@ -8,7 +8,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { Application as PrismaApplication } from "@prisma/client";
-import { Check, ChevronDown } from "lucide-react";
+import {
+  BadgeCheck,
+  BadgeX,
+  Check,
+  ChevronDown,
+  FileText,
+  Send,
+  Users,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "react-toastify";
@@ -32,6 +40,14 @@ const statusColors: Record<string, string> = {
     "bg-green-100 text-green-500 hover:bg-green-200 hover:text-green-600 border border-green-300 dark:hover:bg-green-800/50 dark:hover:text-green-300",
   rejected:
     "bg-red-100 text-red-500 hover:bg-red-200 hover:text-red-600 border border-red-300 dark:hover:bg-red-800/50 dark:hover:text-red-300",
+};
+
+const statusIcons: Record<string, React.ReactNode> = {
+  applied: <Send className="size-4 text-sky-500" />,
+  assessment: <FileText className="size-4 text-yellow-500" />,
+  interview: <Users className="size-4 text-purple-500" />,
+  offer: <BadgeCheck className="size-4 text-green-500" />,
+  rejected: <BadgeX className="size-4 text-red-500" />,
 };
 
 interface StatusDropdownProps {
@@ -75,7 +91,10 @@ export default function StatusDropdown({
               `h-auto ${statusColors[application.status.toLowerCase()]} w-full justify-center border-none px-2.5 py-0.5 text-sm font-semibold ${isPending ? "animate-pulse cursor-default" : "cursor-pointer"}`,
             )}
           >
-            {application.status}
+            <div className="flex items-center gap-1">
+              {statusIcons[application.status.toLowerCase()]}
+              <span>{application.status}</span>
+            </div>
             {isPending ? (
               <span className="ml-1 animate-spin">⏳</span>
             ) : (
@@ -93,7 +112,10 @@ export default function StatusDropdown({
                 onSelect={() => handleStatusChange(statusOption)}
                 className={`${statusColors[statusOption.toLowerCase()]} mx-1 h-7 w-32 cursor-pointer items-center rounded-lg px-2 text-center transition-colors`}
               >
-                <span>{statusOption}</span>
+                <div className="flex items-center gap-1">
+                  {statusIcons[statusOption.toLowerCase()]}
+                  <span>{statusOption}</span>
+                </div>
                 {application.status === statusOption ? (
                   <Check className="size-4" />
                 ) : (

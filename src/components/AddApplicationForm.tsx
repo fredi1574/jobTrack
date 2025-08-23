@@ -1,6 +1,8 @@
 "use client";
 import { createApplication } from "@/app/actions";
 import {
+  BadgeCheck,
+  BadgeX,
   Briefcase,
   Calendar,
   CircleCheck,
@@ -8,6 +10,8 @@ import {
   LinkIcon,
   MapPin,
   MessageSquare,
+  Send,
+  Users,
 } from "lucide-react";
 import { useActionState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
@@ -238,19 +242,27 @@ export default function AddApplicationForm({
               <SelectValue placeholder="Select status" />
             </SelectTrigger>
             <SelectContent className="">
-              <SelectItem className="" value="Applied">
+              <SelectItem className="flex items-center gap-2" value="Applied">
+                <Send className="size-4" />
                 Applied
               </SelectItem>
-              <SelectItem className="" value="Assessment">
+              <SelectItem
+                className="flex items-center gap-2"
+                value="Assessment"
+              >
+                <FileText className="size-4" />
                 Assessment
               </SelectItem>
-              <SelectItem className="" value="Interview">
+              <SelectItem className="flex items-center gap-2" value="Interview">
+                <Users className="size-4" />
                 Interview
               </SelectItem>
-              <SelectItem className="" value="Offer">
+              <SelectItem className="flex items-center gap-2" value="Offer">
+                <BadgeCheck className="size-4" />
                 Offer
               </SelectItem>
-              <SelectItem className="" value="Rejected">
+              <SelectItem className="flex items-center gap-2" value="Rejected">
+                <BadgeX className="size-4" />
                 Rejected
               </SelectItem>
             </SelectContent>

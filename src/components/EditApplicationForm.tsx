@@ -10,6 +10,10 @@ import {
   MapPin,
   MessageSquare,
   Save,
+  Send,
+  Users,
+  Trophy,
+  X,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
@@ -297,19 +301,27 @@ export default function EditApplicationForm({
               <SelectValue placeholder="Select status" />
             </SelectTrigger>
             <SelectContent className="">
-              <SelectItem className="" value="Applied">
+              <SelectItem className="flex items-center gap-2" value="Applied">
+                <Send className="size-4" />
                 Applied
               </SelectItem>
-              <SelectItem className="" value="Assessment">
+              <SelectItem
+                className="flex items-center gap-2"
+                value="Assessment"
+              >
+                <FileText className="size-4" />
                 Assessment
               </SelectItem>
-              <SelectItem className="" value="Interview">
+              <SelectItem className="flex items-center gap-2" value="Interview">
+                <Users className="size-4" />
                 Interview
               </SelectItem>
-              <SelectItem className="" value="Offer">
+              <SelectItem className="flex items-center gap-2" value="Offer">
+                <Trophy className="size-4" />
                 Offer
               </SelectItem>
-              <SelectItem className="" value="Rejected">
+              <SelectItem className="flex items-center gap-2" value="Rejected">
+                <X className="size-4" />
                 Rejected
               </SelectItem>
             </SelectContent>

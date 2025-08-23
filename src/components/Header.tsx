@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun } from "lucide-react";
+import { ChartLine, List, Moon, Sun } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
@@ -59,7 +59,7 @@ export default function Header() {
           <div className="h-6 w-20 animate-pulse rounded bg-gray-300 dark:bg-gray-700"></div>
         ) : session?.user ? (
           <>
-            <p className="hidden text-sm text-gray-600 sm:inline dark:text-white">
+            <p className="hidden rounded-md bg-gray-200/50 p-2 text-sm text-gray-600 sm:inline dark:bg-gray-600/50 dark:text-white">
               Hi, {session.user.name || session.user.email?.split("@")[0]}{" "}
             </p>
             <Button
@@ -68,7 +68,10 @@ export default function Header() {
               className="hidden sm:inline-flex dark:bg-gray-700 dark:text-white"
               asChild
             >
-              <Link href="/">Table</Link>
+              <Link href="/">
+                <List className="size-4" />
+                Table
+              </Link>
             </Button>
             <Button
               variant="outline"
@@ -76,7 +79,10 @@ export default function Header() {
               className="dark:bg-gray-700 dark:text-white"
               asChild
             >
-              <Link href="/analytics">Statistics</Link>
+              <Link href="/analytics">
+                <ChartLine className="size-4" />
+                Statistics
+              </Link>
             </Button>
 
             {renderThemeToggle()}
