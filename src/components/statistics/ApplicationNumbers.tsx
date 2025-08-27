@@ -1,5 +1,5 @@
 import { Application } from "@prisma/client";
-import { BadgeCheck, BadgeX, FileText, Send, Users } from "lucide-react";
+import { Award, BadgeX, ClipboardList, MailCheck, Users } from "lucide-react";
 import { Card, CardContent, CardTitle } from "../ui/card";
 
 const getNumberOfStatus = (applications: Application[], status: string) => {
@@ -26,7 +26,7 @@ export default function ApplicationNumbers({
       {/* Applied status */}
       <Card className="flex flex-col items-center bg-sky-100 lg:w-1/4 dark:bg-sky-800">
         <CardTitle className="text-muted-foreground flex items-center gap-2 text-sm font-medium">
-          <Send className="size-4" />
+          <MailCheck className="size-4" />
           Applied
         </CardTitle>
         <CardContent className="text-4xl font-bold">
@@ -37,7 +37,7 @@ export default function ApplicationNumbers({
       {/* Assessment status */}
       <Card className="bg- flex flex-col items-center bg-yellow-100 lg:w-1/4 dark:bg-yellow-500">
         <CardTitle className="text-muted-foreground flex items-center gap-2 text-sm font-medium">
-          <FileText className="size-4" />
+          <ClipboardList className="size-4" />
           Assessment
         </CardTitle>
         <CardContent className="text-4xl font-bold">
@@ -59,7 +59,7 @@ export default function ApplicationNumbers({
       {/* Offer status */}
       <Card className="flex flex-col items-center bg-green-100 lg:w-1/4 dark:bg-green-800">
         <CardTitle className="text-muted-foreground flex items-center gap-2 text-sm font-medium">
-          <BadgeCheck className="size-4" />
+          <Award className="size-4" />
           Offer
         </CardTitle>
         <CardContent className="text-4xl font-bold">

@@ -1,16 +1,17 @@
 "use client";
 import { createApplication } from "@/app/actions";
 import {
-  BadgeCheck,
+  Award,
   BadgeX,
   Briefcase,
   Calendar,
   CircleCheck,
+  ClipboardList,
   FileText,
   LinkIcon,
+  MailCheck,
   MapPin,
   MessageSquare,
-  Send,
   Users,
 } from "lucide-react";
 import { useActionState, useEffect } from "react";
@@ -243,14 +244,14 @@ export default function AddApplicationForm({
             </SelectTrigger>
             <SelectContent className="">
               <SelectItem className="flex items-center gap-2" value="Applied">
-                <Send className="size-4" />
+                <MailCheck className="size-4" />
                 Applied
               </SelectItem>
               <SelectItem
                 className="flex items-center gap-2"
                 value="Assessment"
               >
-                <FileText className="size-4" />
+                <ClipboardList className="size-4" />
                 Assessment
               </SelectItem>
               <SelectItem className="flex items-center gap-2" value="Interview">
@@ -258,7 +259,7 @@ export default function AddApplicationForm({
                 Interview
               </SelectItem>
               <SelectItem className="flex items-center gap-2" value="Offer">
-                <BadgeCheck className="size-4" />
+                <Award className="size-4" />
                 Offer
               </SelectItem>
               <SelectItem className="flex items-center gap-2" value="Rejected">

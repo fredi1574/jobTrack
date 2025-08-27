@@ -2,16 +2,18 @@
 import { updateApplication } from "@/app/actions";
 import { Application as PrismaApplication } from "@prisma/client";
 import {
+  Award,
   BadgeCheck,
   BadgeX,
   Briefcase,
   Calendar,
+  ClipboardList,
   FileText,
   LinkIcon,
+  MailCheck,
   MapPin,
   MessageSquare,
   Save,
-  Send,
   Users,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -301,14 +303,14 @@ export default function EditApplicationForm({
             </SelectTrigger>
             <SelectContent className="">
               <SelectItem className="flex items-center gap-2" value="Applied">
-                <Send className="size-4" />
+                <MailCheck className="size-4" />
                 Applied
               </SelectItem>
               <SelectItem
                 className="flex items-center gap-2"
                 value="Assessment"
               >
-                <FileText className="size-4" />
+                <ClipboardList className="size-4" />
                 Assessment
               </SelectItem>
               <SelectItem className="flex items-center gap-2" value="Interview">
@@ -316,7 +318,7 @@ export default function EditApplicationForm({
                 Interview
               </SelectItem>
               <SelectItem className="flex items-center gap-2" value="Offer">
-                <BadgeCheck className="size-4" />
+                <Award className="size-4" />
                 Offer
               </SelectItem>
               <SelectItem className="flex items-center gap-2" value="Rejected">
