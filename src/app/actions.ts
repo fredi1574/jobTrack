@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { Application as PrismaApplication } from "@prisma/client";
 import { del, put } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
+import { ApplicationStatus } from "@/types/application";
 
 export interface ActionResult {
   success: boolean;
@@ -306,7 +307,7 @@ export async function removeResume(
 
 export async function updateApplicationStatus(
   id: string,
-  status: string,
+  status: ApplicationStatus,
 ): Promise<{ success: boolean; error?: string }> {
   const session = await getServerAuthSession();
   if (!session?.user?.id) {

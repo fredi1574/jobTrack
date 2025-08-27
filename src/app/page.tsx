@@ -1,10 +1,8 @@
 import DashboardClient from "@/components/DashboardClient";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { getServerAuthSession } from "@/lib/auth";
 import type { Session } from "next-auth";
 import Link from "next/link";
-import { CheckCircle, TrendingUp, Bell, Users, Star } from "lucide-react";
 import { getApplications } from "./actions";
 
 export default async function HomePage() {

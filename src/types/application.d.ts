@@ -1,0 +1,1 @@
+export type ApplicationStatus = "Applied" | "Assessment" | "Interview" | "Offer" | "Rejected";
