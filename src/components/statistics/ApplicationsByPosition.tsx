@@ -67,11 +67,11 @@ export default function ApplicationsByPosition({
           tickLine={false}
           axisLine={false}
           tickMargin={10}
-          angle={-25}
+          angle={-15}
           textAnchor="end"
           interval={0}
         />
-        <YAxis />
+        <YAxis allowDecimals={false} />
         <ChartTooltip
           cursor={false}
           content={

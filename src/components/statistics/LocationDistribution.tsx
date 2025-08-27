@@ -67,10 +67,10 @@ export default function LocationDistribution({
           tickLine={false}
           axisLine={false}
           tickMargin={10}
-          angle={-25}
+          angle={-15}
           textAnchor="end"
         />
-        <YAxis />
+        <YAxis allowDecimals={false} />
         <ChartTooltip
           cursor={false}
           content={

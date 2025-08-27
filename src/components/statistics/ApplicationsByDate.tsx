@@ -1,14 +1,12 @@
 import { Application } from "@prisma/client";
 import { useMemo } from "react";
 import {
-  LineChart,
+  CartesianGrid,
   Line,
+  LineChart,
+  ResponsiveContainer,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
 } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart";
 
@@ -75,7 +73,7 @@ export default function ApplicationsByDate({
         >
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis dataKey="date" />
-          <YAxis />
+          <YAxis allowDecimals={false} />
           <ChartTooltip
             cursor={false}
             content={
