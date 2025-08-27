@@ -76,37 +76,44 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-var(--header-height))] items-center justify-center p-4">
-      <Card className="w-full max-w-sm shadow-lg">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Register</CardTitle>
-          <CardDescription className="">
-            Create your Job Tracker account
+    <div className="flex-center-screen">
+      <Card className="w-full max-w-md border-0 bg-white/80 shadow-xl backdrop-blur-sm dark:bg-gray-800/80">
+        <CardHeader className="pb-6 text-center">
+          <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">
+            Create Account
+          </CardTitle>
+          <CardDescription className="text-gray-600 dark:text-gray-300">
+            Start tracking your job applications
           </CardDescription>
         </CardHeader>
-        <CardContent className="">
+        <CardContent className="space-y-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label className="" htmlFor="name">
+              <Label
+                htmlFor="name"
+                className="font-medium text-gray-700 dark:text-gray-200"
+              >
                 Name (Optional)
               </Label>
               <Input
                 type="text"
-                className=""
                 id="name"
                 name="name"
                 value={form.name}
                 onChange={handleChange}
                 placeholder="Your Name"
                 disabled={loading}
+                className="h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:focus:border-blue-400 dark:focus:ring-blue-400"
               />
             </div>
             <div className="space-y-2">
-              <Label className="" htmlFor="email">
+              <Label
+                htmlFor="email"
+                className="font-medium text-gray-700 dark:text-gray-200"
+              >
                 Email
               </Label>
               <Input
-                className=""
                 id="email"
                 name="email"
                 type="email"
@@ -115,14 +122,17 @@ export default function RegisterPage() {
                 placeholder="you@example.com"
                 required
                 disabled={loading}
+                className="h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:focus:border-blue-400 dark:focus:ring-blue-400"
               />
             </div>
             <div className="space-y-2">
-              <Label className="" htmlFor="password">
+              <Label
+                htmlFor="password"
+                className="font-medium text-gray-700 dark:text-gray-200"
+              >
                 Password
               </Label>
               <Input
-                className=""
                 id="password"
                 name="password"
                 type="password"
@@ -132,30 +142,41 @@ export default function RegisterPage() {
                 required
                 minLength={6}
                 disabled={loading}
+                className="h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:focus:border-blue-400 dark:focus:ring-blue-400"
               />
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Minimum 6 characters
+              </p>
             </div>
             {error && (
-              <p className="text-sm text-red-600 dark:text-red-500">{error}</p>
+              <div className="rounded-lg border border-red-200 bg-red-50 p-3 dark:border-red-700 dark:bg-red-900/20">
+                <p className="text-sm text-red-600 dark:text-red-400">
+                  {error}
+                </p>
+              </div>
             )}
             <Button
-              variant="outline"
-              size="lg"
+              variant="default"
+              size="xl"
               type="submit"
-              className="w-full"
+              className="h-11 w-full cursor-pointer bg-gradient-to-r from-blue-500 to-blue-600 font-medium text-white shadow-lg transition-all duration-200 hover:from-blue-600 hover:to-blue-700 hover:shadow-xl dark:from-blue-600 dark:to-blue-700 dark:hover:from-blue-700 dark:hover:to-blue-800"
               disabled={loading}
             >
-              {loading ? "Registering..." : "Register"}
+              {loading ? "Creating Account..." : "Create Account"}
             </Button>
-            <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+          </form>
+
+          <div className="border-t border-gray-100 pt-4 text-center dark:border-gray-700">
+            <p className="text-sm text-gray-600 dark:text-gray-300">
               Already have an account?{" "}
               <Link
                 href="/login"
-                className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                className="font-medium text-blue-600 transition-colors hover:text-blue-700 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
               >
-                Login here
+                Sign in here
               </Link>
             </p>
-          </form>
+          </div>
         </CardContent>
       </Card>
     </div>

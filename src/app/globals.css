@@ -138,3 +138,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .flex-center-screen {
+    @apply flex min-h-screen items-center justify-center;
+  }
+}
