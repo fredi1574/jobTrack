@@ -103,23 +103,23 @@ export default function StatusDropdown({
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="overflow-x-scroll bg-sky-50 p-2 dark:bg-indigo-950">
-          <div className="flex w-full max-w-[90vw]">
+          <div className="flex">
             {possibleStatuses.map((statusOption) => (
               <DropdownMenuItem
                 inset={false}
                 key={statusOption}
                 disabled={isPending || application.status === statusOption}
                 onSelect={() => handleStatusChange(statusOption)}
-                className={`${statusColors[statusOption.toLowerCase()]} mx-1 h-7 w-32 cursor-pointer items-center rounded-lg px-2 text-center transition-colors`}
+                className={`${statusColors[statusOption.toLowerCase()]} mx-1 h-7 cursor-pointer items-center rounded-lg px-2 transition-colors`}
               >
-                <div className="flex items-center gap-1">
+                <div className="flex flex-1 items-center justify-center gap-1">
                   {statusIcons[statusOption.toLowerCase()]}
-                  <span>{statusOption}</span>
+                  {statusOption}
                 </div>
                 {application.status === statusOption ? (
-                  <Check className="size-4" />
+                  <Check className="w-4" />
                 ) : (
-                  <span className="size-4" />
+                  <span className="w-4" />
                 )}
               </DropdownMenuItem>
             ))}
