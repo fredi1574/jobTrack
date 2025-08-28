@@ -70,20 +70,37 @@ export default function StatusDistribution({
     <ChartContainer
       id="status-chart"
       config={chartConfig}
+      className={undefined}
     >
       <PieChart>
         <ChartTooltip
           cursor={false}
-          content={<ChartTooltipContent hideLabel />}
+          content={
+            <ChartTooltipContent
+              hideLabel
+              active={undefined}
+              payload={undefined}
+              className={undefined}
+              label={undefined}
+              labelFormatter={undefined}
+              labelClassName={undefined}
+              formatter={undefined}
+              color={undefined}
+              nameKey={undefined}
+              labelKey={undefined}
+            />
+          }
         />
         <ChartLegend
-          content={<ChartLegendContent nameKey="status" />}
+          content={
+            <ChartLegendContent
+              nameKey="status"
+              className={undefined}
+              payload={undefined}
+            />
+          }
         />
-        <Pie
-          data={pieData}
-          nameKey="status"
-          dataKey="count"
-        >
+        <Pie data={pieData} nameKey="status" dataKey="count">
           {pieData.map((entry) => (
             <Cell
               key={`cell-${entry.status}`}
