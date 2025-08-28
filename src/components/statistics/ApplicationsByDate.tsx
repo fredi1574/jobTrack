@@ -1,13 +1,6 @@
 import { Application } from "@prisma/client";
 import { useMemo } from "react";
-import {
-  CartesianGrid,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart";
 
 type ChartConfig = {
@@ -20,7 +13,7 @@ type ChartConfig = {
 const chartConfig = {
   count: {
     label: "Applications",
-    color: "hsl(var(--chart-primary))",
+    color: "#3b82f6",
   },
 } satisfies ChartConfig;
 
@@ -56,51 +49,46 @@ export default function ApplicationsByDate({
     <ChartContainer
       id="applications-by-date-chart"
       config={chartConfig}
-      className="my-4 max-h-[300px] w-full rounded-2xl border bg-gray-100 p-4 dark:bg-gray-800"
+      className="max-h-[300px] w-full"
     >
-      <h1 className="mt-2 text-center text-xl font-bold">
-        Applications by Date
-      </h1>
-      <ResponsiveContainer width="100%" height={250}>
-        <LineChart
-          data={chartData}
-          margin={{
-            top: 5,
-            right: 20,
-            left: -10,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="date" />
-          <YAxis allowDecimals={false} />
-          <ChartTooltip
-            cursor={false}
-            content={
-              <ChartTooltipContent
-                hideLabel
-                active={undefined}
-                payload={undefined}
-                className={undefined}
-                label={undefined}
-                labelFormatter={undefined}
-                labelClassName={undefined}
-                formatter={undefined}
-                color={undefined}
-                nameKey={undefined}
-                labelKey={undefined}
-              />
-            }
-          />
-          <Line
-            type="monotone"
-            dataKey="count"
-            stroke={chartConfig.count.color}
-            strokeWidth={2}
-            dot={false}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      <LineChart
+        data={chartData}
+        margin={{
+          top: 5,
+          right: 20,
+          left: -10,
+          bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+        <XAxis dataKey="date" />
+        <YAxis allowDecimals={false} />
+        <ChartTooltip
+          cursor={false}
+          content={
+            <ChartTooltipContent
+              hideLabel
+              active={undefined}
+              payload={undefined}
+              className={undefined}
+              label={undefined}
+              labelFormatter={undefined}
+              labelClassName={undefined}
+              formatter={undefined}
+              color={undefined}
+              nameKey={undefined}
+              labelKey={undefined}
+            />
+          }
+        />
+        <Line
+          type="monotone"
+          dataKey="count"
+          stroke={chartConfig.count.color}
+          strokeWidth={2}
+          dot={false}
+        />
+      </LineChart>
     </ChartContainer>
   );
 }

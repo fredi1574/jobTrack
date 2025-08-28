@@ -1,7 +1,7 @@
 import { Application } from "@prisma/client";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart";
 import { useMemo } from "react";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart";
 
 type ChartConfig = {
   [key: string]: {
@@ -13,7 +13,7 @@ type ChartConfig = {
 const chartConfig = {
   count: {
     label: "Applications",
-    color: "hsl(var(--chart-primary))",
+    color: "#f97316",
   },
 } satisfies ChartConfig;
 
@@ -46,11 +46,8 @@ export default function LocationDistribution({
     <ChartContainer
       id="location-chart"
       config={chartConfig}
-      className="my-4 max-h-[300px] rounded-2xl border bg-gray-100 pb-6 lg:w-3/4 dark:bg-gray-800"
+      className="max-h-[300px] w-full"
     >
-      <h1 className="mt-2 text-center text-xl font-bold">
-        Location Distribution
-      </h1>
       <BarChart
         accessibilityLayer
         data={chartData}

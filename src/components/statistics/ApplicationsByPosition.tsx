@@ -1,6 +1,6 @@
 import { Application } from "@prisma/client";
 import { useMemo } from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart";
 
 type ChartConfig = {
@@ -13,7 +13,7 @@ type ChartConfig = {
 const chartConfig = {
   count: {
     label: "Applications",
-    color: "hsl(var(--chart-primary))",
+    color: "#10b981",
   },
 } satisfies ChartConfig;
 
@@ -46,11 +46,8 @@ export default function ApplicationsByPosition({
     <ChartContainer
       id="applications-by-position-chart"
       config={chartConfig}
-      className="my-4 max-h-[300px] w-full rounded-2xl border bg-gray-100 p-4 dark:bg-gray-800"
+      className="max-h-[300px] w-full"
     >
-      <h1 className="mt-2 text-center text-xl font-bold">
-        Applications by Position
-      </h1>
       <BarChart
         accessibilityLayer
         data={chartData}

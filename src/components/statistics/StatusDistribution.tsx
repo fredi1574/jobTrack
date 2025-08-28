@@ -70,12 +70,9 @@ export default function StatusDistribution({
     <ChartContainer
       id="status-chart"
       config={chartConfig}
-      className="my-4 aspect-square max-h-[300px] rounded-2xl border bg-gray-100 pb-6 lg:w-1/4 dark:bg-gray-800"
+      className="flex items-center justify-center"
     >
-      <h1 className="mt-2 text-center text-xl font-bold">
-        Status Distribution
-      </h1>
-      <PieChart>
+      <PieChart width={250} height={250}>
         <ChartTooltip
           cursor={false}
           content={
@@ -102,20 +99,19 @@ export default function StatusDistribution({
               payload={undefined}
             />
           }
-          className="-translate-y-4 flex-wrap gap-2 *:basis-1/4 *:justify-center"
         />
         <Pie
           data={pieData}
-          nameKey="status" // The key for the label/name
-          dataKey="count" // The key for the numerical value
+          nameKey="status"
+          dataKey="count"
+          cx="50%"
+          cy="50%"
+          outerRadius={100}
         >
           {pieData.map((entry) => (
             <Cell
               key={`cell-${entry.status}`}
-              fill={
-                chartConfig[entry.status as keyof typeof chartConfig]?.color ||
-                "hsl(var(--muted))"
-              }
+              fill={chartConfig[entry.status as keyof typeof chartConfig].color}
             />
           ))}
         </Pie>
