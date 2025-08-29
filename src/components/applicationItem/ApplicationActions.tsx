@@ -23,7 +23,7 @@ export default function ApplicationActions({
   };
 
   return (
-    <div className="flex shrink-0 items-center gap-2 pl-1 sm:gap-3 sm:pl-2">
+    <div className="hidden shrink-0 items-center gap-2 pl-1 sm:gap-3 sm:pl-2 md:flex">
       <Pencil
         onClick={handleEditClick}
         className="size-4 cursor-pointer text-gray-500 hover:text-blue-600 dark:hover:text-blue-400"
