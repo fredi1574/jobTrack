@@ -11,12 +11,14 @@ import { Application as PrismaApplication } from "@prisma/client";
 import { Check, ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 import {
   POSSIBLE_APPLICATION_STATUSES,
   STATUS_COLORS,
   STATUS_ICONS,
+  TOAST_BACKGROUND_COLORS,
+  TOAST_TEXT_COLORS,
 } from "@/lib/constants";
 import { ApplicationStatus } from "@/types/application";
 
@@ -35,7 +37,11 @@ export default function StatusDropdown({
         const result = await updateApplicationStatus(application.id, newStatus);
         if (result?.success) {
           toast.success(`Status updated to ${newStatus}`, {
-            icon: <span>🔄</span>,
+            icon: STATUS_ICONS[newStatus.toLowerCase()],
+            style: {
+              backgroundColor: TOAST_BACKGROUND_COLORS[newStatus.toLowerCase()],
+              color: TOAST_TEXT_COLORS[newStatus.toLowerCase()],
+            },
           });
           router.refresh();
         } else {
@@ -61,7 +67,7 @@ export default function StatusDropdown({
               `h-auto ${STATUS_COLORS[application.status.toLowerCase()]} w-full justify-center border-none px-2.5 py-0.5 text-sm font-semibold ${isPending ? "animate-pulse cursor-default" : "cursor-pointer"}`,
             )}
           >
-            <div className="flex items-center justify-center gap-1">
+            <div className="flex flex-1 items-center justify-center gap-1">
               {STATUS_ICONS[application.status.toLowerCase()]}
               <span>{application.status}</span>
             </div>

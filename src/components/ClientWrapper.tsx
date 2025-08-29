@@ -1,8 +1,7 @@
 "use client";
 import { SessionProvider } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Toaster } from "sonner";
 import Header from "./Header";
 import React from "react";
 
@@ -21,18 +20,7 @@ export default function ClientWrapper({ children }: ClientWrapperProps) {
 
   return (
     <SessionProvider>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
+      <Toaster theme="system" duration={2000} />
       {!shouldHideHeader && <Header />}
       {children}
     </SessionProvider>

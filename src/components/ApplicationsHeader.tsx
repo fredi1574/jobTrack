@@ -64,7 +64,7 @@ export default function ApplicationsHeader({
   );
 
   return (
-    <div className="hidden w-full border bg-gray-50 px-4 py-3 text-xs font-medium tracking-widest text-gray-500 sm:flex dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">
+    <div className="hidden w-full rounded-t-xl border bg-gray-50 px-4 py-3 text-xs font-medium text-gray-500 sm:flex dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">
       <div className="flex flex-1 items-center justify-around gap-4 overflow-hidden">
         <SortableHeader
           columnKey="company"

@@ -6,7 +6,7 @@ import { DialogTitle } from "@radix-ui/react-dialog";
 import { Download, PlusCircle, Search } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { CSVLink } from "react-csv";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import AddApplicationForm from "./AddApplicationForm";
 import ApplicationAccordionItem from "./ApplicationAccordionItem";
 import ApplicationsHeader from "./ApplicationsHeader";
@@ -210,7 +210,7 @@ export default function DashboardClient({
 
       {/* applications */}
       {filteredApplications.length > 0 ? (
-        <div className="shadow-lg">
+        <div className="mx-[-1rem] shadow-lg/10 sm:mx-auto sm:w-full">
           <ApplicationsHeader
             sortColumn={sortColumn}
             sortDirection={sortDirection}

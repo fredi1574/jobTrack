@@ -95,7 +95,6 @@ export default function ApplicationAccordionItem({
       value={application.id}
       className={`border-b last:border-b-0 dark:border-gray-700 ${statusStyling.background} ${statusStyling.border} ${statusStyling.hover}`}
     >
-      {/* FIX: AccordionTrigger - add asChild and wrap the content in a div */}
       <AccordionTrigger
         className={`items-center gap-2 rounded-none px-4 py-3 hover:no-underline ${statusStyling.background} ${statusStyling.text || ""}`}
       >

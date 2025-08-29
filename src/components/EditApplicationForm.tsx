@@ -19,7 +19,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import FileUploadDropzone from "./FileUploadDropzone";
 import { Button } from "./ui/button";
 import { DialogClose } from "./ui/dialog";
