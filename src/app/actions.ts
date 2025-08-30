@@ -119,7 +119,10 @@ export async function createApplication(
         status,
         url: url,
         location,
-        appliedAt: new Date(appliedAt),
+        appliedAt: (() => {
+          const [year, month, day] = appliedAt.split('-').map(Number);
+          return new Date(Date.UTC(year, month - 1, day));
+        })(),
         notes: notes || null,
         resumeUrl: resumeBlobUrl,
         User: { connect: { id: session.user.id } },
@@ -210,7 +213,10 @@ export async function updateApplication(
         position,
         status,
         url: url || null,
-        appliedAt: new Date(appliedAt),
+        appliedAt: (() => {
+          const [year, month, day] = appliedAt.split('-').map(Number);
+          return new Date(Date.UTC(year, month - 1, day));
+        })(),
         location,
         notes: notes || null,
         resumeUrl:

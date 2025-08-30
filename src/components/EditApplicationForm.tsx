@@ -264,7 +264,17 @@ export default function EditApplicationForm({
             type="date"
             id="appliedAt"
             name="appliedAt"
-            defaultValue={new Date().toISOString().split("T")[0]}
+            defaultValue={
+              applicationData.appliedAt
+                ? (() => {
+                    const date = new Date(applicationData.appliedAt);
+                    const year = date.getUTCFullYear();
+                    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+                    const day = String(date.getUTCDate()).padStart(2, '0');
+                    return `${year}-${month}-${day}`;
+                  })()
+                : ""
+            }
             className="w-40 border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
           {state?.fieldErrors?.appliedAt && (
