@@ -14,14 +14,14 @@ import {
   MessageSquare,
   Users,
 } from "lucide-react";
-import { useActionState, useEffect } from "react";
+import { useEffect, useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
 import FileUploadDropzone from "./FileUploadDropzone";
 import { Button } from "./ui/button";
 import { DialogClose } from "./ui/dialog";
+import FormField from "./ui/FormField";
 import { Input } from "./ui/input";
-import { Label } from "./ui/label";
 import {
   Select,
   SelectContent,
@@ -105,14 +105,13 @@ export default function AddApplicationForm({
       )}
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="space-y-2">
-          <Label
-            htmlFor="company"
-            className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
-          >
-            <Briefcase className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-            Company Name
-          </Label>
+        <FormField
+          id="company"
+          name="company"
+          label="Company Name"
+          icon={<Briefcase className="h-4 w-4 text-gray-500 dark:text-gray-400" />}
+          errorMessage={state?.fieldErrors?.company?.join(", ")}
+        >
           <Input
             type="text"
             id="company"
@@ -121,21 +120,15 @@ export default function AddApplicationForm({
             placeholder="e.g. Google"
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
-          {state?.fieldErrors?.company && (
-            <p className="mt-1 text-xs text-red-600 dark:text-red-400">
-              {state.fieldErrors.company.join(", ")}
-            </p>
-          )}
-        </div>
+        </FormField>
 
-        <div className="space-y-2">
-          <Label
-            htmlFor="position"
-            className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
-          >
-            <FileText className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-            Position / Job Title
-          </Label>
+        <FormField
+          id="position"
+          name="position"
+          label="Position / Job Title"
+          icon={<FileText className="h-4 w-4 text-gray-500 dark:text-gray-400" />}
+          errorMessage={state?.fieldErrors?.position?.join(", ")}
+        >
           <Input
             type="text"
             id="position"
@@ -144,21 +137,15 @@ export default function AddApplicationForm({
             placeholder="e.g. Frontend Developer"
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
-          {state?.fieldErrors?.position && (
-            <p className="mt-1 text-xs text-red-600 dark:text-red-400">
-              {state.fieldErrors.position.join(", ")}
-            </p>
-          )}
-        </div>
+        </FormField>
 
-        <div className="space-y-2">
-          <Label
-            htmlFor="location"
-            className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
-          >
-            <MapPin className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-            Location
-          </Label>
+        <FormField
+          id="location"
+          name="location"
+          label="Location"
+          icon={<MapPin className="h-4 w-4 text-gray-500 dark:text-gray-400" />}
+          errorMessage={state?.fieldErrors?.location?.join(", ")}
+        >
           <Input
             type="text"
             id="location"
@@ -167,21 +154,15 @@ export default function AddApplicationForm({
             placeholder="e.g. Tel-Aviv"
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
-          {state?.fieldErrors?.location && (
-            <p className="mt-1 text-xs text-red-600 dark:text-red-400">
-              {state.fieldErrors.location.join(", ")}
-            </p>
-          )}
-        </div>
+        </FormField>
 
-        <div className="space-y-2">
-          <Label
-            htmlFor="url"
-            className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
-          >
-            <LinkIcon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-            Job Link
-          </Label>
+        <FormField
+          id="url"
+          name="url"
+          label="Job Link"
+          icon={<LinkIcon className="h-4 w-4 text-gray-500 dark:text-gray-400" />}
+          errorMessage={state?.fieldErrors?.url?.join(", ")}
+        >
           <Input
             type="url"
             id="url"
@@ -189,20 +170,15 @@ export default function AddApplicationForm({
             placeholder="https://www.example.com/job"
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
-          {state?.fieldErrors?.url && (
-            <p className="mt-1 text-xs text-red-600 dark:text-red-400">
-              {state.fieldErrors.url.join(", ")}
-            </p>
-          )}
-        </div>
-        <div className="space-y-2">
-          <Label
-            htmlFor="appliedAt"
-            className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
-          >
-            <Calendar className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-            Date Applied
-          </Label>
+        </FormField>
+
+        <FormField
+          id="appliedAt"
+          name="appliedAt"
+          label="Date Applied"
+          icon={<Calendar className="h-4 w-4 text-gray-500 dark:text-gray-400" />}
+          errorMessage={state?.fieldErrors?.appliedAt?.join(", ")}
+        >
           <Input
             type="date"
             id="appliedAt"
@@ -210,12 +186,7 @@ export default function AddApplicationForm({
             defaultValue={new Date().toISOString().split("T")[0]}
             className="w-40 border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
-          {state?.fieldErrors?.appliedAt && (
-            <p className="mt-1 text-xs text-red-600 dark:text-red-400">
-              {state.fieldErrors.appliedAt.join(", ")}
-            </p>
-          )}
-        </div>
+        </FormField>
       </div>
 
       <FileUploadDropzone
@@ -227,14 +198,13 @@ export default function AddApplicationForm({
       />
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="space-y-2">
-          <Label
-            htmlFor="status"
-            className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
-          >
-            <CircleCheck className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-            Application Status
-          </Label>
+        <FormField
+          id="status"
+          name="status"
+          label="Application Status"
+          icon={<CircleCheck className="h-4 w-4 text-gray-500 dark:text-gray-400" />}
+          errorMessage={state?.fieldErrors?.status?.join(", ")}
+        >
           <Select name="status" required>
             <SelectTrigger
               id="status"
@@ -268,21 +238,16 @@ export default function AddApplicationForm({
               </SelectItem>
             </SelectContent>
           </Select>
-          {state?.fieldErrors?.status && (
-            <p className="mt-1 text-xs text-red-600 dark:text-red-400">
-              {state.fieldErrors.status.join(", ")}
-            </p>
-          )}
-        </div>
+        </FormField>
 
-        <div className="space-y-2 md:col-span-2">
-          <Label
-            htmlFor="notes"
-            className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
-          >
-            <MessageSquare className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-            Notes
-          </Label>
+        <FormField
+          id="notes"
+          name="notes"
+          label="Notes"
+          icon={<MessageSquare className="h-4 w-4 text-gray-500 dark:text-gray-400" />}
+          errorMessage={state?.fieldErrors?.notes?.join(", ")}
+          className="md:col-span-2"
+        >
           <Textarea
             id="notes"
             name="notes"
@@ -290,12 +255,7 @@ export default function AddApplicationForm({
             placeholder="Add any relevant details about the application..."
             className="resize-none border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
-          {state?.fieldErrors?.notes && (
-            <p className="mt-1 text-xs text-red-600 dark:text-red-400">
-              {state.fieldErrors.notes.join(", ")}
-            </p>
-          )}
-        </div>
+        </FormField>
       </div>
 
       <div className="flex flex-col gap-4 pt-4">
