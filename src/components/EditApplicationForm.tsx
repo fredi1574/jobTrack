@@ -57,7 +57,7 @@ function UpdateButton() {
       type="submit"
       disabled={pending}
       aria-disabled={pending}
-      className="w-full cursor-pointer bg-blue-500 text-white transition-colors hover:bg-blue-600"
+      className="w-full bg-sky-500 transition-colors hover:bg-sky-600 dark:bg-sky-700 dark:hover:bg-sky-800"
     >
       {pending ? (
         <span className="flex items-center gap-2">
@@ -100,7 +100,7 @@ function CancelButton(): React.ReactElement {
         size="sm"
         variant="outline"
         type="button"
-        className="w-full cursor-pointer"
+        className="w-full bg-red-500 transition-colors hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800"
       >
         Cancel
       </Button>

@@ -6,6 +6,7 @@ import {
   Briefcase,
   Calendar,
   CircleCheck,
+  CirclePlus,
   ClipboardList,
   FileText,
   LinkIcon,
@@ -54,8 +55,9 @@ function SubmitButton(): React.ReactElement {
       type="submit"
       disabled={pending}
       aria-disabled={pending}
-      className="w-full cursor-pointer bg-sky-500 text-white transition-colors hover:bg-sky-600"
+      className="w-full bg-sky-500 transition-colors hover:bg-sky-600 dark:bg-sky-700 dark:hover:bg-sky-800"
     >
+      <CirclePlus className="h-4 w-4" />
       {pending ? "Adding..." : "Add Application"}
     </Button>
   );
@@ -67,8 +69,7 @@ function CancelButton(): React.ReactElement {
       <Button
         size="sm"
         variant="outline"
-        type="button"
-        className="w-full cursor-pointer"
+        className="w-full bg-red-500 hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800"
       >
         Cancel
       </Button>
