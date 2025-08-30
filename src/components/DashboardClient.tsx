@@ -3,13 +3,14 @@ import { deleteApplication } from "@/app/actions";
 import { useSortableData } from "@/hooks/useSortableData";
 import type { Application as PrismaApplication } from "@prisma/client";
 import { DialogTitle } from "@radix-ui/react-dialog";
-import { Download, PlusCircle, Search } from "lucide-react";
+import { Download, PlusCircle, Search, Upload } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { CSVLink } from "react-csv";
 import { toast } from "sonner";
 import AddApplicationForm from "./AddApplicationForm";
 import ApplicationAccordionItem from "./ApplicationAccordionItem";
 import ApplicationsHeader from "./ApplicationsHeader";
+import { CSVImportForm } from "./CSVImportForm";
 import EditApplicationForm from "./EditApplicationForm";
 import NoJobApplications from "./NoJobApplications";
 import { Accordion } from "./ui/accordion";
@@ -32,9 +33,18 @@ export default function DashboardClient({
     useState<PrismaApplication[]>(initialApplications);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [editingApplication, setEditingApplication] =
     useState<PrismaApplication | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const formatDate = (dateString: string | Date) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
 
   // Preparing the data for a CSV file
   const dataForCsv = applications.map((application) => {
@@ -43,12 +53,8 @@ export default function DashboardClient({
 
     return {
       ...restOfData,
-      appliedAt: appliedAt
-        ? new Date(appliedAt).toLocaleDateString("en-IL")
-        : "",
-      updatedAt: updatedAt
-        ? new Date(updatedAt).toLocaleDateString("en-IL")
-        : "",
+      appliedAt: appliedAt ? formatDate(appliedAt) : "",
+      updatedAt: updatedAt ? formatDate(updatedAt) : "",
     };
   });
 
@@ -151,12 +157,31 @@ export default function DashboardClient({
           >
             <CSVLink
               data={dataForCsv}
-              filename={`job-applications - ${new Date().toLocaleDateString("en-IL")} - ${new Date().toLocaleTimeString("en-IL")}.csv`}
+              filename={`job-applications - ${formatDate(new Date())}.csv`}
             >
               <Download className="size-4" />
-              Download CSV
+              Download to a CSV file
             </CSVLink>
           </Button>
+
+          <Dialog open={isImportModalOpen} onOpenChange={setIsImportModalOpen}>
+            <DialogTrigger asChild>
+              <Button
+                variant="outline"
+                size="lg"
+                className="p-5 hover:bg-sky-200/50"
+              >
+                <Upload className="size-4" />
+                Import from a CSV file
+              </Button>
+            </DialogTrigger>
+            <DialogContent className={undefined}>
+              <DialogHeader className={undefined}>
+                <DialogTitle>Import from CSV</DialogTitle>
+              </DialogHeader>
+              <CSVImportForm onSuccess={() => setIsImportModalOpen(false)} />
+            </DialogContent>
+          </Dialog>
 
           {/* Add new application button */}
           <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
@@ -191,7 +216,7 @@ export default function DashboardClient({
       {/* Edit application modal */}
       <Dialog open={isEditModalOpen} onOpenChange={handleEditModalClose}>
         <DialogContent className="flex max-h-[85vh] flex-col overflow-y-auto sm:max-h-[90vh] sm:max-w-lg">
-          <DialogHeader className="">
+          <DialogHeader className={undefined}>
             <DialogTitle>Edit Application</DialogTitle>
             <DialogDescription className="">
               Update the details for this job application
