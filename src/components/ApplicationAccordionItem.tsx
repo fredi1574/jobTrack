@@ -1,18 +1,18 @@
 "use client";
 import StatusDropdown from "@/components/applicationItem/StatusDropdown";
+import { getAccordionContentStyling, getStatusStyling } from "@/lib/utils";
+import { Pencil, Trash2 } from "lucide-react";
 import ApplicationActions from "./applicationItem/ApplicationActions";
 import ApplicationInfo from "./applicationItem/ApplicationInfo";
-import ApplicationURL from "./applicationItem/ApplicationURL";
+import ApplicationJobLink from "./applicationItem/ApplicationJobLink";
 import ApplicationNotes from "./applicationItem/ApplicationNotes";
 import ApplicationResume from "./applicationItem/ApplicationResume";
-import ApplicationJobLink from "./applicationItem/ApplicationJobLink";
+import ApplicationURL from "./applicationItem/ApplicationURL";
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion";
-import { getStatusStyling, getAccordionContentStyling } from "@/lib/utils";
-import { Pencil, Trash2 } from "lucide-react";
 
 interface ApplicationAccordionItemProps {
   application: any;
@@ -35,7 +35,9 @@ export default function ApplicationAccordionItem({
   };
 
   const statusStyling = getStatusStyling(application.status);
-  const accordionContentStyling = getAccordionContentStyling(application.status);
+  const accordionContentStyling = getAccordionContentStyling(
+    application.status,
+  );
 
   return (
     <AccordionItem

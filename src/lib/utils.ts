@@ -1,5 +1,6 @@
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import type { Application as PrismaApplication } from "@prisma/client";
 
 export function cn(...inputs: string[]) {
   return twMerge(clsx(inputs));
@@ -76,4 +77,19 @@ export const formatDate = (dateString: string | Date) => {
   const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
   const year = date.getFullYear();
   return `${day}-${month}-${year}`;
+};
+
+export const prepareApplicationsForCsv = (
+  applications: PrismaApplication[],
+) => {
+  return applications.map((application) => {
+    const { id, UserId, resumeUrl, appliedAt, updatedAt, ...restOfData } =
+      application;
+
+    return {
+      ...restOfData,
+      appliedAt: appliedAt ? formatDate(appliedAt) : "",
+      updatedAt: updatedAt ? formatDate(updatedAt) : "",
+    };
+  });
 };

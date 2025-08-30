@@ -17,7 +17,7 @@ import {
   Users,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
 import FileUploadDropzone from "./FileUploadDropzone";
@@ -166,7 +166,9 @@ export default function EditApplicationForm({
           id="company"
           name="company"
           label="Company Name"
-          icon={<Briefcase className="h-4 w-4 text-gray-500 dark:text-gray-400" />}
+          icon={
+            <Briefcase className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+          }
           errorMessage={state?.fieldErrors?.company?.join(", ")}
         >
           <Input
@@ -183,7 +185,9 @@ export default function EditApplicationForm({
           id="position"
           name="position"
           label="Position / Job Title"
-          icon={<FileText className="h-4 w-4 text-gray-500 dark:text-gray-400" />}
+          icon={
+            <FileText className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+          }
           errorMessage={state?.fieldErrors?.position?.join(", ")}
         >
           <Input
@@ -217,7 +221,9 @@ export default function EditApplicationForm({
           id="url"
           name="url"
           label="Job Link"
-          icon={<LinkIcon className="h-4 w-4 text-gray-500 dark:text-gray-400" />}
+          icon={
+            <LinkIcon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+          }
           errorMessage={state?.fieldErrors?.url?.join(", ")}
         >
           <Input
@@ -233,7 +239,9 @@ export default function EditApplicationForm({
           id="appliedAt"
           name="appliedAt"
           label="Date Applied"
-          icon={<Calendar className="h-4 w-4 text-gray-500 dark:text-gray-400" />}
+          icon={
+            <Calendar className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+          }
           errorMessage={state?.fieldErrors?.appliedAt?.join(", ")}
         >
           <Input
@@ -274,7 +282,9 @@ export default function EditApplicationForm({
           id="status"
           name="status"
           label="Application Status"
-          icon={<BadgeCheck className="h-4 w-4 text-gray-500 dark:text-gray-400" />}
+          icon={
+            <BadgeCheck className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+          }
           errorMessage={state?.fieldErrors?.status?.join(", ")}
         >
           <Select name="status" required defaultValue={applicationData.status}>
@@ -316,7 +326,9 @@ export default function EditApplicationForm({
           id="notes"
           name="notes"
           label="Notes"
-          icon={<MessageSquare className="h-4 w-4 text-gray-500 dark:text-gray-400" />}
+          icon={
+            <MessageSquare className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+          }
           errorMessage={state?.fieldErrors?.notes?.join(", ")}
           className="md:col-span-2"
         >

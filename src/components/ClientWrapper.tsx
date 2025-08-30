@@ -3,7 +3,6 @@ import { SessionProvider } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { Toaster } from "sonner";
 import Header from "./Header";
-import React from "react";
 
 const NO_HEADER_PAGES: string[] = ["/login", "/register"];
 

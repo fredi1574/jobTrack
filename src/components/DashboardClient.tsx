@@ -1,6 +1,7 @@
 "use client";
+import { useApplicationSearch } from "@/hooks/useApplicationSearch";
 import { useSortableData } from "@/hooks/useSortableData";
-import { formatDate } from "@/lib/utils";
+import { prepareApplicationsForCsv } from "@/lib/utils";
 import type { Application as PrismaApplication } from "@prisma/client";
 import { useCallback, useEffect, useState } from "react";
 import AddApplicationModal from "./AddApplicationModal";
@@ -17,36 +18,18 @@ export default function DashboardClient({
 }) {
   const [applications, setApplications] =
     useState<PrismaApplication[]>(initialApplications);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const { searchTerm, setSearchTerm, filteredApplications } =
+    useApplicationSearch(applications);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [editingApplication, setEditingApplication] =
     useState<PrismaApplication | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
 
   // Preparing the data for a CSV file
-  const dataForCsv = applications.map((application) => {
-    const { id, UserId, resumeUrl, appliedAt, updatedAt, ...restOfData } =
-      application;
-
-    return {
-      ...restOfData,
-      appliedAt: appliedAt ? formatDate(appliedAt) : "",
-      updatedAt: updatedAt ? formatDate(updatedAt) : "",
-    };
-  });
+  const dataForCsv = prepareApplicationsForCsv(applications);
 
   useEffect(() => {
     setApplications(initialApplications);
   }, [initialApplications]);
-
-  const filteredApplications = applications.filter((application) => {
-    return (
-      application.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      application.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      application.location.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
 
   const {
     sortedData: sortedApplications,
@@ -88,19 +71,11 @@ export default function DashboardClient({
 
           {/* Action buttons */}
           <div className="flex gap-2">
-            <ImportApplicationModal
-              onImportSuccess={() => {
-                setIsImportModalOpen(false);
-              }}
-            />
+            <ImportApplicationModal />
             <ExportCSVButton data={dataForCsv} />
           </div>
 
-          <AddApplicationModal
-            onAddSuccess={() => {
-              setIsAddModalOpen(false);
-            }}
-          />
+          <AddApplicationModal />
         </div>
       </div>
 

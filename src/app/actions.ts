@@ -1,10 +1,10 @@
 "use server";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { ApplicationStatus } from "@/types/application";
 import { Application as PrismaApplication } from "@prisma/client";
 import { del, put } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
-import { ApplicationStatus } from "@/types/application";
 
 export interface ActionResult {
   success: boolean;
@@ -120,7 +120,7 @@ export async function createApplication(
         url: url,
         location,
         appliedAt: (() => {
-          const [year, month, day] = appliedAt.split('-').map(Number);
+          const [year, month, day] = appliedAt.split("-").map(Number);
           return new Date(Date.UTC(year, month - 1, day));
         })(),
         notes: notes || null,
@@ -214,7 +214,7 @@ export async function updateApplication(
         status,
         url: url || null,
         appliedAt: (() => {
-          const [year, month, day] = appliedAt.split('-').map(Number);
+          const [year, month, day] = appliedAt.split("-").map(Number);
           return new Date(Date.UTC(year, month - 1, day));
         })(),
         location,
