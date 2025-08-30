@@ -127,80 +127,79 @@ export default function DashboardClient({
 
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-10">
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <h1 className="text-2xl font-bold md:text-3xl">
           Your Job Applications
         </h1>
-
-        {/* Search bar */}
-        <div className="flex w-full flex-col gap-4 rounded-lg bg-white sm:w-auto sm:flex-row sm:items-center dark:bg-slate-800">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-2">
+          {/* Search bar */}
           <div className="relative w-full sm:w-64 md:w-72">
             <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
             <Input
               type="text"
               placeholder="Search applications..."
-              className="pl-10"
+              className="bg-white pl-10 dark:bg-slate-800"
               value={searchTerm}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                 setSearchTerm(event.target.value)
               }
             />
           </div>
-        </div>
-
-        <div className="flex w-full justify-between gap-4 md:justify-end">
-          <Button
-            variant="outline"
-            size="lg"
-            className="p-5 hover:bg-sky-200/50"
-            asChild
-          >
-            <CSVLink
-              data={dataForCsv}
-              filename={`job-applications - ${formatDate(new Date())}.csv`}
+          {/* Action buttons */}
+          <div className="flex gap-2">
+            <Dialog
+              open={isImportModalOpen}
+              onOpenChange={setIsImportModalOpen}
             >
-              <Download className="size-4" />
-              Download to a CSV file
-            </CSVLink>
-          </Button>
+              <DialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={undefined}
+                  size={undefined}
+                >
+                  <Upload className="mr-2 h-4 w-4" />
+                  Import
+                </Button>
+              </DialogTrigger>
+              <DialogContent className={undefined}>
+                <DialogHeader className={undefined}>
+                  <DialogTitle>Import from CSV</DialogTitle>
+                </DialogHeader>
+                <CSVImportForm onSuccess={() => setIsImportModalOpen(false)} />
+              </DialogContent>
+            </Dialog>
 
-          <Dialog open={isImportModalOpen} onOpenChange={setIsImportModalOpen}>
-            <DialogTrigger asChild>
-              <Button
-                variant="outline"
-                size="lg"
-                className="p-5 hover:bg-sky-200/50"
+            <Button
+              variant="outline"
+              asChild
+              className={undefined}
+              size={undefined}
+            >
+              <CSVLink
+                data={dataForCsv}
+                filename={`job-applications - ${formatDate(new Date())}.csv`}
               >
-                <Upload className="size-4" />
-                Import from a CSV file
-              </Button>
-            </DialogTrigger>
-            <DialogContent className={undefined}>
-              <DialogHeader className={undefined}>
-                <DialogTitle>Import from CSV</DialogTitle>
-              </DialogHeader>
-              <CSVImportForm onSuccess={() => setIsImportModalOpen(false)} />
-            </DialogContent>
-          </Dialog>
+                <Download className="mr-2 h-4 w-4" />
+                Export
+              </CSVLink>
+            </Button>
+          </div>
 
-          {/* Add new application button */}
           <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
             <DialogTrigger asChild>
               <Button
-                className="cursor-pointer p-5 hover:bg-sky-200/50"
-                size="sm"
-                variant="outline"
+                className="bg-green-500/70 text-green-900 hover:bg-green-700 dark:text-white"
+                variant={undefined}
+                size={undefined}
               >
-                <PlusCircle className="size-4" />
-                Add new Application
+                <PlusCircle className="h-4 w-4" />
+                Add Application
               </Button>
             </DialogTrigger>
-
-            {/* Add new application form */}
             <DialogContent className="flex max-h-[85vh] flex-col overflow-y-auto sm:max-h-[90vh] sm:max-w-lg">
-              <DialogHeader className="">
+              <DialogHeader className={undefined}>
                 <DialogTitle>Add new Application</DialogTitle>
-                <DialogDescription className="">
+                <DialogDescription className={undefined}>
                   Fill in the details for the job application you are applying
                   for
                 </DialogDescription>
@@ -218,7 +217,7 @@ export default function DashboardClient({
         <DialogContent className="flex max-h-[85vh] flex-col overflow-y-auto sm:max-h-[90vh] sm:max-w-lg">
           <DialogHeader className={undefined}>
             <DialogTitle>Edit Application</DialogTitle>
-            <DialogDescription className="">
+            <DialogDescription className={undefined}>
               Update the details for this job application
             </DialogDescription>
           </DialogHeader>
