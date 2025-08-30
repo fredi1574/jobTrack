@@ -47,22 +47,25 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex-center-screen">
-      <Card className="w-full max-w-md border-0 bg-white/80 shadow-xl backdrop-blur-sm dark:bg-gray-800/80">
-        <CardHeader className="pb-6 text-center">
-          <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">
-            Sign In
+    <div className="relative flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4 py-12 dark:from-gray-900 dark:to-gray-950">
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-blue-200 to-indigo-200 opacity-30 blur-3xl dark:from-blue-700 dark:to-indigo-800"></div>
+      </div>
+      <Card className="relative z-10 w-full max-w-md rounded-lg border border-gray-200 bg-white/90 p-8 shadow-2xl backdrop-blur-xl dark:border-gray-700 dark:bg-gray-800/70">
+        <CardHeader className="mb-6 text-center">
+          <CardTitle className="text-3xl font-extrabold text-gray-900 dark:text-white">
+            Welcome Back!
           </CardTitle>
-          <CardDescription className="text-gray-600 dark:text-gray-300">
-            Access your Job Application Tracker
+          <CardDescription className="mt-2 text-gray-600 dark:text-gray-300">
+            Sign in to access your Job Application Tracker.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-5">
             <div className="space-y-2">
               <Label
                 htmlFor="email"
-                className="font-medium text-gray-700 dark:text-gray-200"
+                className="text-sm font-medium text-gray-700 dark:text-gray-200"
               >
                 Email
               </Label>
@@ -76,13 +79,13 @@ export default function LoginPage() {
                 }
                 required
                 disabled={loading}
-                className="h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                className="h-10 w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm transition-colors focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500"
               />
             </div>
             <div className="space-y-2">
               <Label
                 htmlFor="password"
-                className="font-medium text-gray-700 dark:text-gray-200"
+                className="text-sm font-medium text-gray-700 dark:text-gray-200"
               >
                 Password
               </Label>
@@ -96,19 +99,19 @@ export default function LoginPage() {
                 }
                 required
                 disabled={loading}
-                className="h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                className="h-10 w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm transition-colors focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500"
               />
             </div>
             {error && (
-              <div className="rounded-lg border border-red-200 bg-red-50 p-3 dark:border-red-700 dark:bg-red-900/20">
-                <p className="text-sm text-red-600 dark:text-red-400">
+              <div className="rounded-md border border-red-300 bg-red-50 p-3 dark:border-red-700 dark:bg-red-900/20">
+                <p className="text-sm text-red-700 dark:text-red-400">
                   {error}
                 </p>
               </div>
             )}
             <Button
               type="submit"
-              className="h-11 w-full cursor-pointer bg-gradient-to-r from-blue-500 to-blue-600 font-medium text-white shadow-lg transition-all duration-200 hover:from-blue-600 hover:to-blue-700 hover:shadow-xl dark:from-blue-600 dark:to-blue-700 dark:hover:from-blue-700 dark:hover:to-blue-800"
+              className="h-11 w-full cursor-pointer rounded-md bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-2 text-lg font-semibold text-white shadow-md transition-all duration-300 hover:from-blue-700 hover:to-blue-800 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none dark:from-blue-700 dark:to-blue-800 dark:hover:from-blue-800 dark:hover:to-blue-900"
               disabled={loading}
               variant={undefined}
               size={undefined}
@@ -117,7 +120,7 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <div className="border-t border-gray-100 pt-4 text-center dark:border-gray-700">
+          <div className="mt-6 border-t border-gray-200 pt-6 text-center dark:border-gray-700">
             <p className="text-sm text-gray-600 dark:text-gray-300">
               Don&apos;t have an account?{" "}
               <Link
