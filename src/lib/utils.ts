@@ -69,3 +69,11 @@ export const getAccordionContentStyling = (status: string) => {
       return "bg-gray-50/50 text-gray-600 dark:bg-slate-500";
   }
 };
+
+export const formatDate = (dateString: string | Date) => {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+};
