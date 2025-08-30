@@ -157,7 +157,7 @@ export default function DashboardClient({
                   className={undefined}
                   size={undefined}
                 >
-                  <Upload className="mr-2 h-4 w-4" />
+                  <Upload className="h-4 w-4" />
                   Import
                 </Button>
               </DialogTrigger>
@@ -179,7 +179,7 @@ export default function DashboardClient({
                 data={dataForCsv}
                 filename={`job-applications - ${formatDate(new Date())}.csv`}
               >
-                <Download className="mr-2 h-4 w-4" />
+                <Download className="h-4 w-4" />
                 Export
               </CSVLink>
             </Button>
@@ -204,9 +204,8 @@ export default function DashboardClient({
                   for
                 </DialogDescription>
               </DialogHeader>
-              <div className="flex-grow py-4 pr-6 pl-1">
-                <AddApplicationForm onSuccess={handleAddModalClose} />
-              </div>
+
+              <AddApplicationForm onSuccess={handleAddModalClose} />
             </DialogContent>
           </Dialog>
         </div>
@@ -221,14 +220,13 @@ export default function DashboardClient({
               Update the details for this job application
             </DialogDescription>
           </DialogHeader>
-          <div className="flex-grow py-4 pr-6 pl-1">
-            {editingApplication && (
-              <EditApplicationForm
-                applicationData={editingApplication}
-                onSuccess={handleEditSuccess}
-              />
-            )}
-          </div>
+
+          {editingApplication && (
+            <EditApplicationForm
+              applicationData={editingApplication}
+              onSuccess={handleEditSuccess}
+            />
+          )}
         </DialogContent>
       </Dialog>
 
