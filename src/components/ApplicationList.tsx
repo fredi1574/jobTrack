@@ -1,15 +1,11 @@
-import { deleteApplication } from "@/app/actions";
-import type { Application as PrismaApplication } from "@prisma/client";
-import { useCallback } from "react";
-import { toast } from "sonner";
+import { Application as PrismaApplication } from "@prisma/client";
+import { Accordion } from "@radix-ui/react-accordion";
 import ApplicationAccordionItem from "./ApplicationAccordionItem";
 import ApplicationsHeader from "./ApplicationsHeader";
 import NoJobApplications from "./NoJobApplications";
-import { Accordion } from "./ui/accordion";
 
 interface ApplicationListProps {
   applications: PrismaApplication[];
-  onEdit: (application: PrismaApplication) => void;
   searchTerm: string;
   sortColumn: keyof PrismaApplication | null;
   sortDirection: "asc" | "desc";
@@ -18,34 +14,11 @@ interface ApplicationListProps {
 
 export default function ApplicationList({
   applications,
-  onEdit,
   searchTerm,
   sortColumn,
   sortDirection,
   handleSort,
 }: ApplicationListProps) {
-  const handleDeleteApplication = useCallback(async (applicationId: string) => {
-    if (!confirm("Are you sure you want to delete this application?")) {
-      return;
-    }
-
-    try {
-      const result = await deleteApplication(applicationId);
-
-      if (result?.success) {
-        // The parent component (DashboardClient) will handle updating the applications state
-        toast.success("Application deleted successfully!", {
-          icon: <span>🚮</span>,
-        });
-      } else {
-        toast.error(result?.error || "Failed to delete application.");
-      }
-    } catch (error) {
-      console.error("Delete failed:", error);
-      toast.error("An error occurred. Please try again.");
-    }
-  }, []);
-
   return (
     <>
       {applications.length > 0 ? (
@@ -61,8 +34,6 @@ export default function ApplicationList({
               <ApplicationAccordionItem
                 key={application.id}
                 application={application}
-                onDelete={handleDeleteApplication}
-                onEdit={onEdit}
               />
             ))}
           </Accordion>

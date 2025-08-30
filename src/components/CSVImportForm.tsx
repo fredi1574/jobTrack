@@ -1,71 +1,90 @@
 "use client";
+import { importApplications } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { File as FileIcon, UploadCloud, X } from "lucide-react";
-import { useSession } from "next-auth/react";
-import React, { useRef, useState } from "react";
+import React, { useActionState, useEffect, useRef, useState } from "react";
+import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
 
-export function CSVImportForm({ onSuccess }: { onSuccess?: () => void }) {
+interface ActionResult {
+  success: boolean;
+  message?: string;
+  error?: string;
+  fieldErrors?: Record<string, string[]>;
+}
+
+const initialState: ActionResult = {
+  message: undefined,
+  error: undefined,
+  fieldErrors: undefined,
+  success: false,
+};
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button
+      type="submit"
+      disabled={pending}
+      className="w-full"
+      size="lg"
+      variant={undefined}
+    >
+      {pending ? (
+        <>
+          <svg
+            className="mr-3 -ml-1 h-5 w-5 animate-spin text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+          Importing...
+        </>
+      ) : (
+        "Import CSV"
+      )}
+    </Button>
+  );
+}
+
+export function CSVImportForm() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const { data: session } = useSession();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [state, formAction] = useActionState(importApplications, initialState);
+
+  useEffect(() => {
+    if (state?.success) {
+      toast.success(state.message || "CSV imported successfully!");
+      setSelectedFile(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+    if (state?.error) {
+      toast.error(state.error);
+    }
+  }, [state]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      if (event.target.files[0].type !== "text/csv") {
-        toast.error("Please select a valid CSV file.");
-        return;
-      }
       setSelectedFile(event.target.files[0]);
     } else {
       setSelectedFile(null);
-    }
-  };
-
-  const handleUpload = async () => {
-    if (!selectedFile) {
-      toast.error("Please select a CSV file to upload.");
-      return;
-    }
-
-    if (!session?.user?.id) {
-      toast.error("User not authenticated. Please log in.");
-      return;
-    }
-
-    setIsUploading(true);
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-    formData.append("userId", session.user.id);
-
-    try {
-      const response = await fetch("/api/import-csv", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        toast.success(data.message || "CSV imported successfully!");
-        setSelectedFile(null);
-        if (fileInputRef.current) {
-          fileInputRef.current.value = "";
-        }
-        if (onSuccess) {
-          onSuccess();
-        }
-        window.location.reload();
-      } else {
-        toast.error(data.error || "Failed to import CSV.");
-      }
-    } catch (error) {
-      console.error("Error uploading CSV:", error);
-      toast.error("An unexpected error occurred during upload.");
-    } finally {
-      setIsUploading(false);
     }
   };
 
@@ -77,7 +96,7 @@ export function CSVImportForm({ onSuccess }: { onSuccess?: () => void }) {
   };
 
   return (
-    <div className="flex flex-col gap-6 p-1">
+    <form action={formAction} className="flex flex-col gap-6 p-1">
       <div>
         <label
           htmlFor="csv-upload"
@@ -116,6 +135,7 @@ export function CSVImportForm({ onSuccess }: { onSuccess?: () => void }) {
             id="csv-upload"
             ref={fileInputRef}
             type="file"
+            name="file" // Add name attribute for FormData
             accept=".csv,text/csv"
             className="hidden"
             onChange={handleFileChange}
@@ -135,41 +155,7 @@ export function CSVImportForm({ onSuccess }: { onSuccess?: () => void }) {
         </ul>
       </div>
 
-      <Button
-        onClick={handleUpload}
-        disabled={!selectedFile || isUploading}
-        className="w-full"
-        size="lg"
-        variant={undefined}
-      >
-        {isUploading ? (
-          <>
-            <svg
-              className="mr-3 -ml-1 h-5 w-5 animate-spin text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
-            </svg>
-            Importing...
-          </>
-        ) : (
-          "Import CSV"
-        )}
-      </Button>
-    </div>
+      <SubmitButton />
+    </form>
   );
 }

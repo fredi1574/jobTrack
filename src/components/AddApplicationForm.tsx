@@ -77,11 +77,11 @@ function CancelButton(): React.ReactElement {
 }
 
 interface AddApplicationFormProps {
-  setModalOpen?: (isOpen: boolean) => void;
+  onSuccess?: () => void;
 }
 
 export default function AddApplicationForm({
-  setModalOpen,
+  onSuccess,
 }: AddApplicationFormProps): React.ReactElement {
   const [state, formAction] = useActionState(createApplication, initialState);
 
@@ -90,11 +90,11 @@ export default function AddApplicationForm({
       toast.success("Application added successfully!", {
         icon: <span>➕</span>,
       });
-      if (setModalOpen) {
-        setModalOpen(false);
+      if (onSuccess) {
+        onSuccess();
       }
     }
-  }, [state?.success, setModalOpen]);
+  }, [state?.success, onSuccess]);
 
   return (
     <form action={formAction} className="space-y-6 pt-4">

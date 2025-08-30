@@ -13,10 +13,6 @@ import {
 export default function ImportApplicationModal() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleSuccess = () => {
-    setIsOpen(false);
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -29,7 +25,7 @@ export default function ImportApplicationModal() {
         <DialogHeader className={undefined}>
           <DialogTitle className={undefined}>Import from CSV</DialogTitle>
         </DialogHeader>
-        <CSVImportForm onSuccess={handleSuccess} />
+        <CSVImportForm />
       </DialogContent>
     </Dialog>
   );

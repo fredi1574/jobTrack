@@ -1,7 +1,9 @@
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 import AddApplicationForm from "./AddApplicationForm";
-import { Button } from "./ui/button";
+import {
+  Button,
+} from "./ui/button";
 import {
   Dialog,
   DialogContent,
@@ -34,8 +36,9 @@ export default function AddApplicationModal() {
           </DialogDescription>
         </DialogHeader>
 
-        <AddApplicationForm setModalOpen={setIsOpen} />
+        <AddApplicationForm onSuccess={() => setIsOpen(false)} />
       </DialogContent>
     </Dialog>
   );
 }
+

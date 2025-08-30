@@ -3,10 +3,8 @@ import { useApplicationSearch } from "@/hooks/useApplicationSearch";
 import { useSortableData } from "@/hooks/useSortableData";
 import { prepareApplicationsForCsv } from "@/lib/utils";
 import type { Application as PrismaApplication } from "@prisma/client";
-import { useCallback, useEffect, useState } from "react";
 import AddApplicationModal from "./AddApplicationModal";
 import ApplicationList from "./ApplicationList";
-import EditApplicationModal from "./EditApplicationModal";
 import ExportCSVButton from "./ExportCSVButton";
 import ImportApplicationModal from "./ImportApplicationModal";
 import SearchBar from "./SearchBar";
@@ -16,20 +14,11 @@ export default function DashboardClient({
 }: {
   initialApplications: PrismaApplication[];
 }) {
-  const [applications, setApplications] =
-    useState<PrismaApplication[]>(initialApplications);
   const { searchTerm, setSearchTerm, filteredApplications } =
-    useApplicationSearch(applications);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingApplication, setEditingApplication] =
-    useState<PrismaApplication | null>(null);
+    useApplicationSearch(initialApplications);
 
   // Preparing the data for a CSV file
-  const dataForCsv = prepareApplicationsForCsv(applications);
-
-  useEffect(() => {
-    setApplications(initialApplications);
-  }, [initialApplications]);
+  const dataForCsv = prepareApplicationsForCsv(initialApplications);
 
   const {
     sortedData: sortedApplications,
@@ -41,20 +30,6 @@ export default function DashboardClient({
     "appliedAt",
     "desc",
   );
-
-  const handleOpenEditModal = useCallback((application: PrismaApplication) => {
-    setEditingApplication(application);
-    setIsEditModalOpen(true);
-  }, []);
-
-  const handleEditModalClose = useCallback(() => {
-    setIsEditModalOpen(false);
-    setEditingApplication(null);
-  }, []);
-
-  const handleEditSuccess = useCallback(() => {
-    handleEditModalClose();
-  }, [handleEditModalClose]);
 
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-10">
@@ -79,18 +54,9 @@ export default function DashboardClient({
         </div>
       </div>
 
-      {/* Edit application modal */}
-      <EditApplicationModal
-        isOpen={isEditModalOpen}
-        onClose={handleEditModalClose}
-        applicationData={editingApplication}
-        onEditSuccess={handleEditSuccess}
-      />
-
       {/* applications */}
       <ApplicationList
         applications={sortedApplications}
-        onEdit={handleOpenEditModal}
         searchTerm={searchTerm}
         sortColumn={sortColumn}
         sortDirection={sortDirection}

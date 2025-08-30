@@ -1,4 +1,5 @@
 import { Application as PrismaApplication } from "@prisma/client";
+import EditApplicationForm from "./EditApplicationForm";
 import {
   Dialog,
   DialogContent,
@@ -6,20 +7,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
-import EditApplicationForm from "./EditApplicationForm";
 
 interface EditApplicationModalProps {
   isOpen: boolean;
   onClose: () => void;
   applicationData: PrismaApplication | null;
-  onEditSuccess: () => void;
 }
 
 export default function EditApplicationModal({
   isOpen,
   onClose,
   applicationData,
-  onEditSuccess,
 }: EditApplicationModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -34,7 +32,7 @@ export default function EditApplicationModal({
         {applicationData && (
           <EditApplicationForm
             applicationData={applicationData}
-            onSuccess={onEditSuccess}
+            onClose={onClose}
           />
         )}
       </DialogContent>

@@ -110,12 +110,12 @@ function CancelButton(): React.ReactElement {
 
 interface EditApplicationFormProps {
   applicationData: PrismaApplication;
-  onSuccess?: () => void;
+  onClose?: () => void;
 }
 
 export default function EditApplicationForm({
   applicationData,
-  onSuccess,
+  onClose,
 }: EditApplicationFormProps): React.ReactElement {
   const [state, formAction] = useActionState(
     updateApplication,
@@ -125,8 +125,8 @@ export default function EditApplicationForm({
 
   useEffect(() => {
     if (state?.success) {
-      if (onSuccess) {
-        onSuccess();
+      if (onClose) {
+        onClose();
       }
       router.refresh();
       toast.info("Application updated successfully!", {
@@ -136,7 +136,7 @@ export default function EditApplicationForm({
     if (state?.error && !state.fieldErrors) {
       toast.error(state.error);
     }
-  }, [state?.success, state?.error, state?.fieldErrors, onSuccess, router]);
+  }, [state?.success, state?.error, state?.fieldErrors, router, onClose]);
 
   if (!applicationData) {
     return (
