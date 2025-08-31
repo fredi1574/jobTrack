@@ -1,14 +1,14 @@
 import { Upload } from "lucide-react";
 import { useState } from "react";
-import { CSVImportForm } from "./CSVImportForm";
-import { Button } from "./ui/button";
+import { CSVImportForm } from "../CSVImportForm";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
+} from "../ui/dialog";
 
 export default function ImportApplicationModal() {
   const [isOpen, setIsOpen] = useState(false);

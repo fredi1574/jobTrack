@@ -107,7 +107,7 @@ export default function StatisticsClient({
       <ApplicationNumbers applications={filteredApplications} />
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <Card className="lg:col-span-1">
+        <Card className="">
           <CardHeader className={undefined}>
             <CardTitle className={undefined}>Status Distribution</CardTitle>
           </CardHeader>

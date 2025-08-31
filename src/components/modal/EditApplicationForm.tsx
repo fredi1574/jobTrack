@@ -20,19 +20,19 @@ import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
-import FileUploadDropzone from "./FileUploadDropzone";
-import { Button } from "./ui/button";
-import { DialogClose } from "./ui/dialog";
-import FormField from "./ui/FormField";
-import { Input } from "./ui/input";
+import FileUploadDropzone from "../FileUploadDropzone";
+import { Button } from "../ui/button";
+import { DialogClose } from "../ui/dialog";
+import FormField from "../ui/FormField";
+import { Input } from "../ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
-import { Textarea } from "./ui/textarea";
+} from "../ui/select";
+import { Textarea } from "../ui/textarea";
 
 interface ActionResult {
   success: boolean;

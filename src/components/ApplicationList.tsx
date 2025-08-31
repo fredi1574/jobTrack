@@ -1,6 +1,6 @@
 import { Application as PrismaApplication } from "@prisma/client";
 import { Accordion } from "@radix-ui/react-accordion";
-import ApplicationAccordionItem from "./ApplicationAccordionItem";
+import ApplicationAccordionItem from "./applicationItem/ApplicationAccordionItem";
 import ApplicationsHeader from "./ApplicationsHeader";
 import NoJobApplications from "./NoJobApplications";
 

@@ -122,7 +122,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/components/ApplicationAccordionItem.tsx",
+    "src/components/applicationItem/ApplicationAccordionItem.tsx",
     "src/hooks/useSortableData.js",
     "src/components/ThemeProvider.ts"
   ],

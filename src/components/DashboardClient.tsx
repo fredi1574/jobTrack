@@ -1,13 +1,13 @@
 "use client";
+import SearchBar from "@/components/header/SearchBar";
 import { useApplicationSearch } from "@/hooks/useApplicationSearch";
 import { useSortableData } from "@/hooks/useSortableData";
-import { prepareApplicationsForCsv } from "@/lib/utils";
+import { prepareApplicationsForCsv } from "@/lib/csv.utils";
 import type { Application as PrismaApplication } from "@prisma/client";
-import AddApplicationModal from "./AddApplicationModal";
 import ApplicationList from "./ApplicationList";
 import ExportCSVButton from "./ExportCSVButton";
-import ImportApplicationModal from "./ImportApplicationModal";
-import SearchBar from "./SearchBar";
+import AddApplicationModal from "./modal/AddApplicationModal";
+import ImportApplicationModal from "./modal/ImportApplicationModal";
 
 export default function DashboardClient({
   initialApplications,

@@ -1,12 +1,12 @@
 import { Application as PrismaApplication } from "@prisma/client";
-import EditApplicationForm from "./EditApplicationForm";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "./ui/dialog";
+} from "../ui/dialog";
+import EditApplicationForm from "./EditApplicationForm";
 
 interface EditApplicationModalProps {
   isOpen: boolean;

@@ -1,7 +1,7 @@
 "use client";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "sonner";
-import HeaderWrapper from "./HeaderWrapper";
+import HeaderWrapper from "./header/HeaderWrapper";
 
 interface ClientWrapperProps {
   children: React.ReactNode;

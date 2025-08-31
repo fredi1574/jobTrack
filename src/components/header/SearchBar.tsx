@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 
 interface SearchBarProps {
   searchTerm: string;
@@ -16,7 +16,7 @@ export default function SearchBar({
       <Input
         type="text"
         placeholder="Search applications..."
-        className="bg-white pl-10 dark:bg-slate-800"
+        className="bg-white pl-10"
         value={searchTerm}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
           onSearchChange(event.target.value)

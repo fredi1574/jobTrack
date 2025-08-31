@@ -6,18 +6,18 @@ import { Application as PrismaApplication } from "@prisma/client";
 import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import ApplicationActions from "./applicationItem/ApplicationActions";
-import ApplicationInfo from "./applicationItem/ApplicationInfo";
-import ApplicationJobLink from "./applicationItem/ApplicationJobLink";
-import ApplicationNotes from "./applicationItem/ApplicationNotes";
-import ApplicationResume from "./applicationItem/ApplicationResume";
-import ApplicationURL from "./applicationItem/ApplicationURL";
-import EditApplicationModal from "./EditApplicationModal";
+import EditApplicationModal from "../modal/EditApplicationModal";
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "./ui/accordion";
+} from "../ui/accordion";
+import ApplicationActions from "./ApplicationActions";
+import ApplicationInfo from "./ApplicationInfo";
+import ApplicationJobLink from "./ApplicationJobLink";
+import ApplicationNotes from "./ApplicationNotes";
+import ApplicationResume from "./ApplicationResume";
+import ApplicationURL from "./ApplicationURL";
 
 interface ApplicationAccordionItemProps {
   application: PrismaApplication;
@@ -69,10 +69,10 @@ export default function ApplicationAccordionItem({
   return (
     <AccordionItem
       value={application.id}
-      className={`border-b last:border-b-0 dark:border-gray-700 ${statusStyling.background} ${statusStyling.border} ${statusStyling.hover}`}
+      className={`border-b last:border-b-0 dark:border-gray-700 ${statusStyling.background} ${statusStyling.border}`}
     >
       <AccordionTrigger
-        className={`items-center gap-2 rounded-none px-4 py-3 hover:no-underline ${statusStyling.background} ${statusStyling.text || ""}`}
+        className={`items-center gap-2 rounded-none px-4 py-3 hover:no-underline ${statusStyling.hover} ${statusStyling.text}`}
       >
         {/* Main content div */}
         <div className="flex flex-1 items-center gap-4 overflow-hidden">
@@ -105,8 +105,6 @@ export default function ApplicationAccordionItem({
           </div>
 
           <div className="flex justify-end gap-2 pt-2 md:hidden">
-            {" "}
-            {/* Only visible on small screens */}
             <button
               onClick={() => handleEditClick(application)}
               className="inline-flex cursor-pointer items-center gap-1 rounded-md bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-600 transition-colors hover:bg-blue-300 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30"
