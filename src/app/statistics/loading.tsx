@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function AnalyticsLoading() {
+export default function StatisticsLoading() {
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-10">
       {/* Filters Skeleton */}
