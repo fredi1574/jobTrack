@@ -1,9 +1,7 @@
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 import AddApplicationForm from "./AddApplicationForm";
-import {
-  Button,
-} from "./ui/button";
+import { Button } from "./ui/button";
 import {
   Dialog,
   DialogContent,
@@ -28,7 +26,7 @@ export default function AddApplicationModal() {
           Add Application
         </Button>
       </DialogTrigger>
-      <DialogContent className="flex max-h-[85vh] flex-col overflow-y-auto sm:max-h-[90vh] sm:max-w-lg">
+      <DialogContent className="flex max-h-[85vh] flex-col overflow-y-auto rounded-r-none sm:max-h-[90vh] sm:max-w-lg">
         <DialogHeader className={undefined}>
           <DialogTitle className={undefined}>Add new Application</DialogTitle>
           <DialogDescription className={undefined}>
@@ -41,4 +39,3 @@ export default function AddApplicationModal() {
     </Dialog>
   );
 }
-

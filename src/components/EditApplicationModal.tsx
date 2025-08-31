@@ -21,7 +21,7 @@ export default function EditApplicationModal({
 }: EditApplicationModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="flex max-h-[85vh] flex-col overflow-y-auto sm:max-h-[90vh] sm:max-w-lg">
+      <DialogContent className="flex max-h-[85vh] flex-col overflow-y-auto rounded-r-none sm:max-h-[90vh] sm:max-w-lg">
         <DialogHeader className={undefined}>
           <DialogTitle className={undefined}>Edit Application</DialogTitle>
           <DialogDescription className={undefined}>
