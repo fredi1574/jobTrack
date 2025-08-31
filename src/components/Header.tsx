@@ -1,11 +1,46 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { ChartLine, List, Menu, Moon, Sun, X } from "lucide-react";
+import {
+  ChartLine,
+  DoorClosed,
+  DoorOpen,
+  List,
+  Menu,
+  Moon,
+  Sun,
+  X,
+} from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Switch } from "./ui/switch";
+
+const SignOutButton = () => {
+  const [hovered, setHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+  };
+
+  return (
+    <Button
+      variant="default"
+      size="sm"
+      className="w-full bg-red-400 hover:bg-red-500 dark:bg-red-500 dark:hover:bg-red-600"
+      onClick={() => signOut({ callbackUrl: "/" })}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {hovered ? <DoorOpen /> : <DoorClosed />}
+      Sign out
+    </Button>
+  );
+};
 
 export default function Header() {
   const { data: session, status } = useSession();
@@ -34,7 +69,7 @@ export default function Header() {
       <div className="flex items-center gap-2">
         <Sun
           className={`size-5 transition-colors ${
-            isDarkMode ? "text-orange-400/40" : "text-orange-400"
+            isDarkMode ? "text-orange-400/20" : "text-orange-400"
           }`}
         />
         <Switch
@@ -46,7 +81,7 @@ export default function Header() {
         />
         <Moon
           className={`size-5 transition-colors ${
-            isDarkMode ? "text-blue-400" : "text-blue-400/40"
+            isDarkMode ? "text-blue-400" : "text-blue-400/20"
           }`}
         />
       </div>
@@ -54,78 +89,75 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 flex items-center justify-between border-b border-gray-200 bg-white/80 p-4 text-gray-900 shadow-md backdrop-blur-sm dark:border-gray-700 dark:bg-gray-800/80 dark:text-white">
-      <Link href="/" className="text-xl font-bold">
-        JobTracker
-      </Link>
+    <header className="sticky top-0 z-50 border-b border-gray-200/50 bg-gradient-to-b from-white/80 to-white/60 p-4 text-gray-900 shadow-lg backdrop-blur-lg dark:border-gray-700/50 dark:from-gray-800/80 dark:to-gray-800/60 dark:text-white">
+      <div className="container mx-auto flex items-center justify-between">
+        <Link href="/" className="text-2xl font-bold tracking-tight">
+          JobTracker
+        </Link>
 
-      {/* Desktop Menu */}
-      <nav className="hidden items-center gap-4 md:flex">
-        {status === "loading" ? (
-          <div className="h-6 w-20 animate-pulse rounded bg-gray-300 dark:bg-gray-700"></div>
-        ) : session?.user ? (
-          <>
-            <p className="rounded-md bg-gray-200 p-2 text-sm text-gray-600 dark:bg-gray-600 dark:text-white">
-              Hi, {session.user.name || session.user.email?.split("@")[0]}{" "}
-            </p>
+        {/* Desktop Menu */}
+        <nav className="hidden items-center gap-6 md:flex">
+          {status === "loading" ? (
+            <div className="h-8 w-24 animate-pulse rounded-md bg-gray-300 dark:bg-gray-700"></div>
+          ) : session?.user ? (
+            <>
+              <p className="rounded-full bg-gray-200/50 px-4 py-2 text-sm font-medium text-gray-700 dark:bg-gray-700/50 dark:text-gray-300">
+                Hi, {session.user.name || session.user.email?.split("@")[0]}
+              </p>
+              <Button
+                variant="ghost"
+                asChild
+                className="bg-slate-300 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
+                size={undefined}
+              >
+                <Link href="/">
+                  <List className="mr-2 size-4" />
+                  Table
+                </Link>
+              </Button>
+              <Button
+                variant="ghost"
+                asChild
+                className="bg-slate-300 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
+                size={undefined}
+              >
+                <Link href="/statistics">
+                  <ChartLine className="mr-2 size-4" />
+                  Statistics
+                </Link>
+              </Button>
+
+              {renderThemeToggle()}
+
+              <div>
+                <SignOutButton />
+              </div>
+            </>
+          ) : null}
+        </nav>
+
+        {/* Mobile Menu Button */}
+        <div className="md:hidden">
+          {session?.user && (
             <Button
-              variant="outline"
-              size="sm"
-              className="dark:bg-gray-700 dark:text-white"
-              asChild
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className={undefined}
             >
-              <Link href="/">
-                <List className="mr-2 size-4" />
-                Table
-              </Link>
+              {isMenuOpen ? (
+                <X className="size-6" />
+              ) : (
+                <Menu className="size-6" />
+              )}
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="dark:bg-gray-700 dark:text-white"
-              asChild
-            >
-              <Link href="/analytics">
-                <ChartLine className="mr-2 size-4" />
-                Statistics
-              </Link>
-            </Button>
-
-            {renderThemeToggle()}
-
-            <Button
-              variant="destructive"
-              size="sm"
-              className="cursor-pointer hover:bg-red-500 dark:text-white dark:hover:bg-red-700"
-              onClick={() => signOut({ callbackUrl: "/" })}
-            >
-              Sign out
-            </Button>
-          </>
-        ) : null}
-      </nav>
-
-      {/* Mobile Menu Button */}
-      <div className="md:hidden">
-        {session?.user && (
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className={undefined}
-          >
-            {isMenuOpen ? (
-              <X className="size-6" />
-            ) : (
-              <Menu className="size-6" />
-            )}
-          </Button>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Mobile Menu */}
       <div
-        className={`absolute top-full left-0 w-full bg-white p-4 shadow-md transition-all duration-300 ease-in-out md:hidden dark:bg-gray-800 ${
+        className={`absolute top-full left-0 w-full bg-white p-4 shadow-lg backdrop-blur-md transition-all duration-300 ease-in-out md:hidden dark:bg-gray-800 ${
           isMenuOpen
             ? "translate-y-0 opacity-100"
             : "pointer-events-none -translate-y-4 opacity-0"
@@ -134,16 +166,15 @@ export default function Header() {
         <nav className="flex flex-col items-center gap-4">
           {session?.user && (
             <>
-              <p className="rounded-md bg-gray-200 p-2 text-sm text-gray-600 dark:bg-gray-600 dark:text-white">
-                Hi,{" "}
-                {session.user.name || session.user.email?.split("@")[0]}{" "}
+              <p className="rounded-full bg-gray-200/50 px-4 py-2 text-sm font-medium text-gray-700 dark:bg-gray-700/50 dark:text-gray-300">
+                Hi, {session.user.name || session.user.email?.split("@")[0]}
               </p>
               <Button
-                variant="outline"
-                size="sm"
-                className="w-full dark:bg-gray-700 dark:text-white"
+                variant="ghost"
+                className="w-full bg-slate-300 p-6 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
                 asChild
                 onClick={() => setIsMenuOpen(false)}
+                size={undefined}
               >
                 <Link href="/">
                   <List className="mr-2 size-4" />
@@ -151,31 +182,23 @@ export default function Header() {
                 </Link>
               </Button>
               <Button
-                variant="outline"
-                size="sm"
-                className="w-full dark:bg-gray-700 dark:text-white"
+                variant="ghost"
+                className="w-full bg-slate-300 p-6 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
                 asChild
                 onClick={() => setIsMenuOpen(false)}
+                size={undefined}
               >
-                <Link href="/analytics">
+                <Link href="/statistics">
                   <ChartLine className="mr-2 size-4" />
                   Statistics
                 </Link>
               </Button>
 
-              {renderThemeToggle()}
+              <div className="my-2">{renderThemeToggle()}</div>
 
-              <Button
-                variant="destructive"
-                size="sm"
-                className="w-full cursor-pointer hover:bg-red-500 dark:text-white dark:hover:bg-red-700"
-                onClick={() => {
-                  signOut({ callbackUrl: "/" });
-                  setIsMenuOpen(false);
-                }}
-              >
-                Sign out
-              </Button>
+              <div className="w-full">
+                <SignOutButton />
+              </div>
             </>
           )}
         </nav>
