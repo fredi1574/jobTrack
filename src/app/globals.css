@@ -63,11 +63,6 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -97,11 +92,6 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -114,11 +104,11 @@
 
 @layer base {
   :root {
-    --chart-applied: 204 93.8% 93.7%;
-    --chart-assessment: 54.9 96.7% 88%;
-    --chart-interview: 268.7 100% 95.5%;
-    --chart-offer: 140.6 84.2% 92.5%;
-    --chart-rejected: 0 93.3% 94.1%;
+    --chart-applied: 210 90% 55%;
+    --chart-assessment: 45 100% 50%;
+    --chart-interview: 270 70% 50%;
+    --chart-offer: 120 80% 40%;
+    --chart-rejected: 0 90% 50%;
     --chart-primary: 200.6 94.4% 86.1%;
   }
 

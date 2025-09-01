@@ -14,7 +14,7 @@ type ChartConfig = {
 const chartConfig = {
   count: {
     label: "Applications",
-    color: "#3b82f6",
+    color: "#1E90FF",
   },
 } satisfies ChartConfig;
 
@@ -46,7 +46,7 @@ export default function ApplicationsByDate({
         <XAxis dataKey="date" />
         <YAxis allowDecimals={false} />
         <ChartTooltip
-          cursor={false}
+          cursor={true}
           content={
             <ChartTooltipContent
               active={undefined}

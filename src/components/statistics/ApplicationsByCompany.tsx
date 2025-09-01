@@ -13,7 +13,7 @@ type ChartConfig = {
 const chartConfig = {
   count: {
     label: "Applications",
-    color: "#8b5cf6",
+    color: "#22C55E",
   },
 } satisfies ChartConfig;
 
@@ -69,7 +69,7 @@ export default function ApplicationsByCompany({
         />
         <YAxis allowDecimals={false} />
         <ChartTooltip
-          cursor={false}
+          cursor={true}
           content={
             <ChartTooltipContent
               active={undefined}
