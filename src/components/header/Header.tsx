@@ -89,7 +89,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-200/50 bg-gradient-to-b from-white/80 to-white/60 p-4 text-gray-900 shadow-lg backdrop-blur-lg dark:border-gray-700/50 dark:from-gray-800/80 dark:to-gray-800/60 dark:text-white">
+    <header className="sticky top-0 z-50 bg-gradient-to-b from-white/30 to-white/10 p-4 shadow-lg/20 backdrop-blur-md transition-all duration-1500 ease-in-out dark:from-gray-800/50 dark:to-gray-800/30 dark:text-white">
       <div className="container mx-auto flex items-center justify-between">
         <Link href="/" className="text-2xl font-bold tracking-tight">
           JobTracker
@@ -101,7 +101,7 @@ export default function Header() {
             <div className="h-8 w-24 animate-pulse rounded-md bg-gray-300 dark:bg-gray-700"></div>
           ) : session?.user ? (
             <>
-              <p className="rounded-full bg-gray-200/50 px-4 py-2 text-sm font-medium text-gray-700 dark:bg-gray-700/50 dark:text-gray-300">
+              <p className="rounded-full bg-gray-300/50 px-4 py-2 text-sm font-medium text-gray-700 dark:bg-gray-700/50 dark:text-gray-300">
                 Hi, {session.user.name || session.user.email?.split("@")[0]}
               </p>
               <Button
@@ -143,7 +143,7 @@ export default function Header() {
               variant="ghost"
               size="icon"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={undefined}
+              className="bg-gray-500/30"
             >
               {isMenuOpen ? (
                 <X className="size-6" />
@@ -158,17 +158,12 @@ export default function Header() {
       {/* Mobile Menu */}
       <div
         className={`absolute top-full left-0 w-full bg-white p-4 shadow-lg backdrop-blur-md transition-all duration-300 ease-in-out md:hidden dark:bg-gray-800 ${
-          isMenuOpen
-            ? "translate-y-0 opacity-100"
-            : "pointer-events-none -translate-y-4 opacity-0"
+          isMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0"
         }`}
       >
         <nav className="flex flex-col items-center gap-4">
           {session?.user && (
             <>
-              <p className="rounded-full bg-gray-200/50 px-4 py-2 text-sm font-medium text-gray-700 dark:bg-gray-700/50 dark:text-gray-300">
-                Hi, {session.user.name || session.user.email?.split("@")[0]}
-              </p>
               <Button
                 variant="ghost"
                 className="w-full bg-slate-300 p-6 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
