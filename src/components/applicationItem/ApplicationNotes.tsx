@@ -12,7 +12,7 @@ export default function ApplicationNotes({ notes }: ApplicationNotesProps) {
         Notes
       </h4>
       {notes ? (
-        <div className="pl-1 whitespace-pre-wrap text-gray-700 dark:text-gray-300">
+        <div className="pl-1 whitespace-pre-wrap break-words text-gray-700 dark:text-gray-300">
           {notes}
         </div>
       ) : (
