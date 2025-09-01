@@ -4,7 +4,7 @@ import {
   STATUS_ICONS,
 } from "@/lib/constants";
 import { Application } from "@prisma/client";
-import { Users } from "lucide-react";
+import { FileStack } from "lucide-react";
 import StatisticCard from "./StatisticCard";
 
 const statusesToDisplay = ["Total", ...POSSIBLE_APPLICATION_STATUSES];
@@ -23,7 +23,7 @@ export default function ApplicationNumbers({
           status={status}
           icon={
             status === "Total" ? (
-              <Users className="size-4" />
+              <FileStack className="size-4" />
             ) : (
               STATUS_ICONS[status.toLowerCase()]
             )
