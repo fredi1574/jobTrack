@@ -14,10 +14,10 @@ export default function ApplicationInfo({
   return (
     <>
       <div className="flex w-full flex-col sm:w-2/5 sm:flex-row sm:gap-4">
-        <span className="w-full truncate font-semibold text-gray-900 sm:w-1/2 dark:text-gray-100">
+        <span className="w-full font-semibold break-all text-gray-900 sm:w-1/2 dark:text-gray-100">
           {application.company}
         </span>
-        <span className="w-full truncate text-gray-700 sm:w-1/2 dark:text-gray-300">
+        <span className="w-full break-all text-gray-700 sm:w-1/2 dark:text-gray-300">
           {application.position}
         </span>
       </div>
