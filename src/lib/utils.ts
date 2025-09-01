@@ -13,34 +13,34 @@ export const getStatusStyling = (status: string) => {
   switch (statusLower) {
     case "applied":
       return {
-        background: "bg-sky-100 dark:bg-sky-900/20",
-        border: "border-l-4 border-l-sky-500 dark:border-l-sky-800",
-        hover: "hover:bg-sky-200/50 dark:hover:bg-sky-900/30",
+        background: "bg-sky-100 dark:bg-sky-900/30",
+        border: "border-l-4 border-l-sky-500 dark:border-l-sky-700",
+        hover: "hover:bg-sky-200/60 dark:hover:bg-sky-900/40",
       };
     case "assessment":
       return {
-        background: "bg-yellow-100 dark:bg-yellow-900/20",
-        border: "border-l-4 border-l-yellow-500 dark:border-l-yellow-800",
-        hover: "hover:bg-yellow-200/50 dark:hover:bg-yellow-900/30",
+        background: "bg-yellow-100 dark:bg-yellow-900/30",
+        border: "border-l-4 border-l-yellow-500 dark:border-l-yellow-700",
+        hover: "hover:bg-yellow-200/60 dark:hover:bg-yellow-900/40",
       };
     case "interview":
       return {
-        background: "bg-purple-100 dark:bg-purple-900/20",
-        border: "border-l-4 border-l-purple-500 dark:border-l-purple-800",
-        hover: "hover:bg-purple-200/50 dark:hover:bg-purple-900/30",
+        background: "bg-purple-100 dark:bg-purple-900/30",
+        border: "border-l-4 border-l-purple-500 dark:border-l-purple-700",
+        hover: "hover:bg-purple-200/60 dark:hover:bg-purple-900/40",
       };
     case "offer":
       return {
-        background: "bg-green-100 dark:bg-green-900/20",
-        border: "border-l-4 border-l-green-500 dark:border-l-green-800",
-        hover: "hover:bg-green-200/50 dark:hover:bg-green-900/30",
+        background: "bg-green-100 dark:bg-green-900/30",
+        border: "border-l-4 border-l-green-500 dark:border-l-green-700",
+        hover: "hover:bg-green-200/60 dark:hover:bg-green-900/40",
       };
     case "rejected":
       return {
-        background: "bg-red-100 dark:bg-red-900/20",
-        border: "border-l-4 border-l-red-500 dark:border-l-red-800",
-        hover: "hover:bg-red-200/50 dark:hover:bg-red-900/30",
-        text: "text-red-400 line-through opacity-70 dark:text-red-400",
+        background: "bg-red-100 dark:bg-red-900/30",
+        border: "border-l-4 border-l-red-500 dark:border-l-red-700",
+        hover: "hover:bg-red-200/60 dark:hover:bg-red-900/40",
+        text: "text-red-500 line-through opacity-80 dark:text-red-500",
       };
   }
 };
@@ -51,15 +51,15 @@ export const getAccordionContentStyling = (status: string) => {
 
   switch (statusLower) {
     case "rejected":
-      return "bg-red-50/50 dark:bg-red-800/20";
+      return "bg-red-50/70 dark:bg-red-900/20";
     case "offer":
-      return "bg-green-50/50 dark:bg-green-800/20";
+      return "bg-green-50/70 dark:bg-green-900/20";
     case "applied":
-      return "bg-sky-50/50 dark:bg-sky-800/20";
+      return "bg-sky-50/70 dark:bg-sky-900/20";
     case "assessment":
-      return "bg-yellow-50/50 dark:bg-yellow-800/20";
+      return "bg-yellow-50/70 dark:bg-yellow-900/20";
     case "interview":
-      return "bg-purple-50/50 dark:bg-purple-800/20";
+      return "bg-purple-50/70 dark:bg-purple-900/20";
     default:
       return "bg-gray-50/50 dark:bg-slate-500";
   }

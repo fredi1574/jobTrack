@@ -71,7 +71,7 @@ export default function ApplicationAccordionItem({
       className={`border-b last:border-b-0 dark:border-gray-700 ${statusStyling!.background} ${statusStyling!.border}`}
     >
       <AccordionTrigger
-        className={`items-center gap-2 rounded-none px-4 py-3 hover:no-underline ${statusStyling!.hover} ${statusStyling!.text}`}
+        className={`group items-center gap-2 rounded-none px-4 py-3 hover:no-underline ${statusStyling!.hover} ${statusStyling!.text}`}
       >
         {/* Main content div */}
         <div className="flex flex-1 items-center gap-4 overflow-hidden">

@@ -26,7 +26,7 @@ export default function ApplicationActions({
     <div className="hidden shrink-0 items-center gap-2 pl-1 sm:gap-3 sm:pl-2 md:flex">
       <Pencil
         onClick={handleEditClick}
-        className="size-4 cursor-pointer text-gray-500 hover:text-blue-600 dark:hover:text-blue-400"
+        className="size-4 cursor-pointer text-gray-500 hover:text-yellow-600 dark:hover:text-yellow-400"
         aria-label="Edit Application"
       />
       <Trash2
