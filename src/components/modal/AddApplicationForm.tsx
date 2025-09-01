@@ -13,7 +13,7 @@ import {
   MailCheck,
   MapPin,
   MessageSquare,
-  Users,
+  MessagesSquare,
 } from "lucide-react";
 import { useActionState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
@@ -236,7 +236,7 @@ export default function AddApplicationForm({
                 Assessment
               </SelectItem>
               <SelectItem className="flex items-center gap-2" value="Interview">
-                <Users className="size-4" />
+                <MessagesSquare className="size-4" />
                 Interview
               </SelectItem>
               <SelectItem className="flex items-center gap-2" value="Offer">

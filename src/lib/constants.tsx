@@ -3,7 +3,7 @@ import {
   ClipboardList,
   Handshake,
   MailCheck,
-  Users,
+  MessagesSquare,
 } from "lucide-react";
 
 export const POSSIBLE_APPLICATION_STATUSES = [
@@ -32,7 +32,9 @@ export const STATUS_ICONS: Record<string, React.ReactNode> = {
   assessment: (
     <ClipboardList className="size-4 text-yellow-500 dark:text-yellow-400" />
   ),
-  interview: <Users className="size-4 text-purple-500 dark:text-purple-400" />,
+  interview: (
+    <MessagesSquare className="size-4 text-purple-500 dark:text-purple-400" />
+  ),
   offer: <Handshake className="size-4 text-green-500 dark:text-green-400" />,
   rejected: <BadgeX className="size-4 text-red-500 dark:text-red-400" />,
 };

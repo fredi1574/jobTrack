@@ -13,8 +13,8 @@ import {
   MailCheck,
   MapPin,
   MessageSquare,
+  MessagesSquare,
   Save,
-  Users,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
@@ -307,7 +307,7 @@ export default function EditApplicationForm({
                 Assessment
               </SelectItem>
               <SelectItem className="flex items-center gap-2" value="Interview">
-                <Users className="size-4" />
+                <MessagesSquare className="size-4" />
                 Interview
               </SelectItem>
               <SelectItem className="flex items-center gap-2" value="Offer">
