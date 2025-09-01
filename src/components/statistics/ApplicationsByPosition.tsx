@@ -73,7 +73,6 @@ export default function ApplicationsByPosition({
           cursor={false}
           content={
             <ChartTooltipContent
-              hideLabel
               active={undefined}
               payload={undefined}
               className={undefined}

@@ -72,7 +72,6 @@ export default function ApplicationsByCompany({
           cursor={false}
           content={
             <ChartTooltipContent
-              hideLabel
               active={undefined}
               payload={undefined}
               className={undefined}

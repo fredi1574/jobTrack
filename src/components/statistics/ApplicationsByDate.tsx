@@ -67,7 +67,6 @@ export default function ApplicationsByDate({
           cursor={false}
           content={
             <ChartTooltipContent
-              hideLabel
               active={undefined}
               payload={undefined}
               className={undefined}
