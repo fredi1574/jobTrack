@@ -1,3 +1,4 @@
+import { generateChartDataByDate } from "@/lib/chart.utils";
 import { Application } from "@prisma/client";
 import { useMemo } from "react";
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
@@ -23,26 +24,7 @@ export default function ApplicationsByDate({
   applications: Application[];
 }) {
   const chartData = useMemo(() => {
-    const dateCounts = applications.reduce(
-      (accumulator, { appliedAt }) => {
-        if (appliedAt) {
-          const date = new Date(appliedAt).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-          });
-          accumulator[date] = (accumulator[date] || 0) + 1;
-        }
-        return accumulator;
-      },
-      {} as Record<string, number>,
-    );
-
-    return Object.entries(dateCounts)
-      .map(([date, count]) => ({
-        date,
-        count,
-      }))
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    return generateChartDataByDate(applications);
   }, [applications]);
 
   return (
