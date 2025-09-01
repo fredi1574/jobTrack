@@ -1,4 +1,10 @@
-import { Award, BadgeX, ClipboardList, MailCheck, Users } from "lucide-react";
+import {
+  BadgeX,
+  ClipboardList,
+  Handshake,
+  MailCheck,
+  Users,
+} from "lucide-react";
 
 export const POSSIBLE_APPLICATION_STATUSES = [
   "Applied",
@@ -23,10 +29,24 @@ export const STATUS_COLORS: Record<string, string> = {
 
 export const STATUS_ICONS: Record<string, React.ReactNode> = {
   applied: <MailCheck className="size-4 text-sky-500 dark:text-sky-400" />,
-  assessment: <ClipboardList className="size-4 text-yellow-500 dark:text-yellow-400" />,
+  assessment: (
+    <ClipboardList className="size-4 text-yellow-500 dark:text-yellow-400" />
+  ),
   interview: <Users className="size-4 text-purple-500 dark:text-purple-400" />,
-  offer: <Award className="size-4 text-green-500 dark:text-green-400" />,
+  offer: <Handshake className="size-4 text-green-500 dark:text-green-400" />,
   rejected: <BadgeX className="size-4 text-red-500 dark:text-red-400" />,
+};
+
+export const STATUS_CARD_COLORS: Record<string, string> = {
+  total:
+    "bg-neutral-50 text-neutral-600 dark:text-neutral-400 dark:bg-neutral-800",
+  applied: "bg-sky-200 text-sky-500 dark:text-sky-400 dark:bg-sky-800",
+  assessment:
+    "bg-yellow-200 text-yellow-500 dark:text-yellow-400 dark:bg-yellow-600",
+  interview:
+    "bg-purple-200 text-purple-500 dark:text-purple-400 dark:bg-purple-800",
+  offer: "bg-green-200 text-green-500 dark:text-green-400 dark:bg-green-800",
+  rejected: "bg-red-200 text-red-500 dark:text-red-400 dark:bg-red-800",
 };
 
 export const TOAST_BACKGROUND_COLORS: Record<string, string> = {

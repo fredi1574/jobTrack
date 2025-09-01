@@ -18,10 +18,6 @@ type ChartConfig = {
 };
 
 const chartConfig = {
-  applications: {
-    label: "Applications",
-    color: "hsl(var(--chart-primary))",
-  },
   Applied: {
     label: "Applied",
     color: "hsl(var(--chart-applied))",
