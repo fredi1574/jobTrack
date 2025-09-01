@@ -14,10 +14,9 @@ import {
 } from "../ui/accordion";
 import ApplicationActions from "./ApplicationActions";
 import ApplicationInfo from "./ApplicationInfo";
-import ApplicationJobLink from "./ApplicationJobLink";
 import ApplicationNotes from "./ApplicationNotes";
-import ApplicationResume from "./ApplicationResume";
 import ApplicationURL from "./ApplicationURL";
+import ApplicationLinks from "./ApplicationLinks";
 
 interface ApplicationAccordionItemProps {
   application: PrismaApplication;
@@ -92,19 +91,19 @@ export default function ApplicationAccordionItem({
       <AccordionContent
         className={`px-0 pt-0 pb-0 text-sm ${accordionContentStyling}`}
       >
-        <div className="space-y-4 rounded-b-lg p-5">
-          <ApplicationNotes notes={application.notes} />
-
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <ApplicationResume
-              resumeUrl={application.resumeUrl}
+        <div className="mx-4 grid grid-cols-1 py-4 md:grid-cols-4 md:gap-4">
+          <div className="md:col-span-3">
+            <ApplicationNotes notes={application.notes} />
+          </div>
+          <div className="mt-4 md:mt-0">
+            <ApplicationLinks
               applicationId={application.id}
+              resumeUrl={application.resumeUrl}
+              jobUrl={application.url}
             />
-
-            <ApplicationJobLink url={application.url} />
           </div>
 
-          <div className="flex justify-end gap-2 pt-2 md:hidden">
+          <div className="mt-4 flex justify-end gap-2 pt-2 md:hidden">
             <button
               onClick={() => handleEditClick(application)}
               className="inline-flex cursor-pointer items-center gap-1 rounded-md bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-600 transition-colors hover:bg-blue-300 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30"
