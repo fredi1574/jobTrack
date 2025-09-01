@@ -1,7 +1,6 @@
 "use client";
 import { createApplication } from "@/app/actions";
 import {
-  Award,
   BadgeX,
   Briefcase,
   Calendar,
@@ -9,6 +8,7 @@ import {
   CirclePlus,
   ClipboardList,
   FileText,
+  Handshake,
   LinkIcon,
   MailCheck,
   MapPin,
@@ -240,7 +240,7 @@ export default function AddApplicationForm({
                 Interview
               </SelectItem>
               <SelectItem className="flex items-center gap-2" value="Offer">
-                <Award className="size-4" />
+                <Handshake className="size-4" />
                 Offer
               </SelectItem>
               <SelectItem className="flex items-center gap-2" value="Rejected">

@@ -2,13 +2,13 @@
 import { updateApplication } from "@/app/actions";
 import { Application as PrismaApplication } from "@prisma/client";
 import {
-  Award,
   BadgeCheck,
   BadgeX,
   Briefcase,
   Calendar,
   ClipboardList,
   FileText,
+  Handshake,
   LinkIcon,
   MailCheck,
   MapPin,
@@ -311,7 +311,7 @@ export default function EditApplicationForm({
                 Interview
               </SelectItem>
               <SelectItem className="flex items-center gap-2" value="Offer">
-                <Award className="size-4" />
+                <Handshake className="size-4" />
                 Offer
               </SelectItem>
               <SelectItem className="flex items-center gap-2" value="Rejected">
