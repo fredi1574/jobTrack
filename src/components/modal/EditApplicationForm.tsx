@@ -165,7 +165,7 @@ export default function EditApplicationForm({
         <FormField
           id="company"
           name="company"
-          label="Company Name"
+          label="Company Name *"
           icon={
             <Briefcase className="h-4 w-4 text-gray-500 dark:text-gray-400" />
           }
@@ -184,7 +184,7 @@ export default function EditApplicationForm({
         <FormField
           id="position"
           name="position"
-          label="Position / Job Title"
+          label="Position / Job Title *"
           icon={
             <FileText className="h-4 w-4 text-gray-500 dark:text-gray-400" />
           }
@@ -203,7 +203,7 @@ export default function EditApplicationForm({
         <FormField
           id="location"
           name="location"
-          label="Location"
+          label="Location *"
           icon={<MapPin className="h-4 w-4 text-gray-500 dark:text-gray-400" />}
           errorMessage={state?.fieldErrors?.location?.join(", ")}
         >
@@ -238,7 +238,7 @@ export default function EditApplicationForm({
         <FormField
           id="appliedAt"
           name="appliedAt"
-          label="Date Applied"
+          label="Date Applied *"
           icon={
             <Calendar className="h-4 w-4 text-gray-500 dark:text-gray-400" />
           }
@@ -317,7 +317,7 @@ export default function EditApplicationForm({
         <FormField
           id="status"
           name="status"
-          label="Application Status"
+          label="Application Status *"
           icon={
             <BadgeCheck className="h-4 w-4 text-gray-500 dark:text-gray-400" />
           }
