@@ -296,6 +296,7 @@ export default function EditApplicationForm({
             type="number"
             id="salary"
             name="salary"
+            min="1"
             defaultValue={applicationData.salary ?? ""}
             placeholder="e.g. 20,000"
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"

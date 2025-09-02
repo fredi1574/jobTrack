@@ -227,6 +227,7 @@ export default function AddApplicationForm({
             id="salary"
             name="salary"
             placeholder="e.g. 20,000"
+            min="1"
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
         </FormField>
