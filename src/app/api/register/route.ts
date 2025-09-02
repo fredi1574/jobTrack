@@ -14,6 +14,27 @@ export async function POST(req: Request) {
       );
     }
 
+    // Basic email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(lowerCaseEmail)) {
+      return NextResponse.json(
+        { error: "Invalid email format" },
+        { status: 400 },
+      );
+    }
+
+    // Password strength validation
+    // At least 8 characters
+    const passwordRegex = /^.{8,}$/;
+    if (!passwordRegex.test(password)) {
+      return NextResponse.json(
+        {
+          error: "Password must be at least 8 characters long.",
+        },
+        { status: 400 },
+      );
+    }
+
     const existing = await prisma.user.findUnique({
       where: { email: lowerCaseEmail },
     });

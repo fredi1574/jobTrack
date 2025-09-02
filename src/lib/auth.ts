@@ -34,17 +34,13 @@ export const authOptions: AuthOptions = {
           where: { email: lowerCaseEmail },
         });
 
-        if (!user) {
-          throw new Error("No user found with this email.");
-        }
-
-        if (!user.password) {
-          throw new Error("User account not set up for password login.");
+        if (!user || !user.password) {
+          throw new Error("Invalid credentials.");
         }
 
         const isValid = await compare(credentials.password, user.password);
         if (!isValid) {
-          throw new Error("Incorrect password.");
+          throw new Error("Invalid credentials.");
         }
 
         return {

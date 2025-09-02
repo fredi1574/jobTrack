@@ -167,12 +167,6 @@ export async function createApplication(
   const url = ensureUrlProtocol(urlInput);
 
   if (!company || !position || !status) {
-    console.log("Basic validation error: missing required fields", {
-      company,
-      position,
-      status,
-      notes,
-    });
     return {
       error: "Company, Position, Location/City, and Status are required.",
       success: false,

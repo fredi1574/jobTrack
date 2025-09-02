@@ -35,6 +35,14 @@ export default function RegisterPage() {
       return;
     }
 
+    // Client-side password strength validation
+    const passwordRegex = /^.{8,}$/;
+    if (!passwordRegex.test(form.password)) {
+      setError("Password must be at least 8 characters long.");
+      setLoading(false);
+      return;
+    }
+
     try {
       // 1. Call the registration API endpoint
       const res = await fetch("/api/register", {
@@ -143,12 +151,12 @@ export default function RegisterPage() {
                 onChange={handleChange}
                 placeholder="••••••••"
                 required
-                minLength={6}
+                minLength={8}
                 disabled={loading}
                 className="h-10 w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm transition-colors focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500"
               />
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                Minimum 6 characters
+                Minimum 8 characters
               </p>
             </div>
             {error && (
