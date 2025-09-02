@@ -16,11 +16,14 @@ import ApplicationsByDate from "./ApplicationsByDate";
 import ApplicationsByPosition from "./ApplicationsByPosition";
 import LocationDistribution from "./LocationDistribution";
 import StatusDistribution from "./StatusDistribution";
+import { ApplicationsBySource } from "./ApplicationsBySource";
 
 export default function StatisticsClient({
   initialApplications,
+  applicationsBySource,
 }: {
   initialApplications: PrismaApplication[];
+  applicationsBySource: { source: string; count: number }[];
 }) {
   // State for the filters
   const [statusFilter, setStatusFilter] = useState("all");
@@ -126,7 +129,7 @@ export default function StatisticsClient({
             <StatusDistribution applications={filteredApplications} />
           </CardContent>
         </Card>
-        <Card className={undefined}>
+        <Card className="">
           <CardHeader className={undefined}>
             <CardTitle className={undefined}>Applications by Date</CardTitle>
           </CardHeader>
@@ -136,7 +139,7 @@ export default function StatisticsClient({
         </Card>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-4">
         <Card className={undefined}>
           <CardHeader className={undefined}>
             <CardTitle className={undefined}>
@@ -149,21 +152,30 @@ export default function StatisticsClient({
         </Card>
         <Card className={undefined}>
           <CardHeader className={undefined}>
-            <CardTitle className={undefined}>Location Distribution</CardTitle>
+            <CardTitle className={undefined}>Applications by Company</CardTitle>
+          </CardHeader>
+          <CardContent className={undefined}>
+            <ApplicationsByCompany applications={filteredApplications} />
+          </CardContent>
+        </Card>
+
+        <Card className={undefined}>
+          <CardHeader className={undefined}>
+            <CardTitle className={undefined}>
+              Applications by Location
+            </CardTitle>
           </CardHeader>
           <CardContent className={undefined}>
             <LocationDistribution applications={filteredApplications} />
           </CardContent>
         </Card>
-      </div>
 
-      <div className="mt-6">
         <Card className={undefined}>
           <CardHeader className={undefined}>
-            <CardTitle className={undefined}>Applications by Company</CardTitle>
+            <CardTitle className={undefined}>Applications by Source</CardTitle>
           </CardHeader>
           <CardContent className={undefined}>
-            <ApplicationsByCompany applications={filteredApplications} />
+            <ApplicationsBySource data={applicationsBySource} />
           </CardContent>
         </Card>
       </div>

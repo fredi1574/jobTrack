@@ -110,6 +110,36 @@ export async function getApplications(
   }
 }
 
+export async function getApplicationsBySource() {
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) {
+    return [];
+  }
+
+  try {
+    const applications = await prisma.application.findMany({
+      where: { UserId: session.user.id },
+      select: {
+        jobSource: true,
+      },
+    });
+
+    const sourceCounts: { [key: string]: number } = {};
+    applications.forEach((app) => {
+      const source = app.jobSource || "Unknown";
+      sourceCounts[source] = (sourceCounts[source] || 0) + 1;
+    });
+
+    return Object.entries(sourceCounts).map(([source, count]) => ({
+      source,
+      count,
+    }));
+  } catch (error) {
+    console.error("Failed to fetch applications by source:", error);
+    return [];
+  }
+}
+
 export async function createApplication(
   previousState: FormState,
   formData: FormData,
