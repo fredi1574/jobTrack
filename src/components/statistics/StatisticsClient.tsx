@@ -14,9 +14,9 @@ import ApplicationNumbers from "./ApplicationNumbers";
 import ApplicationsByCompany from "./ApplicationsByCompany";
 import ApplicationsByDate from "./ApplicationsByDate";
 import ApplicationsByPosition from "./ApplicationsByPosition";
+import { ApplicationsBySource } from "./ApplicationsBySource";
 import LocationDistribution from "./LocationDistribution";
 import StatusDistribution from "./StatusDistribution";
-import { ApplicationsBySource } from "./ApplicationsBySource";
 
 export default function StatisticsClient({
   initialApplications,
@@ -129,7 +129,7 @@ export default function StatisticsClient({
             <StatusDistribution applications={filteredApplications} />
           </CardContent>
         </Card>
-        <Card className="">
+        <Card className={undefined}>
           <CardHeader className={undefined}>
             <CardTitle className={undefined}>Applications by Date</CardTitle>
           </CardHeader>

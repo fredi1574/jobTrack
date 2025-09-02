@@ -1,4 +1,3 @@
-
 import { Download, FileText, LinkIcon, Trash } from "lucide-react";
 import { removeResume } from "@/app/actions";
 
@@ -18,7 +17,7 @@ export default function ApplicationLinks({
   };
 
   return (
-    <div className="rounded-lg border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+    <div className="bg-card h-full rounded-lg border border-gray-100 p-4 shadow-sm dark:border-gray-700">
       <div className="space-y-3">
         <div className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100">
           <FileText className="size-4" />
