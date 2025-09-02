@@ -265,6 +265,42 @@ export default function EditApplicationForm({
             className="w-40 border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
         </FormField>
+
+        <FormField
+          id="jobSource"
+          name="jobSource"
+          label="Job Source"
+          icon={
+            <LinkIcon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+          }
+          errorMessage={state?.fieldErrors?.jobSource?.join(", ")}
+        >
+          <Input
+            type="text"
+            id="jobSource"
+            name="jobSource"
+            defaultValue={applicationData.jobSource ?? ""}
+            placeholder="e.g. LinkedIn, Company Website"
+            className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
+          />
+        </FormField>
+
+        <FormField
+          id="salary"
+          name="salary"
+          label="Salary (NIS)"
+          icon={<span className="text-gray-500 dark:text-gray-400">$</span>}
+          errorMessage={state?.fieldErrors?.salary?.join(", ")}
+        >
+          <Input
+            type="number"
+            id="salary"
+            name="salary"
+            defaultValue={applicationData.salary ?? ""}
+            placeholder="e.g. 20,000"
+            className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
+          />
+        </FormField>
       </div>
 
       <FileUploadDropzone

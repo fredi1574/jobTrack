@@ -127,6 +127,8 @@ export async function createApplication(
   const urlInput = formData.get("url")?.toString().trim() ?? "";
   const appliedAt = formData.get("appliedAt")?.toString().trim() ?? "";
   const notes = formData.get("notes")?.toString().trim() ?? "";
+  const jobSource = formData.get("jobSource")?.toString().trim() ?? "";
+  const salary = formData.get("salary")?.toString().trim();
   const resumeFileValue = formData.get("resumeFile");
 
   const resumeFile = resumeFileValue instanceof File ? resumeFileValue : null;
@@ -186,6 +188,8 @@ export async function createApplication(
         })(),
         notes: notes || null,
         resumeUrl: resumeBlobUrl,
+        jobSource: jobSource || null,
+        salary: salary ? parseInt(salary) : null,
         User: { connect: { id: session.user.id } },
       },
     });
@@ -219,6 +223,8 @@ export async function updateApplication(
   const appliedAt = formData.get("appliedAt")?.toString().trim() ?? "";
   const location = formData.get("location")?.toString().trim() ?? "";
   const notes = formData.get("notes")?.toString().trim() ?? "";
+  const jobSource = formData.get("jobSource")?.toString().trim() ?? "";
+  const salary = formData.get("salary")?.toString().trim();
   const resumeFileValue = formData.get("resumeFile");
 
   const resumeFile = resumeFileValue instanceof File ? resumeFileValue : null;
@@ -284,6 +290,8 @@ export async function updateApplication(
           newResumeBlobUrl !== undefined
             ? newResumeBlobUrl
             : application.resumeUrl,
+        jobSource: jobSource || null,
+        salary: salary ? parseInt(salary) : null,
       },
     });
 
@@ -457,6 +465,8 @@ export async function importApplications(
         appliedAt: getVal("appliedat")
           ? parseDateString(getVal("appliedat")) || new Date()
           : new Date(),
+        jobSource: getVal("jobsource") || null,
+        salary: getVal("salary") ? parseInt(getVal("salary")) : null,
       };
     });
 

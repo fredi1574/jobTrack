@@ -93,7 +93,10 @@ export default function ApplicationAccordionItem({
       >
         <div className="mx-4 grid grid-cols-1 py-4 md:grid-cols-4 md:gap-4">
           <div className="md:col-span-3">
-            <ApplicationNotes notes={application.notes} />
+            <ApplicationNotes
+              notes={application.notes}
+              salary={application.salary}
+            />
           </div>
           <div className="mt-4 md:mt-0">
             <ApplicationLinks
