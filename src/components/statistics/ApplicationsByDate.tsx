@@ -31,15 +31,15 @@ export default function ApplicationsByDate({
     <ChartContainer
       id="applications-by-date-chart"
       config={chartConfig}
-      className="max-h-[300px] w-full"
+      className="w-full"
     >
       <LineChart
         data={chartData}
         margin={{
-          top: 5,
-          right: 20,
-          left: -10,
-          bottom: 5,
+          top: 0,
+          right: 5,
+          left: 5,
+          bottom: 0,
         }}
       >
         <CartesianGrid strokeDasharray="3 3" vertical={false} />

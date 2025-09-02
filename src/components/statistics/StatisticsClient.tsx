@@ -56,10 +56,12 @@ export default function StatisticsClient({
   }, [initialApplications, statusFilter, dateRangeFilter]);
 
   return (
-    <div className="container mx-auto p-4 md:p-6 lg:p-10">
+    <div className="mx-auto p-4 md:p-6 lg:p-10">
+      {/* --- Header and Filters --- */}
       <div className="mb-6 flex flex-col items-start justify-between md:flex-row md:items-center">
         <h1 className="mb-4 text-2xl font-bold md:mb-0">Statistics</h1>
         <div className="flex w-full flex-col items-start gap-4 sm:flex-row sm:items-center md:w-auto">
+          {/* Status Filter */}
           <div className="flex w-full items-center gap-2 sm:w-auto">
             <Label htmlFor="status-filter" className={undefined}>
               Status
@@ -77,6 +79,7 @@ export default function StatisticsClient({
               </SelectContent>
             </Select>
           </div>
+          {/* Date Range Filter */}
           <div className="flex w-full items-center gap-2">
             <Label htmlFor="date-range-filter" className="w-24 md:w-auto">
               Date Range
@@ -110,10 +113,12 @@ export default function StatisticsClient({
         </div>
       </div>
 
-      <ApplicationNumbers applications={filteredApplications} />
+      <div className="mb-6">
+        <ApplicationNumbers applications={filteredApplications} />
+      </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <Card className="">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <Card className={undefined}>
           <CardHeader className={undefined}>
             <CardTitle className={undefined}>Status Distribution</CardTitle>
           </CardHeader>
@@ -121,7 +126,7 @@ export default function StatisticsClient({
             <StatusDistribution applications={filteredApplications} />
           </CardContent>
         </Card>
-        <Card className="lg:col-span-2">
+        <Card className={undefined}>
           <CardHeader className={undefined}>
             <CardTitle className={undefined}>Applications by Date</CardTitle>
           </CardHeader>
