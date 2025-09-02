@@ -98,6 +98,12 @@ export default function StatisticsClient({
                 <SelectItem value="90" className={undefined}>
                   Last 90 Days
                 </SelectItem>
+                <SelectItem value="180" className={undefined}>
+                  Last 180 Days
+                </SelectItem>
+                <SelectItem value="365" className={undefined}>
+                  Last 365 Days
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
