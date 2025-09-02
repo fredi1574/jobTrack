@@ -52,10 +52,10 @@ export default function ApplicationsByPosition({
         accessibilityLayer
         data={chartData}
         margin={{
-          left: 10,
-          right: 10,
-          top: 10,
-          bottom: 40,
+          top: 0,
+          right: 5,
+          left: -20,
+          bottom: 20,
         }}
       >
         <CartesianGrid vertical={false} />

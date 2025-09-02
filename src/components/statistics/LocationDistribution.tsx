@@ -52,9 +52,9 @@ export default function LocationDistribution({
         accessibilityLayer
         data={chartData}
         margin={{
-          left: 10,
-          right: 10,
-          top: 10,
+          top: 0,
+          right: 5,
+          left: -20,
           bottom: 20,
         }}
       >

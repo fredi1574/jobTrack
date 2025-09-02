@@ -38,7 +38,7 @@ export default function ApplicationsByDate({
         margin={{
           top: 0,
           right: 5,
-          left: 5,
+          left: -20,
           bottom: 0,
         }}
       >
