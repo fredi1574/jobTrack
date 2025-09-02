@@ -158,7 +158,9 @@ export default function Header() {
       {/* Mobile Menu */}
       <div
         className={`absolute top-full left-0 w-full bg-white p-4 shadow-lg backdrop-blur-md transition-all duration-300 ease-in-out md:hidden dark:bg-gray-800 ${
-          isMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0"
+          isMenuOpen
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-4 opacity-0 pointer-events-none"
         }`}
       >
         <nav className="flex flex-col items-center gap-4">
