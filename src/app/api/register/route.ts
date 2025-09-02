@@ -33,7 +33,6 @@ export async function POST(req: Request) {
       },
     });
 
-    // Don't return the full user object with the hash
     return NextResponse.json(
       { message: "User created successfully", userId: user.id },
       { status: 201 },

@@ -1,16 +1,15 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { compare } from "bcryptjs";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { prisma } from "./prisma";
-import { Session } from "next-auth";
-import NextAuth, {
+import {
   getServerSession as originalGetServerSession,
+  Session,
   type AuthOptions,
-  type DefaultSession,
   type User as NextAuthUser,
 } from "next-auth";
 import { AdapterUser } from "next-auth/adapters";
 import { JWT } from "next-auth/jwt";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { prisma } from "./prisma";
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -26,7 +25,7 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials): Promise<NextAuthUser | null> {
         if (!credentials?.email || !credentials?.password) {
-          return null;
+          throw new Error("Please enter both email and password.");
         }
 
         const lowerCaseEmail = credentials.email.toLowerCase().trim();
@@ -35,13 +34,17 @@ export const authOptions: AuthOptions = {
           where: { email: lowerCaseEmail },
         });
 
-        if (!user || !user.password) {
-          return null;
+        if (!user) {
+          throw new Error("No user found with this email.");
+        }
+
+        if (!user.password) {
+          throw new Error("User account not set up for password login.");
         }
 
         const isValid = await compare(credentials.password, user.password);
         if (!isValid) {
-          return null;
+          throw new Error("Incorrect password.");
         }
 
         return {
@@ -84,8 +87,6 @@ export const authOptions: AuthOptions = {
       if (token && session.user) {
         session.user.id = token.id as string;
         session.user.name = token.name;
-        // Ensure email from token if needed, though usually present
-        // session.user.email = token.email;
       }
       return session;
     },
