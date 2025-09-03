@@ -1,5 +1,6 @@
 "use client";
-import { createApplication } from "@/app/actions";
+
+import { createApplication, scrapeJob, ScrapeResult } from "@/app/actions";
 import {
   BadgeX,
   Briefcase,
@@ -14,8 +15,15 @@ import {
   MapPin,
   MessageSquare,
   MessagesSquare,
+  Search,
 } from "lucide-react";
-import { useActionState, useEffect } from "react";
+import {
+  SetStateAction,
+  useActionState,
+  useEffect,
+  useState,
+  useTransition,
+} from "react";
 import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
 import FileUploadDropzone from "../FileUploadDropzone";
@@ -46,7 +54,7 @@ const initialState: ActionResult = {
   success: false,
 };
 
-function SubmitButton(): React.ReactElement {
+function SubmitButton() {
   const { pending } = useFormStatus();
   return (
     <Button
@@ -63,7 +71,7 @@ function SubmitButton(): React.ReactElement {
   );
 }
 
-function CancelButton(): React.ReactElement {
+function CancelButton() {
   return (
     <DialogClose asChild>
       <Button
@@ -83,8 +91,16 @@ interface AddApplicationFormProps {
 
 export default function AddApplicationForm({
   onSuccess,
-}: AddApplicationFormProps): React.ReactElement {
+}: AddApplicationFormProps) {
   const [state, formAction] = useActionState(createApplication, initialState);
+  const [isPending, startTransition] = useTransition();
+  const [url, setUrl] = useState("");
+  const [company, setCompany] = useState("");
+  const [position, setPosition] = useState("");
+  const [location, setLocation] = useState("");
+  const [jobSource, setJobSource] = useState("");
+  const [salary, setSalary] = useState("");
+  const [notes, setNotes] = useState("");
 
   useEffect(() => {
     if (state?.success) {
@@ -96,6 +112,23 @@ export default function AddApplicationForm({
       }
     }
   }, [state?.success, onSuccess]);
+
+  const handleFetch = () => {
+    startTransition(async () => {
+      const result: ScrapeResult = await scrapeJob(url);
+      if (result.success) {
+        setCompany(result.data["Company Name"] || "");
+        setPosition(result.data["Position/Job Title"] || "");
+        setLocation(result.data["Location"] || "");
+        setJobSource(result.data["Job Source"] || "");
+        setSalary(result.data["Salary"] || "");
+        setNotes(result.data["Notes"] || "");
+        toast.success("Job details fetched successfully!");
+      } else {
+        toast.error(result.error || "An unknown error occurred.");
+      }
+    });
+  };
 
   return (
     <form action={formAction} className="space-y-6 pt-4">
@@ -121,6 +154,10 @@ export default function AddApplicationForm({
             name="company"
             required
             placeholder="e.g. Google"
+            value={company}
+            onChange={(e: { target: { value: SetStateAction<string> } }) =>
+              setCompany(e.target.value)
+            }
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
         </FormField>
@@ -140,6 +177,10 @@ export default function AddApplicationForm({
             name="position"
             required
             placeholder="e.g. Frontend Developer"
+            value={position}
+            onChange={(e: { target: { value: SetStateAction<string> } }) =>
+              setPosition(e.target.value)
+            }
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
         </FormField>
@@ -157,6 +198,10 @@ export default function AddApplicationForm({
             name="location"
             required
             placeholder="e.g. Tel-Aviv"
+            value={location}
+            onChange={(e: { target: { value: SetStateAction<string> } }) =>
+              setLocation(e.target.value)
+            }
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
         </FormField>
@@ -170,13 +215,28 @@ export default function AddApplicationForm({
           }
           errorMessage={state?.fieldErrors?.url?.join(", ")}
         >
-          <Input
-            type="url"
-            id="url"
-            name="url"
-            placeholder="https://www.example.com/job"
-            className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
-          />
+          <div className="flex items-center gap-2">
+            <Input
+              type="url"
+              id="url"
+              name="url"
+              placeholder="https://www.example.com/job"
+              className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
+              onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                setUrl(e.target.value)
+              }
+            />
+            <Button
+              type="button"
+              onClick={handleFetch}
+              disabled={isPending}
+              className="p-2"
+              variant={undefined}
+              size={undefined}
+            >
+              {isPending ? "Fetching..." : <Search className="h-4 w-4" />}
+            </Button>
+          </div>
         </FormField>
 
         <FormField
@@ -211,6 +271,10 @@ export default function AddApplicationForm({
             id="jobSource"
             name="jobSource"
             placeholder="e.g. LinkedIn, Company Website"
+            value={jobSource}
+            onChange={(e: { target: { value: SetStateAction<string> } }) =>
+              setJobSource(e.target.value)
+            }
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
         </FormField>
@@ -228,6 +292,10 @@ export default function AddApplicationForm({
             name="salary"
             placeholder="e.g. 20,000"
             min="1"
+            value={salary}
+            onChange={(e: { target: { value: SetStateAction<string> } }) =>
+              setSalary(e.target.value)
+            }
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
         </FormField>
@@ -300,6 +368,10 @@ export default function AddApplicationForm({
             id="notes"
             name="notes"
             rows={4}
+            value={notes}
+            onChange={(e: { target: { value: SetStateAction<string> } }) =>
+              setNotes(e.target.value)
+            }
             placeholder="Add any relevant details about the application..."
             className="resize-none border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />

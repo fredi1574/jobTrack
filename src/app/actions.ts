@@ -1,4 +1,5 @@
 "use server";
+import { scrapeJobDetailsWithAI } from "@/lib/ai";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { ApplicationStatus } from "@/types/application";
@@ -13,6 +14,14 @@ export interface ActionResult {
   error?: string;
   fieldErrors?: Record<string, string[]>;
 }
+
+export type ScrapeResult = {
+  success: true;
+  data: any;
+} | {
+  success: false;
+  error: string;
+};
 
 const allowedTypes = [
   "application/pdf",
@@ -504,5 +513,23 @@ export async function importApplications(
   } catch (error) {
     console.error("Error importing CSV:", error);
     return { success: false, error: "Failed to import CSV." };
+  }
+}
+
+export async function scrapeJob(url: string): Promise<ScrapeResult> {
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  if (!url) {
+    return { success: false, error: "URL is required" };
+  }
+
+  try {
+    const jobDetails = await scrapeJobDetailsWithAI(url);
+    return jobDetails;
+  } catch (error) {
+    return { success: false, error: "Failed to scrape job details" };
   }
 }
