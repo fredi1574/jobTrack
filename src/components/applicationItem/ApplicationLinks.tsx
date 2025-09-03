@@ -1,5 +1,5 @@
+import { removeResume } from "@/app/actions/application";
 import { Download, FileText, LinkIcon, Trash } from "lucide-react";
-import { removeResume } from "@/app/actions";
 
 interface ApplicationLinksProps {
   applicationId: string;

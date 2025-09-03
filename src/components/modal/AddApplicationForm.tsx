@@ -1,5 +1,6 @@
 "use client";
-import { createApplication, scrapeJob } from "@/app/actions";
+import { createApplication } from "@/app/actions/application";
+import { scrapeJob } from "@/app/actions/scrape";
 import {
   Briefcase,
   Calendar,
@@ -48,12 +49,7 @@ const initialFormData: ApplicationFormData = {
   notes: "",
 };
 
-interface ActionResult {
-  success: boolean;
-  message?: string;
-  error?: string;
-  fieldErrors?: Record<string, string[]>;
-}
+import { ActionResult } from "@/types/actions";
 
 const initialState: ActionResult = {
   success: false,

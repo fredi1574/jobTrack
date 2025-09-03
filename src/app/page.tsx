@@ -2,7 +2,7 @@ import DashboardClient from "@/components/DashboardClient";
 import LandingPage from "@/components/LandingPage";
 import { getServerAuthSession } from "@/lib/auth";
 import type { Session } from "next-auth";
-import { getApplications } from "./actions";
+import { getApplications } from "./actions/application";
 
 export default async function HomePage() {
   const session: Session | null = await getServerAuthSession();

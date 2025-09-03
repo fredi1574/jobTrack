@@ -1,5 +1,5 @@
 "use client";
-import { updateApplication } from "@/app/actions";
+import { updateApplication } from "@/app/actions/application";
 import { Application as PrismaApplication } from "@prisma/client";
 import {
   BadgeCheck,
@@ -31,13 +31,7 @@ import {
 import { Textarea } from "../ui/textarea";
 import FileUploadDropzone from "./FileUploadDropzone";
 import { CancelButton, SubmitButton } from "./FormButtons";
-
-interface ActionResult {
-  success: boolean;
-  message?: string;
-  error?: string;
-  fieldErrors?: Record<string, string[]>;
-}
+import { ActionResult } from "@/types/actions";
 
 const initialEditState: ActionResult = {
   message: undefined,

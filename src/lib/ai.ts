@@ -1,4 +1,4 @@
-import { ScrapeResult } from "@/app/actions";
+import { ScrapeResult } from "@/app/actions/scrape";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { chromium } from "playwright";
 

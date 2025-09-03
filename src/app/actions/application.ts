@@ -1,107 +1,21 @@
 "use server";
-import { scrapeJobDetailsWithAI } from "@/lib/ai";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { ensureUrlProtocol } from "@/lib/utils"; // New import
 import { ApplicationStatus } from "@/types/application";
 import { Application as PrismaApplication } from "@prisma/client";
 import { del, put } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
-import { parse } from "csv-parse/sync";
 
-export interface ActionResult {
-  success: boolean;
-  message?: string;
-  error?: string;
-  fieldErrors?: Record<string, string[]>;
-}
+import { ActionResult } from "@/types/actions";
 
-export type ScrapeResult = {
-  success: true;
-  data: any;
-} | {
-  success: false;
-  error: string;
-};
+type FormState = ActionResult | undefined | null;
 
 const allowedTypes = [
   "application/pdf",
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
-
-function ensureUrlProtocol(url: string | null | undefined): string | null {
-  const trimmedUrl = url?.trim();
-  if (!trimmedUrl) {
-    return null;
-  }
-  const lowerUrl = trimmedUrl.toLowerCase();
-  if (!lowerUrl.startsWith("http://") && !lowerUrl.startsWith("https://")) {
-    return `https://${trimmedUrl}`;
-  }
-  return trimmedUrl;
-}
-
-function parseDateString(dateString: string): Date | null {
-  if (!dateString) {
-    return null;
-  }
-
-  // Try to parse with different formats
-  let date: Date | null = null;
-
-  // Try DD MM YYYY
-  let parts = dateString.split(" ");
-  if (parts.length === 3) {
-    date = new Date(
-      parseInt(parts[2]),
-      parseInt(parts[1]) - 1,
-      parseInt(parts[0]),
-    );
-    if (!isNaN(date.getTime())) return date;
-  }
-
-  // Try DD/MM/YYYY
-  parts = dateString.split("/");
-  if (parts.length === 3) {
-    date = new Date(
-      parseInt(parts[2]),
-      parseInt(parts[1]) - 1,
-      parseInt(parts[0]),
-    );
-    if (!isNaN(date.getTime())) return date;
-  }
-
-  // Try DD-MM-YYYY
-  parts = dateString.split("-");
-  if (parts.length === 3) {
-    date = new Date(
-      parseInt(parts[2]),
-      parseInt(parts[1]) - 1,
-      parseInt(parts[0]),
-    );
-    if (!isNaN(date.getTime())) return date;
-  }
-
-  // Try YYYY-MM-DD
-  if (parts.length === 3) {
-    date = new Date(
-      parseInt(parts[0]),
-      parseInt(parts[1]) - 1,
-      parseInt(parts[2]),
-    );
-    if (!isNaN(date.getTime())) return date;
-  }
-
-  // Fallback for other formats that new Date() might handle
-  date = new Date(dateString);
-  if (!isNaN(date.getTime())) {
-    return date;
-  }
-
-  return null;
-}
-
-type FormState = ActionResult | undefined | null;
 
 export async function getApplications(
   userId: string,
@@ -327,13 +241,13 @@ export async function updateApplication(
         salary: salary ? parseInt(salary) : null,
       },
     });
-
-    revalidatePath("/");
-    return { success: true, message: "Application updated successfully!" };
   } catch (dbError) {
     console.error("Database error during update:", dbError);
     return { success: false, error: "Database error during update" };
   }
+
+  revalidatePath("/");
+  return { success: true, message: "Application updated successfully!" };
 }
 
 export async function deleteApplication(
@@ -445,91 +359,5 @@ export async function updateApplicationStatus(
   } catch (dbError) {
     console.error("Database error during update:", dbError);
     return { success: false, error: "Database error during update" };
-  }
-}
-
-export async function importApplications(
-  previousState: FormState,
-  formData: FormData,
-): Promise<ActionResult> {
-  const session = await getServerAuthSession();
-  if (!session?.user?.id) {
-    return { success: false, error: "Unauthorized" };
-  }
-
-  const file = formData.get("file") as File;
-
-  if (!file) {
-    return { success: false, error: "No file uploaded." };
-  }
-
-  if (file.type !== "text/csv") {
-    return { success: false, error: "Please select a valid CSV file." };
-  }
-
-  try {
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const csvString = buffer.toString("utf-8");
-
-    const records = parse(csvString, {
-      columns: true,
-      skip_empty_lines: true,
-      bom: true, // Handle UTF-8 Byte Order Mark
-      trim: true, // Trim whitespace from fields
-    });
-
-    const applicationsToCreate = records.map((record: any) => {
-      const getVal = (key: string) => {
-        const recordKey = Object.keys(record).find(
-          (k) => k.toLowerCase().trim() === key,
-        );
-        return recordKey ? record[recordKey] : undefined;
-      };
-
-      return {
-        UserId: session.user!.id,
-        company: getVal("company") || "",
-        position: getVal("position") || "",
-        location: getVal("location") || "",
-        url: getVal("url") || null,
-        status: getVal("status") || "Applied",
-        notes: getVal("notes") || null,
-        resumeUrl: getVal("resumeurl") || null,
-        appliedAt: getVal("appliedat")
-          ? parseDateString(getVal("appliedat")) || new Date()
-          : new Date(),
-        jobSource: getVal("jobsource") || null,
-        salary: getVal("salary") ? parseInt(getVal("salary")) : null,
-      };
-    });
-
-    await prisma.application.createMany({
-      data: applicationsToCreate,
-      skipDuplicates: true,
-    });
-
-    revalidatePath("/");
-    return { success: true, message: "CSV imported successfully!" };
-  } catch (error) {
-    console.error("Error importing CSV:", error);
-    return { success: false, error: "Failed to import CSV." };
-  }
-}
-
-export async function scrapeJob(url: string): Promise<ScrapeResult> {
-  const session = await getServerAuthSession();
-  if (!session?.user?.id) {
-    return { success: false, error: "Unauthorized" };
-  }
-
-  if (!url) {
-    return { success: false, error: "URL is required" };
-  }
-
-  try {
-    const jobDetails = await scrapeJobDetailsWithAI(url);
-    return jobDetails;
-  } catch (error) {
-    return { success: false, error: "Failed to scrape job details" };
   }
 }

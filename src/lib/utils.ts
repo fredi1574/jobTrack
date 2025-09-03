@@ -63,3 +63,75 @@ export const getAccordionContentStyling = (status: string) => {
       return "bg-gray-50/50 dark:bg-slate-500";
   }
 };
+
+export function ensureUrlProtocol(url: string | null | undefined): string | null {
+  const trimmedUrl = url?.trim();
+  if (!trimmedUrl) {
+    return null;
+  }
+  const lowerUrl = trimmedUrl.toLowerCase();
+  if (!lowerUrl.startsWith("http://") && !lowerUrl.startsWith("https://")) {
+    return `https://${trimmedUrl}`;
+  }
+  return trimmedUrl;
+}
+
+export function parseDateString(dateString: string): Date | null {
+  if (!dateString) {
+    return null;
+  }
+
+  // Try to parse with different formats
+  let date: Date | null = null;
+
+  // Try DD MM YYYY
+  let parts = dateString.split(" ");
+  if (parts.length === 3) {
+    date = new Date(
+      parseInt(parts[2]),
+      parseInt(parts[1]) - 1,
+      parseInt(parts[0]),
+    );
+    if (!isNaN(date.getTime())) return date;
+  }
+
+  // Try DD/MM/YYYY
+  parts = dateString.split("/");
+  if (parts.length === 3) {
+    date = new Date(
+      parseInt(parts[2]),
+      parseInt(parts[1]) - 1,
+      parseInt(parts[0]),
+    );
+    if (!isNaN(date.getTime())) return date;
+  }
+
+  // Try DD-MM-YYYY
+  parts = dateString.split("-");
+  if (parts.length === 3) {
+    date = new Date(
+      parseInt(parts[2]),
+      parseInt(parts[1]) - 1,
+      parseInt(parts[0]),
+    );
+    if (!isNaN(date.getTime())) return date;
+  }
+
+  // Try YYYY-MM-DD
+  if (parts.length === 3) {
+    date = new Date(
+      parseInt(parts[0]),
+      parseInt(parts[1]) - 1,
+      parseInt(parts[2]),
+    );
+    if (!isNaN(date.getTime())) return date;
+  }
+
+  // Fallback for other formats that new Date() might handle
+  date = new Date(dateString);
+  if (!isNaN(date.getTime())) {
+    return date;
+  }
+
+  return null;
+}

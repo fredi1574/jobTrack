@@ -3,7 +3,10 @@ import { Button } from "@/components/ui/button";
 import { getServerAuthSession } from "@/lib/auth";
 import { Session } from "next-auth";
 import Link from "next/link";
-import { getApplications, getApplicationsBySource } from "../actions";
+import {
+  getApplications,
+  getApplicationsBySource,
+} from "../actions/application";
 
 export default async function Statistics() {
   const session: Session | null = await getServerAuthSession();
@@ -30,5 +33,10 @@ export default async function Statistics() {
   const applications = await getApplications(userId);
   const applicationsBySource = await getApplicationsBySource();
 
-  return <StatisticsClient initialApplications={applications} applicationsBySource={applicationsBySource} />;
+  return (
+    <StatisticsClient
+      initialApplications={applications}
+      applicationsBySource={applicationsBySource}
+    />
+  );
 }

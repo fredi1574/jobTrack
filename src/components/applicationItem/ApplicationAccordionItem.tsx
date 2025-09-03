@@ -1,5 +1,5 @@
 "use client";
-import { deleteApplication } from "@/app/actions";
+import { deleteApplication } from "@/app/actions/application";
 import StatusDropdown from "@/components/applicationItem/StatusDropdown";
 import { getAccordionContentStyling, getStatusStyling } from "@/lib/utils";
 import { Application as PrismaApplication } from "@prisma/client";
@@ -14,9 +14,9 @@ import {
 } from "../ui/accordion";
 import ApplicationActions from "./ApplicationActions";
 import ApplicationInfo from "./ApplicationInfo";
+import ApplicationLinks from "./ApplicationLinks";
 import ApplicationNotes from "./ApplicationNotes";
 import ApplicationURL from "./ApplicationURL";
-import ApplicationLinks from "./ApplicationLinks";
 
 interface ApplicationAccordionItemProps {
   application: PrismaApplication;

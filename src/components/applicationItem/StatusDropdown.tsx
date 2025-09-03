@@ -1,4 +1,4 @@
-import { updateApplicationStatus } from "@/app/actions";
+import { updateApplicationStatus } from "@/app/actions/application";
 import { buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
