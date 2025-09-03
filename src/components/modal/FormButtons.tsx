@@ -1,9 +1,9 @@
 "use client";
 
-import { useFormStatus } from "react-dom";
-import { Button } from "./ui/button";
-import { DialogClose } from "./ui/dialog";
 import { Loader } from "lucide-react";
+import { useFormStatus } from "react-dom";
+import { Button } from "../ui/button";
+import { DialogClose } from "../ui/dialog";
 
 interface SubmitButtonProps {
   text: string;

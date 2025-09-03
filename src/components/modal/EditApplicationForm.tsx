@@ -19,8 +19,6 @@ import {
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
-import FileUploadDropzone from "../FileUploadDropzone";
-import { CancelButton, SubmitButton } from "../FormButtons";
 import FormField from "../ui/FormField";
 import { Input } from "../ui/input";
 import {
@@ -31,6 +29,8 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
+import FileUploadDropzone from "./FileUploadDropzone";
+import { CancelButton, SubmitButton } from "./FormButtons";
 
 interface ActionResult {
   success: boolean;

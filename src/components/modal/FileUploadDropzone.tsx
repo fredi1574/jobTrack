@@ -2,8 +2,8 @@ import { Label } from "@radix-ui/react-label";
 import { FileText, FileUp, XCircle } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import { toast } from "sonner";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 
 interface FileUploadDropzoneProps {
   id: string;

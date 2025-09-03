@@ -14,8 +14,6 @@ import {
 } from "lucide-react";
 import { useActionState, useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
-import FileUploadDropzone from "../FileUploadDropzone";
-import { CancelButton, SubmitButton } from "../FormButtons";
 import { Button } from "../ui/button";
 import FormField from "../ui/FormField";
 import { Input } from "../ui/input";
@@ -27,6 +25,8 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
+import FileUploadDropzone from "./FileUploadDropzone";
+import { CancelButton, SubmitButton } from "./FormButtons";
 
 interface ApplicationFormData {
   company: string;
