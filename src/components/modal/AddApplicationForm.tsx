@@ -1,34 +1,22 @@
 "use client";
-
-import { createApplication, scrapeJob, ScrapeResult } from "@/app/actions";
+import { createApplication, scrapeJob } from "@/app/actions";
 import {
-  BadgeX,
   Briefcase,
   Calendar,
   CircleCheck,
   CirclePlus,
-  ClipboardList,
   FileText,
-  Handshake,
   LinkIcon,
-  MailCheck,
+  Loader,
   MapPin,
   MessageSquare,
-  MessagesSquare,
   Search,
 } from "lucide-react";
-import {
-  SetStateAction,
-  useActionState,
-  useEffect,
-  useState,
-  useTransition,
-} from "react";
-import { useFormStatus } from "react-dom";
+import { useActionState, useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
 import FileUploadDropzone from "../FileUploadDropzone";
+import { CancelButton, SubmitButton } from "../FormButtons";
 import { Button } from "../ui/button";
-import { DialogClose } from "../ui/dialog";
 import FormField from "../ui/FormField";
 import { Input } from "../ui/input";
 import {
@@ -40,6 +28,26 @@ import {
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 
+interface ApplicationFormData {
+  company: string;
+  position: string;
+  location: string;
+  url: string;
+  jobSource: string;
+  salary: string;
+  notes: string;
+}
+
+const initialFormData: ApplicationFormData = {
+  company: "",
+  position: "",
+  location: "",
+  url: "",
+  jobSource: "",
+  salary: "",
+  notes: "",
+};
+
 interface ActionResult {
   success: boolean;
   message?: string;
@@ -48,42 +56,8 @@ interface ActionResult {
 }
 
 const initialState: ActionResult = {
-  message: undefined,
-  error: undefined,
-  fieldErrors: undefined,
   success: false,
 };
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  return (
-    <Button
-      size="sm"
-      variant="outline"
-      type="submit"
-      disabled={pending}
-      aria-disabled={pending}
-      className="w-full bg-green-500 transition-colors hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-800"
-    >
-      <CirclePlus className="h-4 w-4" />
-      {pending ? "Adding..." : "Add Application"}
-    </Button>
-  );
-}
-
-function CancelButton() {
-  return (
-    <DialogClose asChild>
-      <Button
-        size="sm"
-        variant="outline"
-        className="w-full bg-red-500 hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800"
-      >
-        Cancel
-      </Button>
-    </DialogClose>
-  );
-}
 
 interface AddApplicationFormProps {
   onSuccess?: () => void;
@@ -93,46 +67,60 @@ export default function AddApplicationForm({
   onSuccess,
 }: AddApplicationFormProps) {
   const [state, formAction] = useActionState(createApplication, initialState);
-  const [isPending, startTransition] = useTransition();
-  const [url, setUrl] = useState("");
-  const [company, setCompany] = useState("");
-  const [position, setPosition] = useState("");
-  const [location, setLocation] = useState("");
-  const [jobSource, setJobSource] = useState("");
-  const [salary, setSalary] = useState("");
-  const [notes, setNotes] = useState("");
+  const [isScraping, startScraping] = useTransition();
+  const [formData, setFormData] =
+    useState<ApplicationFormData>(initialFormData);
 
   useEffect(() => {
-    if (state?.success) {
+    if (state.success) {
       toast.success("Application added successfully!", {
         icon: <span>➕</span>,
       });
-      if (onSuccess) {
-        onSuccess();
-      }
+      onSuccess?.();
     }
-  }, [state?.success, onSuccess]);
+  }, [state.success, onSuccess]);
 
-  const handleFetch = () => {
-    startTransition(async () => {
-      const result: ScrapeResult = await scrapeJob(url);
-      if (result.success) {
-        setCompany(result.data["Company Name"] || "");
-        setPosition(result.data["Position/Job Title"] || "");
-        setLocation(result.data["Location"] || "");
-        setJobSource(result.data["Job Source"] || "");
-        setSalary(result.data["Salary"] || "");
-        setNotes(result.data["Notes"] || "");
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleScrape = () => {
+    if (!formData.url) {
+      toast.error("Please enter a URL to scrape.");
+      return;
+    }
+    startScraping(async () => {
+      const result = await scrapeJob(formData.url);
+      if (result.success && result.data) {
+        const {
+          "Company Name": company,
+          "Position/Job Title": position,
+          Location: location,
+          "Job Source": jobSource,
+          Salary: salary,
+        } = result.data;
+
+        setFormData((prev) => ({
+          ...prev,
+          company: company || prev.company,
+          position: position || prev.position,
+          location: location || prev.location,
+          jobSource: jobSource || prev.jobSource,
+          salary: salary || prev.salary,
+        }));
         toast.success("Job details fetched successfully!");
       } else {
-        toast.error(result.error || "An unknown error occurred.");
+        toast.error("An unknown error occurred while scraping.");
       }
     });
   };
 
   return (
     <form action={formAction} className="space-y-6 pt-4">
-      {state?.error && !state.fieldErrors && (
+      {state.error && !state.fieldErrors && (
         <div className="rounded-md bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
           {state.error}
         </div>
@@ -146,7 +134,7 @@ export default function AddApplicationForm({
           icon={
             <Briefcase className="h-4 w-4 text-gray-500 dark:text-gray-400" />
           }
-          errorMessage={state?.fieldErrors?.company?.join(", ")}
+          errorMessage={state.fieldErrors?.company?.join(", ")}
         >
           <Input
             type="text"
@@ -154,10 +142,8 @@ export default function AddApplicationForm({
             name="company"
             required
             placeholder="e.g. Google"
-            value={company}
-            onChange={(e: { target: { value: SetStateAction<string> } }) =>
-              setCompany(e.target.value)
-            }
+            value={formData.company}
+            onChange={handleChange}
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
         </FormField>
@@ -169,7 +155,7 @@ export default function AddApplicationForm({
           icon={
             <FileText className="h-4 w-4 text-gray-500 dark:text-gray-400" />
           }
-          errorMessage={state?.fieldErrors?.position?.join(", ")}
+          errorMessage={state.fieldErrors?.position?.join(", ")}
         >
           <Input
             type="text"
@@ -177,10 +163,8 @@ export default function AddApplicationForm({
             name="position"
             required
             placeholder="e.g. Frontend Developer"
-            value={position}
-            onChange={(e: { target: { value: SetStateAction<string> } }) =>
-              setPosition(e.target.value)
-            }
+            value={formData.position}
+            onChange={handleChange}
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
         </FormField>
@@ -190,7 +174,7 @@ export default function AddApplicationForm({
           name="location"
           label="Location *"
           icon={<MapPin className="h-4 w-4 text-gray-500 dark:text-gray-400" />}
-          errorMessage={state?.fieldErrors?.location?.join(", ")}
+          errorMessage={state.fieldErrors?.location?.join(", ")}
         >
           <Input
             type="text"
@@ -198,10 +182,8 @@ export default function AddApplicationForm({
             name="location"
             required
             placeholder="e.g. Tel-Aviv"
-            value={location}
-            onChange={(e: { target: { value: SetStateAction<string> } }) =>
-              setLocation(e.target.value)
-            }
+            value={formData.location}
+            onChange={handleChange}
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
         </FormField>
@@ -213,7 +195,7 @@ export default function AddApplicationForm({
           icon={
             <LinkIcon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
           }
-          errorMessage={state?.fieldErrors?.url?.join(", ")}
+          errorMessage={state.fieldErrors?.url?.join(", ")}
         >
           <div className="flex items-center gap-2">
             <Input
@@ -221,20 +203,23 @@ export default function AddApplicationForm({
               id="url"
               name="url"
               placeholder="https://www.example.com/job"
+              value={formData.url}
+              onChange={handleChange}
               className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
-              onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                setUrl(e.target.value)
-              }
             />
             <Button
               type="button"
-              onClick={handleFetch}
-              disabled={isPending}
+              onClick={handleScrape}
+              disabled={isScraping}
               className="p-2"
-              variant={undefined}
+              variant="outline"
               size={undefined}
             >
-              {isPending ? "Fetching..." : <Search className="h-4 w-4" />}
+              {isScraping ? (
+                <Loader className="h-4 w-4 animate-spin" />
+              ) : (
+                <Search className="h-4 w-4" />
+              )}
             </Button>
           </div>
         </FormField>
@@ -246,7 +231,7 @@ export default function AddApplicationForm({
           icon={
             <Calendar className="h-4 w-4 text-gray-500 dark:text-gray-400" />
           }
-          errorMessage={state?.fieldErrors?.appliedAt?.join(", ")}
+          errorMessage={state.fieldErrors?.appliedAt?.join(", ")}
         >
           <Input
             type="date"
@@ -264,17 +249,15 @@ export default function AddApplicationForm({
           icon={
             <LinkIcon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
           }
-          errorMessage={state?.fieldErrors?.jobSource?.join(", ")}
+          errorMessage={state.fieldErrors?.jobSource?.join(", ")}
         >
           <Input
             type="text"
             id="jobSource"
             name="jobSource"
             placeholder="e.g. LinkedIn, Company Website"
-            value={jobSource}
-            onChange={(e: { target: { value: SetStateAction<string> } }) =>
-              setJobSource(e.target.value)
-            }
+            value={formData.jobSource}
+            onChange={handleChange}
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
         </FormField>
@@ -283,8 +266,8 @@ export default function AddApplicationForm({
           id="salary"
           name="salary"
           label="Salary (NIS)"
-          icon={<span className="text-gray-500 dark:text-gray-400">$</span>}
-          errorMessage={state?.fieldErrors?.salary?.join(", ")}
+          icon={<span className="text-gray-500 dark:text-gray-400">₪</span>}
+          errorMessage={state.fieldErrors?.salary?.join(", ")}
         >
           <Input
             type="number"
@@ -292,10 +275,8 @@ export default function AddApplicationForm({
             name="salary"
             placeholder="e.g. 20,000"
             min="1"
-            value={salary}
-            onChange={(e: { target: { value: SetStateAction<string> } }) =>
-              setSalary(e.target.value)
-            }
+            value={formData.salary}
+            onChange={handleChange}
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
         </FormField>
@@ -317,7 +298,7 @@ export default function AddApplicationForm({
           icon={
             <CircleCheck className="h-4 w-4 text-gray-500 dark:text-gray-400" />
           }
-          errorMessage={state?.fieldErrors?.status?.join(", ")}
+          errorMessage={state.fieldErrors?.status?.join(", ")}
         >
           <Select name="status" required>
             <SelectTrigger
@@ -326,28 +307,20 @@ export default function AddApplicationForm({
             >
               <SelectValue placeholder="Select status" />
             </SelectTrigger>
-            <SelectContent className="">
-              <SelectItem className="flex items-center gap-2" value="Applied">
-                <MailCheck className="size-4" />
+            <SelectContent className={undefined}>
+              <SelectItem value="Applied" className={undefined}>
                 Applied
               </SelectItem>
-              <SelectItem
-                className="flex items-center gap-2"
-                value="Assessment"
-              >
-                <ClipboardList className="size-4" />
+              <SelectItem value="Assessment" className={undefined}>
                 Assessment
               </SelectItem>
-              <SelectItem className="flex items-center gap-2" value="Interview">
-                <MessagesSquare className="size-4" />
+              <SelectItem value="Interview" className={undefined}>
                 Interview
               </SelectItem>
-              <SelectItem className="flex items-center gap-2" value="Offer">
-                <Handshake className="size-4" />
+              <SelectItem value="Offer" className={undefined}>
                 Offer
               </SelectItem>
-              <SelectItem className="flex items-center gap-2" value="Rejected">
-                <BadgeX className="size-4" />
+              <SelectItem value="Rejected" className={undefined}>
                 Rejected
               </SelectItem>
             </SelectContent>
@@ -361,17 +334,15 @@ export default function AddApplicationForm({
           icon={
             <MessageSquare className="h-4 w-4 text-gray-500 dark:text-gray-400" />
           }
-          errorMessage={state?.fieldErrors?.notes?.join(", ")}
+          errorMessage={state.fieldErrors?.notes?.join(", ")}
           className="md:col-span-2"
         >
           <Textarea
             id="notes"
             name="notes"
             rows={4}
-            value={notes}
-            onChange={(e: { target: { value: SetStateAction<string> } }) =>
-              setNotes(e.target.value)
-            }
+            value={formData.notes}
+            onChange={handleChange}
             placeholder="Add any relevant details about the application..."
             className="resize-none border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
@@ -379,7 +350,11 @@ export default function AddApplicationForm({
       </div>
 
       <div className="flex flex-col gap-4 pt-4">
-        <SubmitButton />
+        <SubmitButton
+          text="Add Application"
+          pendingText="Adding..."
+          icon={<CirclePlus className="h-4 w-4" />}
+        />
         <CancelButton />
       </div>
     </form>
