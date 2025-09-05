@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import {
   ChartLine,
+  Coffee,
   DoorClosed,
   DoorOpen,
   List,
@@ -127,6 +128,18 @@ export default function Header() {
                 </Link>
               </Button>
 
+              <Button
+                variant="ghost"
+                asChild
+                className="bg-slate-300 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
+                size={undefined}
+              >
+                <Link href="/buy-me-a-coffee">
+                  <Coffee className="size-4" />
+                  Support
+                </Link>
+              </Button>
+
               {renderThemeToggle()}
 
               <div>
@@ -188,6 +201,18 @@ export default function Header() {
                 <Link href="/statistics">
                   <ChartLine className="mr-2 size-4" />
                   Statistics
+                </Link>
+              </Button>
+
+              <Button
+                variant="ghost"
+                asChild
+                className="bg-slate-300 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
+                size={undefined}
+              >
+                <Link href="/buy-me-a-coffee">
+                  <Coffee className="size-4" />
+                  Support
                 </Link>
               </Button>
 
