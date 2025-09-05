@@ -203,7 +203,8 @@ export default function AddApplicationForm({
               onChange={handleChange}
               className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
             />
-            <Button
+            {/* TEMP - Removed while being fixed */}
+            {/* <Button
               type="button"
               onClick={handleScrape}
               disabled={isScraping}
@@ -216,7 +217,7 @@ export default function AddApplicationForm({
               ) : (
                 <Search className="h-4 w-4" />
               )}
-            </Button>
+            </Button> */}
           </div>
         </FormField>
 
