@@ -134,7 +134,7 @@ export default function Header() {
                 className="bg-slate-300 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
                 size={undefined}
               >
-                <Link href="/buy-me-a-coffee">
+                <Link href="/support">
                   <Coffee className="size-4" />
                   Support
                 </Link>
@@ -210,7 +210,7 @@ export default function Header() {
                 className="bg-slate-300 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
                 size={undefined}
               >
-                <Link href="/buy-me-a-coffee">
+                <Link href="/support">
                   <Coffee className="size-4" />
                   Support
                 </Link>

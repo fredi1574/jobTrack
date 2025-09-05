@@ -1,7 +1,7 @@
 import { Coffee } from "lucide-react";
 import Link from "next/link";
 
-export default function BuyMeACoffeePage() {
+export default function SupportPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
       <div className="bg-card w-full rounded-lg p-6 text-center shadow-xl md:max-w-1/2 md:p-10">
@@ -11,14 +11,13 @@ export default function BuyMeACoffeePage() {
         </h1>
         <p className="mb-8 text-lg text-gray-700 md:text-xl dark:text-gray-300">
           If you find JobTrack useful, consider buying me a coffee! Your support
-          helps me continue developing and improving this application.
+          helps me continue developing and improving.
         </p>
         <p className="mb-8 text-base text-gray-600 dark:text-gray-400">
-          I understand that the job market can be tough, and I don&apos;t want
-          to take money from people in a situation like mine. It feels like
-          greed and exploitation. So, please know that any donation is entirely
-          your choice, and you are welcome to contribute as little as you want.
-          Your support, in any form, is greatly appreciated!
+          Your support helps keep JobTrack running and accessible to everyone.
+          If you find value in this tool, please consider contributing what you
+          can. Every donation, no matter the amount, makes a difference and is
+          greatly appreciated!
         </p>
         <Link
           href="https://buymeacoffee.com/fredi1574"
