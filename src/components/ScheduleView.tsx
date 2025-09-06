@@ -1,13 +1,6 @@
 import { Calendar, DayModifiers } from "@/components/ui/calendar";
 import type { Application as PrismaApplication } from "@prisma/client";
-import {
-  format,
-  formatDistance,
-  formatDuration,
-  intervalToDuration,
-  isToday,
-  subDays,
-} from "date-fns";
+import { format, formatDuration, intervalToDuration, isToday } from "date-fns";
 import { Calendar1, Clock } from "lucide-react";
 import { useMemo, useState } from "react";
 
@@ -43,7 +36,7 @@ export default function ScheduleView({
   }, [interviewApplications]);
 
   return (
-    <div className="mx-2 flex h-full flex-col">
+    <div className="mx-2 flex h-[95dvh] flex-col">
       <Calendar
         mode="single"
         className="w-full rounded-md border"
@@ -64,7 +57,7 @@ export default function ScheduleView({
               <div {...props} className={`relative ${props.className}`}>
                 {props.children}
                 {hasInterview && (
-                  <span className="absolute bottom-1 left-1/2 z-10 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-purple-500"></span>
+                  <span className="absolute bottom-1 left-1/2 z-10 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-purple-500" />
                 )}
               </div>
             );
