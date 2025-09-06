@@ -1,18 +1,18 @@
 "use client";
 import { deleteApplication } from "@/app/actions/application";
 import StatusDropdown from "@/components/applicationItem/StatusDropdown";
-import { getAccordionContentStyling, getStatusStyling } from "@/lib/utils";
-import { Application as PrismaApplication } from "@prisma/client";
-import { Bell, Pencil, Trash2 } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { getAccordionContentStyling, getStatusStyling } from "@/lib/utils";
+import { Application as PrismaApplication } from "@prisma/client";
 import { format } from "date-fns";
+import { Bell, Pencil, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 import EditApplicationModal from "../modal/EditApplicationModal";
 import {
   AccordionContent,
@@ -20,7 +20,6 @@ import {
   AccordionTrigger,
 } from "../ui/accordion";
 import ApplicationActions from "./ApplicationActions";
-import ApplicationInfo from "./ApplicationInfo";
 import ApplicationDetails from "./ApplicationDetails";
 import ApplicationURL from "./ApplicationURL";
 
@@ -71,6 +70,10 @@ export default function ApplicationAccordionItem({
     setEditingApplication(null);
   };
 
+  const formattedDate = application.appliedAt
+    ? new Date(application.appliedAt).toLocaleDateString("en-IL")
+    : "N/A";
+
   return (
     <AccordionItem
       value={application.id}
@@ -79,36 +82,91 @@ export default function ApplicationAccordionItem({
       <AccordionTrigger
         className={`group items-center gap-2 rounded-none px-4 py-3 hover:no-underline ${statusStyling!.hover} ${statusStyling!.text}`}
       >
-        {/* Main content div */}
-        <div className="flex flex-1 items-center gap-4 overflow-hidden">
-          <ApplicationInfo application={application} />
+        {/* Mobile layout */}
+        <div className="flex w-full items-center justify-between sm:hidden">
+          <div className="flex flex-col items-start">
+            <span className="truncate font-semibold">
+              {application.company}
+            </span>
+            <span className="truncate text-sm text-gray-600 dark:text-gray-400">
+              {application.position}
+            </span>
+          </div>
+          <div className="flex items-center">
+            {application.status === "Interview" && application.interviewDate ? (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span
+                      className="mr-2 flex items-center"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Bell className="h-4 w-4 text-yellow-500" />
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent className={undefined}>
+                    <p>
+                      {format(
+                        new Date(application.interviewDate),
+                        "d/M/yy 'at' HH:mm",
+                      )}
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ) : (
+              <div className="mr-2 h-4 w-6" />
+            )}
+            <StatusDropdown application={application} />
+          </div>
+        </div>
 
-          {application.status === "Interview" && application.interviewDate && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span
-                    className="flex items-center"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Bell className="h-4 w-4 text-yellow-500" />
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>
-                    {format(
-                      new Date(application.interviewDate),
-                      "d/M/yy 'at' HH:mm",
-                    )}
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          )}
-          <StatusDropdown application={application} />
-
-          <ApplicationURL applicationUrl={application.url} />
-
+        {/* Desktop layout */}
+        <div className="hidden w-full flex-1 items-center justify-around gap-4 overflow-hidden sm:flex">
+          <span className="truncate font-semibold text-gray-900 sm:w-1/5 dark:text-gray-100">
+            {application.company}
+          </span>
+          <span className="truncate text-gray-700 sm:w-1/5 dark:text-gray-300">
+            {application.position}
+          </span>
+          <span className="truncate text-gray-500 sm:w-1/6 dark:text-gray-400">
+            {application.location}
+          </span>
+          <span className="truncate text-gray-500 sm:w-1/6 dark:text-gray-400">
+            {formattedDate}
+          </span>
+          <div className="flex items-center justify-center sm:w-1/6">
+            {application.status === "Interview" && application.interviewDate ? (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span
+                      className="mr-2 flex items-center"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Bell className="h-4 w-4 text-yellow-500" />
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent className={undefined}>
+                    <p>
+                      {format(
+                        new Date(application.interviewDate),
+                        "d/M/yy 'at' HH:mm",
+                      )}
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ) : (
+              <div className="mr-2 h-4 w-6" />
+            )}
+            <StatusDropdown application={application} />
+          </div>
+          <div className="w-auto shrink-0">
+            <ApplicationURL applicationUrl={application.url} />
+          </div>
+        </div>
+        <div className="hidden shrink-0 items-center gap-3 pl-2 sm:flex">
           <ApplicationActions
             application={application}
             onEdit={handleEditClick}

@@ -90,7 +90,7 @@ export default function ScheduleView({
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-1 text-xs">
                       <Calendar1 className="h-3 w-3" />
-                      {format(application.interviewDate, "d/M/Y")}
+                      {format(application.interviewDate, "d/M/y")}
                       {isToday(application.interviewDate) && (
                         <p className="text-xs text-red-600 dark:text-red-400">
                           {" (Today)"}

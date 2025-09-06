@@ -6,13 +6,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
-import { Application as PrismaApplication } from "@prisma/client";
-import { Check, ChevronDown } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
-import { toast } from "sonner";
-
 import {
   POSSIBLE_APPLICATION_STATUSES,
   STATUS_COLORS,
@@ -20,7 +13,13 @@ import {
   TOAST_BACKGROUND_COLORS,
   TOAST_TEXT_COLORS,
 } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import { ApplicationStatus } from "@/types/application";
+import { Application as PrismaApplication } from "@prisma/client";
+import { Check, ChevronDown } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { toast } from "sonner";
 
 interface StatusDropdownProps {
   application: PrismaApplication;
@@ -56,7 +55,7 @@ export default function StatusDropdown({
 
   return (
     <div
-      className="mt-1 flex w-auto items-center justify-center sm:mt-0 sm:w-1/6"
+      className="mt-1 flex w-full items-center justify-center sm:mt-0"
       onClick={(e) => e.stopPropagation()}
     >
       <DropdownMenu>

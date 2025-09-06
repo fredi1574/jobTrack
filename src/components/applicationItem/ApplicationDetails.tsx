@@ -1,3 +1,6 @@
+import { removeResume } from "@/app/actions/application";
+import { Application as PrismaApplication } from "@prisma/client";
+import { format, formatDuration, intervalToDuration, isToday } from "date-fns";
 import {
   Calendar,
   Clock,
@@ -8,9 +11,6 @@ import {
   NotebookPen,
   Trash,
 } from "lucide-react";
-import { Application as PrismaApplication } from "@prisma/client";
-import { format, formatDuration, intervalToDuration, isToday } from "date-fns";
-import { removeResume } from "@/app/actions/application";
 
 interface ApplicationDetailsProps {
   application: PrismaApplication;
@@ -55,7 +55,7 @@ export default function ApplicationDetails({
             <div className="pl-1 text-gray-700 dark:text-gray-300">
               <div className="flex items-center gap-1 text-sm">
                 <Calendar className="h-4 w-4" />
-                {format(new Date(interviewDate), "d/M/Y")}
+                {format(new Date(interviewDate), "d/M/y")}
                 {isToday(new Date(interviewDate)) && (
                   <p className="text-sm text-red-600 dark:text-red-400">
                     {" (Today)"}
