@@ -3,6 +3,7 @@ import SearchBar from "@/components/header/SearchBar";
 import {
   Drawer,
   DrawerContent,
+  DrawerDescription,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
@@ -70,6 +71,9 @@ export default function DashboardClient({
               <DrawerTitle className="my-2 text-center text-xl font-bold">
                 Schedule
               </DrawerTitle>
+              <DrawerDescription className="text-center text-gray-500">
+                Your upcoming interviews
+              </DrawerDescription>
               <ScheduleView applications={initialApplications} />
             </DrawerContent>
           </Drawer>
