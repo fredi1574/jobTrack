@@ -76,7 +76,7 @@ export default function ScheduleView({
       {upcomingInterviews.length === 0 ? (
         <p className="text-center text-gray-500">No upcoming interviews</p>
       ) : (
-        <ul className="flex-grow overflow-auto">
+        <ul className="flex-grow overflow-auto pr-1">
           {upcomingInterviews.map((application) => (
             <li
               key={application.id}
