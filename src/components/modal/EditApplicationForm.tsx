@@ -1,5 +1,6 @@
 "use client";
 import { updateApplication } from "@/app/actions/application";
+import { ActionResult } from "@/types/actions";
 import { Application as PrismaApplication } from "@prisma/client";
 import {
   BadgeCheck,
@@ -17,7 +18,7 @@ import {
   Save,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 import FormField from "../ui/FormField";
 import { Input } from "../ui/input";
@@ -31,7 +32,6 @@ import {
 import { Textarea } from "../ui/textarea";
 import FileUploadDropzone from "./FileUploadDropzone";
 import { CancelButton, SubmitButton } from "./FormButtons";
-import { ActionResult } from "@/types/actions";
 
 const initialEditState: ActionResult = {
   message: undefined,
@@ -54,6 +54,9 @@ export default function EditApplicationForm({
     initialEditState,
   );
   const router = useRouter();
+  const [selectedStatus, setSelectedStatus] = useState<string>(
+    applicationData.status,
+  );
 
   useEffect(() => {
     if (state?.success) {
@@ -256,7 +259,12 @@ export default function EditApplicationForm({
           }
           errorMessage={state?.fieldErrors?.status?.join(", ")}
         >
-          <Select name="status" required defaultValue={applicationData.status}>
+          <Select
+            name="status"
+            required
+            defaultValue={applicationData.status}
+            onValueChange={setSelectedStatus}
+          >
             <SelectTrigger
               id="status"
               className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
@@ -290,6 +298,32 @@ export default function EditApplicationForm({
             </SelectContent>
           </Select>
         </FormField>
+
+        {selectedStatus === "Interview" && (
+          <FormField
+            id="interviewDate"
+            name="interviewDate"
+            label="Interview Date and Time"
+            icon={
+              <Calendar className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+            }
+            errorMessage={state?.fieldErrors?.interviewDate?.join(", ")}
+          >
+            <Input
+              type="datetime-local"
+              id="interviewDate"
+              name="interviewDate"
+              defaultValue={
+                applicationData.interviewDate
+                  ? new Date(applicationData.interviewDate)
+                      .toISOString()
+                      .slice(0, 16)
+                  : ""
+              }
+              className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
+            />
+          </FormField>
+        )}
 
         <FormField
           id="notes"

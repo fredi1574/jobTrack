@@ -14,4 +14,5 @@ export type Application = {
   updatedAt?: Date | null;
   jobSource?: string | null;
   salary?: number | null;
+  interviewDate?: Date | null;
 };

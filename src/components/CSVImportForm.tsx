@@ -110,7 +110,7 @@ export function CSVImportForm() {
             id="csv-upload"
             ref={fileInputRef}
             type="file"
-            name="file" // Add name attribute for FormData
+            name="file"
             accept=".csv,text/csv"
             className="hidden"
             onChange={handleFileChange}

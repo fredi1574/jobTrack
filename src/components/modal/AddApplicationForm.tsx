@@ -37,6 +37,7 @@ interface ApplicationFormData {
   jobSource: string;
   salary: string;
   notes: string;
+  interviewDate?: string;
 }
 
 const initialFormData: ApplicationFormData = {
@@ -47,6 +48,7 @@ const initialFormData: ApplicationFormData = {
   jobSource: "",
   salary: "",
   notes: "",
+  interviewDate: "",
 };
 
 import { ActionResult } from "@/types/actions";
@@ -66,6 +68,7 @@ export default function AddApplicationForm({
   const [isScraping, startScraping] = useTransition();
   const [formData, setFormData] =
     useState<ApplicationFormData>(initialFormData);
+  const [selectedStatus, setSelectedStatus] = useState<string>("");
 
   useEffect(() => {
     if (state.success) {
@@ -297,7 +300,7 @@ export default function AddApplicationForm({
           }
           errorMessage={state.fieldErrors?.status?.join(", ")}
         >
-          <Select name="status" required>
+          <Select name="status" required onValueChange={setSelectedStatus}>
             <SelectTrigger
               id="status"
               className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
@@ -323,6 +326,27 @@ export default function AddApplicationForm({
             </SelectContent>
           </Select>
         </FormField>
+
+        {selectedStatus === "Interview" && (
+          <FormField
+            id="interviewDate"
+            name="interviewDate"
+            label="Interview Date and Time"
+            icon={
+              <Calendar className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+            }
+            errorMessage={state.fieldErrors?.interviewDate?.join(", ")}
+          >
+            <Input
+              type="datetime-local"
+              id="interviewDate"
+              name="interviewDate"
+              value={formData.interviewDate}
+              onChange={handleChange}
+              className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
+            />
+          </FormField>
+        )}
 
         <FormField
           id="notes"

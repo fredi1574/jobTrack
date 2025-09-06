@@ -38,6 +38,7 @@ model Application {
   updatedAt DateTime? @updatedAt
   jobSource String?
   salary    Int?
+  interviewDate DateTime?
 }
 
 model Account {

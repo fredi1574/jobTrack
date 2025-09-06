@@ -1,7 +1,7 @@
 "use server";
 import { getServerAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { ensureUrlProtocol } from "@/lib/utils"; // New import
+import { ensureUrlProtocol } from "@/lib/utils";
 import { ApplicationStatus } from "@/types/application";
 import { Application as PrismaApplication } from "@prisma/client";
 import { del, put } from "@vercel/blob";
@@ -82,6 +82,7 @@ export async function createApplication(
   const notes = formData.get("notes")?.toString().trim() ?? "";
   const jobSource = formData.get("jobSource")?.toString().trim() ?? "";
   const salary = formData.get("salary")?.toString().trim();
+  const interviewDate = formData.get("interviewDate")?.toString().trim() ?? "";
   const resumeFileValue = formData.get("resumeFile");
 
   const resumeFile = resumeFileValue instanceof File ? resumeFileValue : null;
@@ -137,6 +138,7 @@ export async function createApplication(
         resumeUrl: resumeBlobUrl,
         jobSource: jobSource || null,
         salary: salary ? parseInt(salary) : null,
+        interviewDate: interviewDate ? new Date(interviewDate) : null,
         User: { connect: { id: session.user.id } },
       },
     });
@@ -172,6 +174,7 @@ export async function updateApplication(
   const notes = formData.get("notes")?.toString().trim() ?? "";
   const jobSource = formData.get("jobSource")?.toString().trim() ?? "";
   const salary = formData.get("salary")?.toString().trim();
+  const interviewDate = formData.get("interviewDate")?.toString().trim() ?? "";
   const resumeFileValue = formData.get("resumeFile");
 
   const resumeFile = resumeFileValue instanceof File ? resumeFileValue : null;
@@ -239,6 +242,7 @@ export async function updateApplication(
             : application.resumeUrl,
         jobSource: jobSource || null,
         salary: salary ? parseInt(salary) : null,
+        interviewDate: interviewDate ? new Date(interviewDate) : null,
       },
     });
   } catch (dbError) {
