@@ -14,8 +14,7 @@ import {
 } from "../ui/accordion";
 import ApplicationActions from "./ApplicationActions";
 import ApplicationInfo from "./ApplicationInfo";
-import ApplicationLinks from "./ApplicationLinks";
-import ApplicationNotes from "./ApplicationNotes";
+import ApplicationDetails from "./ApplicationDetails";
 import ApplicationURL from "./ApplicationURL";
 
 interface ApplicationAccordionItemProps {
@@ -89,39 +88,24 @@ export default function ApplicationAccordionItem({
         </div>
       </AccordionTrigger>
       <AccordionContent
-        className={`px-0 pt-0 pb-0 text-sm ${accordionContentStyling}`}
+        className={`px-4 pt-2 pb-4 text-sm ${accordionContentStyling}`}
       >
-        <div className="mx-4 grid grid-cols-1 py-4 md:grid-cols-4 md:gap-4">
-          <div className="md:col-span-3">
-            <ApplicationNotes
-              notes={application.notes}
-              salary={application.salary}
-            />
-          </div>
-          <div className="mt-4 md:mt-0">
-            <ApplicationLinks
-              applicationId={application.id}
-              resumeUrl={application.resumeUrl}
-              jobUrl={application.url}
-            />
-          </div>
-
-          <div className="mt-4 flex justify-end gap-2 pt-2 md:hidden">
-            <button
-              onClick={() => handleEditClick(application)}
-              className="inline-flex cursor-pointer items-center gap-1 rounded-md bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-600 transition-colors hover:bg-blue-300 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30"
-            >
-              <Pencil className="size-3" />
-              Edit
-            </button>
-            <button
-              onClick={() => handleDeleteClick(application.id)}
-              className="inline-flex cursor-pointer items-center gap-1 rounded-md bg-red-50 px-3 py-1.5 text-xs font-medium text-red-600 transition-colors hover:bg-red-300 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30"
-            >
-              <Trash2 className="size-3" />
-              Delete
-            </button>
-          </div>
+        <ApplicationDetails application={application} />
+        <div className="mt-4 flex justify-end gap-2 pt-2 md:hidden">
+          <button
+            onClick={() => handleEditClick(application)}
+            className="inline-flex cursor-pointer items-center gap-1 rounded-md bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-600 transition-colors hover:bg-blue-300 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30"
+          >
+            <Pencil className="size-3" />
+            Edit
+          </button>
+          <button
+            onClick={() => handleDeleteClick(application.id)}
+            className="inline-flex cursor-pointer items-center gap-1 rounded-md bg-red-50 px-3 py-1.5 text-xs font-medium text-red-600 transition-colors hover:bg-red-300 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30"
+          >
+            <Trash2 className="size-3" />
+            Delete
+          </button>
         </div>
       </AccordionContent>
       <EditApplicationModal
