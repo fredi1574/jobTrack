@@ -3,9 +3,16 @@ import { deleteApplication } from "@/app/actions/application";
 import StatusDropdown from "@/components/applicationItem/StatusDropdown";
 import { getAccordionContentStyling, getStatusStyling } from "@/lib/utils";
 import { Application as PrismaApplication } from "@prisma/client";
-import { Pencil, Trash2 } from "lucide-react";
+import { Bell, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { format } from "date-fns";
 import EditApplicationModal from "../modal/EditApplicationModal";
 import {
   AccordionContent,
@@ -76,6 +83,28 @@ export default function ApplicationAccordionItem({
         <div className="flex flex-1 items-center gap-4 overflow-hidden">
           <ApplicationInfo application={application} />
 
+          {application.status === "Interview" && application.interviewDate && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span
+                    className="flex items-center"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <Bell className="h-4 w-4 text-yellow-500" />
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>
+                    {format(
+                      new Date(application.interviewDate),
+                      "d/M/yy 'at' HH:mm",
+                    )}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
           <StatusDropdown application={application} />
 
           <ApplicationURL applicationUrl={application.url} />
