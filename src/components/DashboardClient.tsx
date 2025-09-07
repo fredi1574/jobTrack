@@ -1,5 +1,4 @@
 "use client";
-"use client";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -17,6 +16,7 @@ import ApplicationList from "./ApplicationList";
 import DashboardHeader from "./DashboardHeader";
 import ScheduleView from "./ScheduleView";
 import GlobalFilters from "./filters/GlobalFilters";
+import { motion } from "motion/react";
 
 interface FilterState {
   status: string;
@@ -81,15 +81,26 @@ export default function DashboardClient({
   } = useSortableData<Application>(filteredApplications, "appliedAt", "desc");
 
   return (
-    <div className="relative">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="relative"
+    >
       <Drawer direction="right">
         <div className="container mx-auto p-4 md:p-6 lg:p-10">
           <DashboardHeader dataForCsv={dataForCsv} />
 
-          <GlobalFilters
-            onFilterChange={handleFilterChange}
-            currentFilters={filters}
-          />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <GlobalFilters
+              onFilterChange={handleFilterChange}
+              currentFilters={filters}
+            />
+          </motion.div>
 
           {/* applications */}
           <ApplicationList
@@ -101,7 +112,12 @@ export default function DashboardClient({
         </div>
 
         {/* Desktop Schedule Button */}
-        <div className="hidden md:block">
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="hidden md:block"
+        >
           <DrawerTrigger asChild>
             <Button
               variant="outline"
@@ -112,7 +128,7 @@ export default function DashboardClient({
               <span className="text-xs">Schedule</span>
             </Button>
           </DrawerTrigger>
-        </div>
+        </motion.div>
 
         <DrawerContent className="flex h-full flex-col">
           <DrawerTitle className="my-2 text-center text-xl font-bold">
@@ -124,6 +140,6 @@ export default function DashboardClient({
           <ScheduleView applications={initialApplications} />
         </DrawerContent>
       </Drawer>
-    </div>
+    </motion.div>
   );
 }

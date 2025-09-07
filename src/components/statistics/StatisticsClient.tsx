@@ -17,6 +17,7 @@ import ApplicationsByPosition from "./ApplicationsByPosition";
 import { ApplicationsBySource } from "./ApplicationsBySource";
 import LocationDistribution from "./LocationDistribution";
 import StatusDistribution from "./StatusDistribution";
+import { motion } from "motion/react";
 
 export default function StatisticsClient({
   initialApplications,
@@ -59,9 +60,19 @@ export default function StatisticsClient({
   }, [initialApplications, statusFilter, dateRangeFilter]);
 
   return (
-    <div className="mx-auto p-4 md:p-6 lg:p-10">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="mx-auto p-4 md:p-6 lg:p-10"
+    >
       {/* --- Header and Filters --- */}
-      <div className="mb-6 flex flex-col items-start justify-between md:flex-row md:items-center">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+        className="mb-6 flex flex-col items-start justify-between md:flex-row md:items-center"
+      >
         <h1 className="mb-4 text-2xl font-bold md:mb-0">Statistics</h1>
         <div className="flex w-full flex-col items-start gap-4 sm:flex-row sm:items-center md:w-auto">
           {/* Status Filter */}
@@ -114,71 +125,116 @@ export default function StatisticsClient({
             </Select>
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="mb-6">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="mb-6"
+      >
         <ApplicationNumbers applications={filteredApplications} />
-      </div>
+      </motion.div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <Card className={undefined}>
-          <CardHeader className={undefined}>
-            <CardTitle className={undefined}>Status Distribution</CardTitle>
-          </CardHeader>
-          <CardContent className={undefined}>
-            <StatusDistribution applications={filteredApplications} />
-          </CardContent>
-        </Card>
-        <Card className={undefined}>
-          <CardHeader className={undefined}>
-            <CardTitle className={undefined}>Applications by Date</CardTitle>
-          </CardHeader>
-          <CardContent className={undefined}>
-            <ApplicationsByDate applications={filteredApplications} />
-          </CardContent>
-        </Card>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <Card className={undefined}>
+            <CardHeader className={undefined}>
+              <CardTitle className={undefined}>Status Distribution</CardTitle>
+            </CardHeader>
+            <CardContent className={undefined}>
+              <StatusDistribution applications={filteredApplications} />
+            </CardContent>
+          </Card>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          <Card className={undefined}>
+            <CardHeader className={undefined}>
+              <CardTitle className={undefined}>Applications by Date</CardTitle>
+            </CardHeader>
+            <CardContent className={undefined}>
+              <ApplicationsByDate applications={filteredApplications} />
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-4">
-        <Card className={undefined}>
-          <CardHeader className={undefined}>
-            <CardTitle className={undefined}>
-              Applications by Position
-            </CardTitle>
-          </CardHeader>
-          <CardContent className={undefined}>
-            <ApplicationsByPosition applications={filteredApplications} />
-          </CardContent>
-        </Card>
-        <Card className={undefined}>
-          <CardHeader className={undefined}>
-            <CardTitle className={undefined}>Applications by Company</CardTitle>
-          </CardHeader>
-          <CardContent className={undefined}>
-            <ApplicationsByCompany applications={filteredApplications} />
-          </CardContent>
-        </Card>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+        >
+          <Card className={undefined}>
+            <CardHeader className={undefined}>
+              <CardTitle className={undefined}>
+                Applications by Position
+              </CardTitle>
+            </CardHeader>
+            <CardContent className={undefined}>
+              <ApplicationsByPosition applications={filteredApplications} />
+            </CardContent>
+          </Card>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+        >
+          <Card className={undefined}>
+            <CardHeader className={undefined}>
+              <CardTitle className={undefined}>
+                Applications by Company
+              </CardTitle>
+            </CardHeader>
+            <CardContent className={undefined}>
+              <ApplicationsByCompany applications={filteredApplications} />
+            </CardContent>
+          </Card>
+        </motion.div>
 
-        <Card className={undefined}>
-          <CardHeader className={undefined}>
-            <CardTitle className={undefined}>
-              Applications by Location
-            </CardTitle>
-          </CardHeader>
-          <CardContent className={undefined}>
-            <LocationDistribution applications={filteredApplications} />
-          </CardContent>
-        </Card>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.7 }}
+        >
+          <Card className={undefined}>
+            <CardHeader className={undefined}>
+              <CardTitle className={undefined}>
+                Applications by Location
+              </CardTitle>
+            </CardHeader>
+            <CardContent className={undefined}>
+              <LocationDistribution applications={filteredApplications} />
+            </CardContent>
+          </Card>
+        </motion.div>
 
-        <Card className={undefined}>
-          <CardHeader className={undefined}>
-            <CardTitle className={undefined}>Applications by Source</CardTitle>
-          </CardHeader>
-          <CardContent className={undefined}>
-            <ApplicationsBySource data={applicationsBySource} />
-          </CardContent>
-        </Card>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+        >
+          <Card className={undefined}>
+            <CardHeader className={undefined}>
+              <CardTitle className={undefined}>
+                Applications by Source
+              </CardTitle>
+            </CardHeader>
+            <CardContent className={undefined}>
+              <ApplicationsBySource data={applicationsBySource} />
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }

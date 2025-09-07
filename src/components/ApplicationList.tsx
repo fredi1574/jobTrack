@@ -1,9 +1,11 @@
+"use client";
 import { Application as PrismaApplication } from "@prisma/client";
 import { Accordion } from "@radix-ui/react-accordion";
 import ApplicationAccordionItem from "./applicationItem/ApplicationAccordionItem";
 import ApplicationsHeader from "./ApplicationsHeader";
 import NoJobApplications from "./NoJobApplications";
 import { useMemo } from "react";
+import { motion } from "motion/react";
 
 interface ApplicationListProps {
   applications: PrismaApplication[];
@@ -33,7 +35,12 @@ export default function ApplicationList({
   return (
     <>
       {sortedAndPrioritizedApplications.length > 0 ? (
-        <div className="mx-[-1rem] shadow-lg/10 sm:mx-auto sm:w-full">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="mx-[-1rem] shadow-lg/10 sm:mx-auto sm:w-full"
+        >
           <ApplicationsHeader
             sortColumn={sortColumn}
             sortDirection={sortDirection}
@@ -41,14 +48,18 @@ export default function ApplicationList({
           />
 
           <Accordion type="single" collapsible className="w-full">
-            {sortedAndPrioritizedApplications.map((application) => (
-              <ApplicationAccordionItem
+            {sortedAndPrioritizedApplications.map((application, index) => (
+              <motion.div
                 key={application.id}
-                application={application}
-              />
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2, delay: index * 0.05 }}
+              >
+                <ApplicationAccordionItem application={application} />
+              </motion.div>
             ))}
           </Accordion>
-        </div>
+        </motion.div>
       ) : (
         <NoJobApplications />
       )}
