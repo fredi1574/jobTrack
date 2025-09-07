@@ -52,8 +52,6 @@ export async function scrapeJobDetailsWithAI(
       .replace(/```json|```/g, "")
       .trim();
 
-    console.log("JSON Response:", jsonResponse);
-
     if (!jsonResponse) {
       return {
         success: false,
