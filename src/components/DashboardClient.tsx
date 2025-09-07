@@ -35,7 +35,7 @@ export default function DashboardClient({
   } = useSortableData<Application>(filteredApplications, "appliedAt", "desc");
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative">
       <Drawer direction="right">
         <div className="container mx-auto p-4 md:p-6 lg:p-10">
           <DashboardHeader
