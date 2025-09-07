@@ -9,8 +9,9 @@ import {
 import { getAccordionContentStyling, getStatusStyling } from "@/lib/utils";
 import { Application as PrismaApplication } from "@prisma/client";
 import { format } from "date-fns";
-import { Bell, Pencil } from "lucide-react";
+import { Bell, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
+import DeleteApplicationModal from "../modal/DeleteApplicationModal";
 import EditApplicationModal from "../modal/EditApplicationModal";
 import {
   AccordionContent,
@@ -37,6 +38,10 @@ export default function ApplicationAccordionItem({
   const [editingApplication, setEditingApplication] =
     useState<PrismaApplication | null>(null);
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deletingApplication, setDeletingApplication] =
+    useState<PrismaApplication | null>(null);
+
   const handleEditClick = (app: PrismaApplication) => {
     setEditingApplication(app);
     setIsEditModalOpen(true);
@@ -45,6 +50,16 @@ export default function ApplicationAccordionItem({
   const handleEditModalClose = () => {
     setIsEditModalOpen(false);
     setEditingApplication(null);
+  };
+
+  const handleDeleteClick = (app: PrismaApplication) => {
+    setDeletingApplication(app);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteModalClose = () => {
+    setIsDeleteModalOpen(false);
+    setDeletingApplication(null);
   };
 
   const formattedDate = application.appliedAt
@@ -162,12 +177,24 @@ export default function ApplicationAccordionItem({
             <Pencil className="size-3" />
             Edit
           </button>
+          <button
+            onClick={() => handleDeleteClick(application)}
+            className="inline-flex cursor-pointer items-center gap-1 rounded-md bg-red-50 px-3 py-1.5 text-xs font-medium text-red-600 transition-colors hover:bg-red-300 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30"
+          >
+            <Trash2 className="size-3" />
+            Delete
+          </button>
         </div>
       </AccordionContent>
       <EditApplicationModal
         isOpen={isEditModalOpen}
         onClose={handleEditModalClose}
         applicationData={editingApplication}
+      />
+      <DeleteApplicationModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleDeleteModalClose}
+        applicationId={deletingApplication?.id || ""}
       />
     </AccordionItem>
   );

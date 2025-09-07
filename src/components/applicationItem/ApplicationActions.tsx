@@ -1,5 +1,5 @@
 import { toggleApplicationPin } from "@/app/actions/application";
-import { DeleteApplicationModal } from "@/components/modal/DeleteApplicationModal";
+import DeleteApplicationModal from "@/components/modal/DeleteApplicationModal";
 import { Application as PrismaApplication } from "@prisma/client";
 import { Pencil, Star, Trash2 } from "lucide-react";
 import { useState } from "react";

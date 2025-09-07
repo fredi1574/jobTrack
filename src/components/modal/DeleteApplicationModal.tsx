@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { deleteApplication } from "@/app/actions/application";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { deleteApplication } from "@/app/actions/application";
+import { useState } from "react";
 import { toast } from "sonner";
 
 interface DeleteApplicationModalProps {
@@ -17,7 +17,7 @@ interface DeleteApplicationModalProps {
   onClose: () => void;
 }
 
-export function DeleteApplicationModal({
+export default function DeleteApplicationModal({
   applicationId,
   isOpen,
   onClose,
