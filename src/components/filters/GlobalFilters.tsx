@@ -10,17 +10,21 @@ import {
 } from "@/components/ui/select";
 import { POSSIBLE_APPLICATION_STATUSES } from "@/lib/constants";
 import { useEffect, useState } from "react";
+import { Search } from "lucide-react";
+import { Input } from "../ui/input";
 
 interface GlobalFiltersProps {
   onFilterChange: (filters: {
     status: string;
     location: string;
     dateRange: { from?: Date; to?: Date };
+    searchTerm: string;
   }) => void;
   currentFilters: {
     status: string;
     location: string;
     dateRange: { from?: Date; to?: Date };
+    searchTerm: string;
   };
 }
 
@@ -31,6 +35,7 @@ export default function GlobalFilters({
   const [locations, setLocations] = useState<string[]>([]);
   const [selectedStatus, setSelectedStatus] = useState<string>("");
   const [selectedLocation, setSelectedLocation] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,18 +67,40 @@ export default function GlobalFilters({
     });
   };
 
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+    onFilterChange({
+      ...currentFilters,
+      searchTerm: value,
+    });
+  };
+
   const handleResetFilters = () => {
     setSelectedStatus("");
     setSelectedLocation("");
+    setSearchTerm("");
     onFilterChange({
       status: "",
       location: "",
       dateRange: { from: undefined, to: undefined },
+      searchTerm: "",
     });
   };
 
   return (
     <div className="mb-4 flex items-center justify-end gap-4">
+      <div className="relative w-full sm:w-64 md:w-72">
+        <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+        <Input
+          type="text"
+          placeholder="Search applications..."
+          className="bg-white pl-10"
+          value={searchTerm}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            handleSearchChange(event.target.value)
+          }
+        />
+      </div>
       <Select onValueChange={handleStatusChange} value={selectedStatus}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Status" />

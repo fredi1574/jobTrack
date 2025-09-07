@@ -7,7 +7,6 @@ import { useMemo } from "react";
 
 interface ApplicationListProps {
   applications: PrismaApplication[];
-  searchTerm: string;
   sortColumn: keyof PrismaApplication | null;
   sortDirection: "asc" | "desc";
   handleSort: (column: keyof PrismaApplication) => void;
@@ -15,7 +14,6 @@ interface ApplicationListProps {
 
 export default function ApplicationList({
   applications,
-  searchTerm,
   sortColumn,
   sortDirection,
   handleSort,
@@ -51,10 +49,6 @@ export default function ApplicationList({
             ))}
           </Accordion>
         </div>
-      ) : searchTerm ? (
-        <p className="mt-10 text-center text-gray-500">
-          No applications match your search term &quot;{searchTerm}&quot;.
-        </p>
       ) : (
         <NoJobApplications />
       )}

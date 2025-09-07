@@ -1,4 +1,5 @@
 "use client";
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -7,7 +8,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { useApplicationSearch } from "@/hooks/useApplicationSearch";
 import { useSortableData } from "@/hooks/useSortableData";
 import { prepareApplicationsForCsv } from "@/lib/csv.utils";
 import type { Application } from "@prisma/client";
@@ -22,6 +22,7 @@ interface FilterState {
   status: string;
   location: string;
   dateRange: { from?: Date; to?: Date };
+  searchTerm: string;
 }
 
 export default function DashboardClient({
@@ -29,16 +30,11 @@ export default function DashboardClient({
 }: {
   initialApplications: Application[];
 }) {
-  const {
-    searchTerm,
-    setSearchTerm,
-    filteredApplications: searchFilteredApplications,
-  } = useApplicationSearch(initialApplications);
-
   const [filters, setFilters] = useState<FilterState>({
     status: "",
     location: "",
     dateRange: { from: undefined, to: undefined },
+    searchTerm: "",
   });
 
   const handleFilterChange = (newFilters: FilterState) => {
@@ -67,14 +63,24 @@ export default function DashboardClient({
               )
           : true;
 
-      return statusMatch && locationMatch && dateMatch;
+      const searchTermMatch = currentFilters.searchTerm
+        ? app.company
+            .toLowerCase()
+            .includes(currentFilters.searchTerm.toLowerCase()) ||
+          app.position
+            .toLowerCase()
+            .includes(currentFilters.searchTerm.toLowerCase()) ||
+          (app.location &&
+            app.location
+              .toLowerCase()
+              .includes(currentFilters.searchTerm.toLowerCase()))
+        : true;
+
+      return statusMatch && locationMatch && dateMatch && searchTermMatch;
     });
   };
 
-  const filteredApplications = applyFilters(
-    searchFilteredApplications,
-    filters,
-  );
+  const filteredApplications = applyFilters(initialApplications, filters);
 
   // Preparing the data for a CSV file
   const dataForCsv = prepareApplicationsForCsv(initialApplications);
@@ -90,11 +96,7 @@ export default function DashboardClient({
     <div className="relative">
       <Drawer direction="right">
         <div className="container mx-auto p-4 md:p-6 lg:p-10">
-          <DashboardHeader
-            searchTerm={searchTerm}
-            onSearchChange={(term: string) => setSearchTerm(term)}
-            dataForCsv={dataForCsv}
-          />
+          <DashboardHeader dataForCsv={dataForCsv} />
 
           <GlobalFilters
             onFilterChange={handleFilterChange}
@@ -104,7 +106,6 @@ export default function DashboardClient({
           {/* applications */}
           <ApplicationList
             applications={sortedApplications}
-            searchTerm={searchTerm}
             sortColumn={sortColumn}
             sortDirection={sortDirection}
             handleSort={handleSort}
