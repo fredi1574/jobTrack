@@ -69,10 +69,10 @@ export default function ApplicationAccordionItem({
   return (
     <AccordionItem
       value={application.id}
-      className={`border-b last:border-b-0 dark:border-gray-700 ${statusStyling!.background} ${statusStyling!.border}`}
+      className={`dark:border-gray-700 ${statusStyling!.background} ${statusStyling!.border}`}
     >
       <AccordionTrigger
-        className={`group items-center gap-2 rounded-none px-4 py-6 hover:no-underline ${statusStyling!.hover} ${statusStyling!.text}`}
+        className={`group items-center gap-2 rounded-none p-3 hover:no-underline ${statusStyling!.hover} ${statusStyling!.text}`}
       >
         {/* Mobile layout */}
         <div className="flex w-full items-center justify-between sm:hidden">
