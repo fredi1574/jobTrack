@@ -3,6 +3,7 @@ import { Application as PrismaApplication } from "@prisma/client";
 import { format, formatDuration, intervalToDuration, isToday } from "date-fns";
 import {
   Calendar,
+  CalendarClock,
   Clock,
   DollarSign,
   Download,
@@ -49,10 +50,10 @@ export default function ApplicationDetails({
         {status === "Interview" && interviewDate && (
           <div className="bg-card rounded-lg border border-gray-100 p-4 shadow-sm dark:border-gray-700">
             <h4 className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-              <Calendar className="size-4" />
+              <CalendarClock className="size-4" />
               Interview Details
             </h4>
-            <div className="pl-1 text-gray-700 dark:text-gray-300">
+            <div className="flex gap-1 pl-1 text-gray-700 dark:text-gray-300">
               <div className="flex items-center gap-1 text-sm">
                 <Calendar className="h-4 w-4" />
                 {format(new Date(interviewDate), "d/M/y")}
@@ -62,22 +63,24 @@ export default function ApplicationDetails({
                   </p>
                 )}
               </div>
+              <p className="text-sm">at</p>
               <div className="flex items-center gap-1 text-sm">
                 <Clock className="h-4 w-4" />
                 {format(new Date(interviewDate), "HH:mm")}
-                {isToday(new Date(interviewDate)) && (
-                  <p className="text-red-600 dark:text-red-400">
-                    (
-                    {formatDuration(
-                      intervalToDuration({
-                        start: new Date(),
-                        end: new Date(interviewDate),
-                      }),
-                      { format: ["hours", "minutes"] },
-                    )}{" "}
-                    remaining)
-                  </p>
-                )}
+                {isToday(new Date(interviewDate)) &&
+                  interviewDate > new Date() && (
+                    <p className="text-red-600 dark:text-red-400">
+                      (
+                      {formatDuration(
+                        intervalToDuration({
+                          start: new Date(),
+                          end: new Date(interviewDate),
+                        }),
+                        { format: ["hours", "minutes"] },
+                      )}{" "}
+                      remaining)
+                    </p>
+                  )}
               </div>
             </div>
           </div>
