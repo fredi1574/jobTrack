@@ -100,19 +100,20 @@ export default function ScheduleView({
                     <div className="flex items-center gap-1 text-xs">
                       <Clock className="h-3 w-3" />
                       {format(application.interviewDate, "HH:mm")}
-                      {isToday(application.interviewDate) && (
-                        <p className="text-red-600 dark:text-red-400">
-                          (
-                          {formatDuration(
-                            intervalToDuration({
-                              start: new Date(),
-                              end: application.interviewDate,
-                            }),
-                            { format: ["hours", "minutes"] },
-                          )}{" "}
-                          remaining)
-                        </p>
-                      )}
+                      {isToday(application.interviewDate) &&
+                        application.interviewDate > new Date() && (
+                          <p className="text-red-600 dark:text-red-400">
+                            (
+                            {formatDuration(
+                              intervalToDuration({
+                                start: new Date(),
+                                end: application.interviewDate,
+                              }),
+                              { format: ["hours", "minutes"] },
+                            )}{" "}
+                            remaining)
+                          </p>
+                        )}
                     </div>
                   </div>
                 )}
