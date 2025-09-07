@@ -21,7 +21,6 @@ import GlobalFilters from "./filters/GlobalFilters";
 interface FilterState {
   status: string;
   location: string;
-  dateRange: { from?: Date; to?: Date };
   searchTerm: string;
 }
 
@@ -33,7 +32,6 @@ export default function DashboardClient({
   const [filters, setFilters] = useState<FilterState>({
     status: "",
     location: "",
-    dateRange: { from: undefined, to: undefined },
     searchTerm: "",
   });
 
@@ -53,16 +51,6 @@ export default function DashboardClient({
         ? app.location === currentFilters.location
         : true;
 
-      const dateMatch =
-        currentFilters.dateRange.from && currentFilters.dateRange.to
-          ? app.appliedAt &&
-            new Date(app.appliedAt) >= currentFilters.dateRange.from &&
-            new Date(app.appliedAt) <=
-              new Date(
-                new Date(currentFilters.dateRange.to).setHours(23, 59, 59, 999),
-              )
-          : true;
-
       const searchTermMatch = currentFilters.searchTerm
         ? app.company
             .toLowerCase()
@@ -76,7 +64,7 @@ export default function DashboardClient({
               .includes(currentFilters.searchTerm.toLowerCase()))
         : true;
 
-      return statusMatch && locationMatch && dateMatch && searchTermMatch;
+      return statusMatch && locationMatch && searchTermMatch;
     });
   };
 

@@ -17,13 +17,11 @@ interface GlobalFiltersProps {
   onFilterChange: (filters: {
     status: string;
     location: string;
-    dateRange: { from?: Date; to?: Date };
     searchTerm: string;
   }) => void;
   currentFilters: {
     status: string;
     location: string;
-    dateRange: { from?: Date; to?: Date };
     searchTerm: string;
   };
 }
@@ -82,7 +80,6 @@ export default function GlobalFilters({
     onFilterChange({
       status: "",
       location: "",
-      dateRange: { from: undefined, to: undefined },
       searchTerm: "",
     });
   };
