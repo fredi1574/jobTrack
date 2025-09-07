@@ -83,7 +83,7 @@ export default function ScheduleView({
               className="my-2 flex w-full items-center justify-between rounded-md border bg-purple-100 p-4 text-purple-800 dark:bg-purple-500/20 dark:text-purple-300"
             >
               <div>
-                <p className="font-semibold">
+                <p className="font-semibold break-all">
                   {application.company} - {application.position}
                 </p>
                 {application.interviewDate && (

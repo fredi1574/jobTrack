@@ -61,11 +61,11 @@ export default function ApplicationAccordionItem({
       >
         {/* Mobile layout */}
         <div className="flex w-full items-center justify-between sm:hidden">
-          <div className="flex flex-col items-start">
-            <span className="flex items-center gap-1 truncate font-semibold break-words">
+          <div className="flex min-w-0 flex-col items-start">
+            <span className="flex items-center gap-1 font-semibold break-all">
               {application.company}
             </span>
-            <span className="truncate text-sm break-words text-gray-600 dark:text-gray-400">
+            <span className="text-sm break-all text-gray-600 dark:text-gray-400">
               {application.position}
             </span>
           </div>
@@ -100,16 +100,16 @@ export default function ApplicationAccordionItem({
 
         {/* Desktop layout */}
         <div className="hidden w-full flex-1 items-center justify-around gap-4 overflow-hidden sm:flex">
-          <span className="flex items-center gap-1 truncate font-semibold text-gray-900 sm:w-1/5 dark:text-gray-100">
+          <span className="flex items-center gap-1 font-semibold break-all text-gray-900 sm:w-1/5 dark:text-gray-100">
             {application.company}
           </span>
-          <span className="truncate text-gray-700 sm:w-1/5 dark:text-gray-300">
+          <span className="break-all text-gray-700 sm:w-1/5 dark:text-gray-300">
             {application.position}
           </span>
-          <span className="truncate text-gray-500 sm:w-1/6 dark:text-gray-400">
+          <span className="text-gray-500 sm:w-1/6 dark:text-gray-400">
             {application.location}
           </span>
-          <span className="truncate text-gray-500 sm:w-1/6 dark:text-gray-400">
+          <span className="text-gray-500 sm:w-1/6 dark:text-gray-400">
             {formattedDate}
           </span>
           <div className="flex items-center justify-center sm:w-1/6">
