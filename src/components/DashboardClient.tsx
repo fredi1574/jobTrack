@@ -1,5 +1,5 @@
 "use client";
-import SearchBar from "@/components/header/SearchBar";
+import { Button } from "@/components/ui/button";
 import {
   Drawer,
   DrawerContent,
@@ -7,16 +7,13 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Calendar } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useApplicationSearch } from "@/hooks/useApplicationSearch";
 import { useSortableData } from "@/hooks/useSortableData";
 import { prepareApplicationsForCsv } from "@/lib/csv.utils";
 import type { Application } from "@prisma/client";
+import { Calendar } from "lucide-react";
 import ApplicationList from "./ApplicationList";
-import ExportCSVButton from "./ExportCSVButton";
-import AddApplicationModal from "./modal/AddApplicationModal";
-import ImportApplicationModal from "./modal/ImportApplicationModal";
+import DashboardHeader from "./DashboardHeader";
 import ScheduleView from "./ScheduleView";
 
 export default function DashboardClient({
@@ -38,59 +35,49 @@ export default function DashboardClient({
   } = useSortableData<Application>(filteredApplications, "appliedAt", "desc");
 
   return (
-    <div className="container mx-auto p-4 md:p-6 lg:p-10">
-      <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <h1 className="text-2xl font-bold md:text-3xl">
-          Your Job Applications
-        </h1>
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-2">
-          {/* Search bar */}
-          <SearchBar
+    <div className="relative min-h-screen">
+      <Drawer direction="right">
+        <div className="container mx-auto p-4 md:p-6 lg:p-10">
+          <DashboardHeader
             searchTerm={searchTerm}
             onSearchChange={(term: string) => setSearchTerm(term)}
+            dataForCsv={dataForCsv}
           />
 
-          {/* Action buttons */}
-          <div className="flex gap-2">
-            <ImportApplicationModal />
-            <ExportCSVButton data={dataForCsv} />
-          </div>
-
-          <Drawer direction="right">
-            <DrawerTrigger asChild>
-              <Button
-                variant="outline"
-                className="flex items-center gap-2"
-                size={undefined}
-              >
-                <Calendar className="h-4 w-4" />
-                Schedule
-              </Button>
-            </DrawerTrigger>
-            <DrawerContent className="flex h-full flex-col">
-              <DrawerTitle className="my-2 text-center text-xl font-bold">
-                Schedule
-              </DrawerTitle>
-              <DrawerDescription className="text-center text-gray-500">
-                Your upcoming interviews
-              </DrawerDescription>
-              <ScheduleView applications={initialApplications} />
-            </DrawerContent>
-          </Drawer>
-
-          {/* Add application modal */}
-          <AddApplicationModal />
+          {/* applications */}
+          <ApplicationList
+            applications={sortedApplications}
+            searchTerm={searchTerm}
+            sortColumn={sortColumn}
+            sortDirection={sortDirection}
+            handleSort={handleSort}
+          />
         </div>
-      </div>
 
-      {/* applications */}
-      <ApplicationList
-        applications={sortedApplications}
-        searchTerm={searchTerm}
-        sortColumn={sortColumn}
-        sortDirection={sortDirection}
-        handleSort={handleSort}
-      />
+        {/* Desktop Schedule Button */}
+        <div className="hidden md:block">
+          <DrawerTrigger asChild>
+            <Button
+              variant="outline"
+              className="fixed top-1/2 -right-2 z-10 flex h-14 w-24 -translate-y-1/2 gap-2 rounded-l-md rounded-r-none border-r-0"
+              size={undefined}
+            >
+              <Calendar className="h-5 w-5" />
+              <span className="text-xs">Schedule</span>
+            </Button>
+          </DrawerTrigger>
+        </div>
+
+        <DrawerContent className="flex h-full flex-col">
+          <DrawerTitle className="my-2 text-center text-xl font-bold">
+            Schedule
+          </DrawerTitle>
+          <DrawerDescription className="text-center text-gray-500">
+            Your upcoming interviews
+          </DrawerDescription>
+          <ScheduleView applications={initialApplications} />
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 }
