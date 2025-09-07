@@ -39,6 +39,7 @@ model Application {
   jobSource String?
   salary    Int?
   interviewDate DateTime?
+  pinned        Boolean   @default(false)
 }
 
 model Account {

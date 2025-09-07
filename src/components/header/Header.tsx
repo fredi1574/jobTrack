@@ -15,7 +15,6 @@ import { signOut, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Switch } from "../ui/switch";
 
 const SignOutButton = () => {
   const [hovered, setHovered] = useState(false);
@@ -55,37 +54,19 @@ export default function Header() {
 
   const isDarkMode = mounted && resolvedTheme === "dark";
 
-  const handleThemeChange = (isChecked: boolean) => {
-    setTheme(isChecked ? "dark" : "light");
-  };
-
   const renderThemeToggle = () => {
-    if (!mounted) {
-      return (
-        <div className="h-6 w-[52px] animate-pulse rounded-full bg-gray-200 dark:bg-gray-700"></div>
-      );
-    }
-
     return (
-      <div className="flex items-center gap-2">
-        <Sun
-          className={`size-5 transition-colors ${
-            isDarkMode ? "text-orange-400/20" : "text-orange-400"
-          }`}
-        />
-        <Switch
-          className=""
-          id="theme-switch"
-          checked={isDarkMode}
-          onCheckedChange={handleThemeChange}
-          aria-label="Toggle theme"
-        />
-        <Moon
-          className={`size-5 transition-colors ${
-            isDarkMode ? "text-blue-400" : "text-blue-400/20"
-          }`}
-        />
-      </div>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => setTheme(isDarkMode ? "light" : "dark")}
+        aria-label="Toggle theme"
+        className={undefined}
+      >
+        <Sun className="h-6 w-6 scale-100 rotate-0 transform transition-all duration-500 dark:scale-0 dark:-rotate-90" />
+        <Moon className="absolute h-6 w-6 scale-0 rotate-90 transform transition-all duration-500 dark:scale-100 dark:rotate-0" />
+        <span className="sr-only">Toggle theme</span>
+      </Button>
     );
   };
 

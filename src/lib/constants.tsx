@@ -28,15 +28,17 @@ export const STATUS_COLORS: Record<string, string> = {
 };
 
 export const STATUS_ICONS: Record<string, React.ReactNode> = {
-  applied: <MailCheck className="size-4 text-sky-500 dark:text-sky-400" />,
+  applied: <MailCheck className="mr-1 size-5 text-sky-500 dark:text-sky-400" />,
   assessment: (
-    <ClipboardList className="size-4 text-yellow-500 dark:text-yellow-400" />
+    <ClipboardList className="mr-1 size-5 text-yellow-500 dark:text-yellow-400" />
   ),
   interview: (
-    <MessagesSquare className="size-4 text-purple-500 dark:text-purple-400" />
+    <MessagesSquare className="mr-1 size-5 text-purple-500 dark:text-purple-400" />
   ),
-  offer: <Handshake className="size-4 text-green-500 dark:text-green-400" />,
-  rejected: <BadgeX className="size-4 text-red-500 dark:text-red-400" />,
+  offer: (
+    <Handshake className="mr-1 size-5 text-green-500 dark:text-green-400" />
+  ),
+  rejected: <BadgeX className="mr-1 size-5 text-red-500 dark:text-red-400" />,
 };
 
 export const STATUS_CARD_COLORS: Record<string, string> = {

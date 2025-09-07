@@ -3,6 +3,7 @@ import { Accordion } from "@radix-ui/react-accordion";
 import ApplicationAccordionItem from "./applicationItem/ApplicationAccordionItem";
 import ApplicationsHeader from "./ApplicationsHeader";
 import NoJobApplications from "./NoJobApplications";
+import { useMemo } from "react";
 
 interface ApplicationListProps {
   applications: PrismaApplication[];
@@ -19,9 +20,21 @@ export default function ApplicationList({
   sortDirection,
   handleSort,
 }: ApplicationListProps) {
+  const sortedAndPrioritizedApplications = useMemo(() => {
+    const sorted = [...applications];
+    sorted.sort((a, b) => {
+      // Pinned applications come first
+      if (a.pinned && !b.pinned) return -1;
+      if (!a.pinned && b.pinned) return 1;
+      // Maintain existing sort order for non-pinned applications
+      return 0;
+    });
+    return sorted;
+  }, [applications]);
+
   return (
     <>
-      {applications.length > 0 ? (
+      {sortedAndPrioritizedApplications.length > 0 ? (
         <div className="mx-[-1rem] shadow-lg/10 sm:mx-auto sm:w-full">
           <ApplicationsHeader
             sortColumn={sortColumn}
@@ -30,7 +43,7 @@ export default function ApplicationList({
           />
 
           <Accordion type="single" collapsible className="w-full">
-            {applications.map((application) => (
+            {sortedAndPrioritizedApplications.map((application) => (
               <ApplicationAccordionItem
                 key={application.id}
                 application={application}

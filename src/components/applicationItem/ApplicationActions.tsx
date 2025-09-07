@@ -1,17 +1,24 @@
+import { toggleApplicationPin } from "@/app/actions/application";
+import { DeleteApplicationModal } from "@/components/modal/DeleteApplicationModal";
 import { Application as PrismaApplication } from "@prisma/client";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Star, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface ApplicationActionsProps {
   application: PrismaApplication;
   onEdit: (application: PrismaApplication) => void;
-  onDelete: (id: string) => void;
 }
 
 export default function ApplicationActions({
   application,
   onEdit,
-  onDelete,
 }: ApplicationActionsProps): React.ReactElement {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [applicationToDeleteId, setApplicationToDeleteId] = useState<
+    string | null
+  >(null);
+
   const handleEditClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     onEdit(application);
@@ -19,11 +26,41 @@ export default function ApplicationActions({
 
   const handleDeleteClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    onDelete(application.id);
+    setApplicationToDeleteId(application.id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handlePinClick = async (event: React.MouseEvent) => {
+    event.stopPropagation();
+    const result = await toggleApplicationPin(
+      application.id,
+      application.pinned,
+    );
+    if (result.success) {
+      toast.success(
+        application.pinned ? "Application unpinned" : "Application pinned",
+      );
+    } else {
+      toast.error(result.error);
+    }
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setApplicationToDeleteId(null);
   };
 
   return (
     <div className="hidden shrink-0 items-center gap-2 pl-1 sm:gap-3 sm:pl-2 md:flex">
+      <Star
+        onClick={handlePinClick}
+        className={`size-4 cursor-pointer ${
+          application.pinned
+            ? "fill-yellow-400 text-yellow-400"
+            : "text-gray-500"
+        } hover:text-yellow-600 dark:hover:text-yellow-400`}
+        aria-label="Pin Application"
+      />
       <Pencil
         onClick={handleEditClick}
         className="size-4 cursor-pointer text-gray-500 hover:text-yellow-600 dark:hover:text-yellow-400"
@@ -34,6 +71,13 @@ export default function ApplicationActions({
         className="size-4 cursor-pointer text-gray-500 hover:text-red-600 dark:hover:text-red-400"
         aria-label="Delete Application"
       />
+      {applicationToDeleteId && (
+        <DeleteApplicationModal
+          applicationId={applicationToDeleteId}
+          isOpen={isDeleteModalOpen}
+          onClose={handleCloseDeleteModal}
+        />
+      )}
     </div>
   );
 }

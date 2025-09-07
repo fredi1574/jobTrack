@@ -12,17 +12,69 @@ import { useSortableData } from "@/hooks/useSortableData";
 import { prepareApplicationsForCsv } from "@/lib/csv.utils";
 import type { Application } from "@prisma/client";
 import { Calendar } from "lucide-react";
+import { useState } from "react";
 import ApplicationList from "./ApplicationList";
 import DashboardHeader from "./DashboardHeader";
 import ScheduleView from "./ScheduleView";
+import GlobalFilters from "./filters/GlobalFilters";
+
+interface FilterState {
+  status: string;
+  location: string;
+  dateRange: { from?: Date; to?: Date };
+}
 
 export default function DashboardClient({
   initialApplications,
 }: {
   initialApplications: Application[];
 }) {
-  const { searchTerm, setSearchTerm, filteredApplications } =
-    useApplicationSearch(initialApplications);
+  const {
+    searchTerm,
+    setSearchTerm,
+    filteredApplications: searchFilteredApplications,
+  } = useApplicationSearch(initialApplications);
+
+  const [filters, setFilters] = useState<FilterState>({
+    status: "",
+    location: "",
+    dateRange: { from: undefined, to: undefined },
+  });
+
+  const handleFilterChange = (newFilters: FilterState) => {
+    setFilters(newFilters);
+  };
+
+  const applyFilters = (
+    applications: Application[],
+    currentFilters: FilterState,
+  ) => {
+    return applications.filter((app) => {
+      const statusMatch = currentFilters.status
+        ? app.status === currentFilters.status
+        : true;
+      const locationMatch = currentFilters.location
+        ? app.location === currentFilters.location
+        : true;
+
+      const dateMatch =
+        currentFilters.dateRange.from && currentFilters.dateRange.to
+          ? app.appliedAt &&
+            new Date(app.appliedAt) >= currentFilters.dateRange.from &&
+            new Date(app.appliedAt) <=
+              new Date(
+                new Date(currentFilters.dateRange.to).setHours(23, 59, 59, 999),
+              )
+          : true;
+
+      return statusMatch && locationMatch && dateMatch;
+    });
+  };
+
+  const filteredApplications = applyFilters(
+    searchFilteredApplications,
+    filters,
+  );
 
   // Preparing the data for a CSV file
   const dataForCsv = prepareApplicationsForCsv(initialApplications);
@@ -42,6 +94,11 @@ export default function DashboardClient({
             searchTerm={searchTerm}
             onSearchChange={(term: string) => setSearchTerm(term)}
             dataForCsv={dataForCsv}
+          />
+
+          <GlobalFilters
+            onFilterChange={handleFilterChange}
+            currentFilters={filters}
           />
 
           {/* applications */}

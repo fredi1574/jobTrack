@@ -24,7 +24,7 @@ export async function getApplications(
   try {
     const applications = await prisma.application.findMany({
       where: { UserId: userId },
-      orderBy: { appliedAt: "desc" },
+      orderBy: [{ pinned: "desc" }, { appliedAt: "desc" }],
     });
     return applications;
   } catch (error) {
@@ -363,5 +363,61 @@ export async function updateApplicationStatus(
   } catch (dbError) {
     console.error("Database error during update:", dbError);
     return { success: false, error: "Database error during update" };
+  }
+}
+
+export async function toggleApplicationPin(
+  id: string,
+  pinned: boolean,
+): Promise<{ success: boolean; error?: string }> {
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  try {
+    const application = await prisma.application.findFirst({
+      where: { id: id, UserId: session.user.id },
+      select: {
+        id: true,
+      },
+    });
+    if (!application) {
+      return {
+        success: false,
+        error: "Application not found or permission denied.",
+      };
+    }
+
+    await prisma.application.update({
+      where: { id: application.id },
+      data: { pinned: !pinned },
+    });
+    revalidatePath("/");
+    return { success: true };
+  } catch (dbError) {
+    console.error("Database error during update:", dbError);
+    return { success: false, error: "Database error during update" };
+  }
+}
+
+export async function getApplicationLocations(): Promise<string[]> {
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) {
+    return [];
+  }
+
+  try {
+    const locations = await prisma.application.findMany({
+      where: { UserId: session.user.id },
+      distinct: ["location"],
+      select: {
+        location: true,
+      },
+    });
+    return locations.map((app) => app.location);
+  } catch (error) {
+    console.error("Failed to fetch application locations:", error);
+    return [];
   }
 }

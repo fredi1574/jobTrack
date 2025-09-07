@@ -1,5 +1,4 @@
 "use client";
-import { deleteApplication } from "@/app/actions/application";
 import StatusDropdown from "@/components/applicationItem/StatusDropdown";
 import {
   Tooltip,
@@ -10,9 +9,8 @@ import {
 import { getAccordionContentStyling, getStatusStyling } from "@/lib/utils";
 import { Application as PrismaApplication } from "@prisma/client";
 import { format } from "date-fns";
-import { Bell, Pencil, Trash2 } from "lucide-react";
+import { Bell, Pencil } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
 import EditApplicationModal from "../modal/EditApplicationModal";
 import {
   AccordionContent,
@@ -44,27 +42,6 @@ export default function ApplicationAccordionItem({
     setIsEditModalOpen(true);
   };
 
-  const handleDeleteClick = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this application?")) {
-      return;
-    }
-
-    try {
-      const result = await deleteApplication(id);
-
-      if (result?.success) {
-        toast.success("Application deleted successfully!", {
-          icon: <span>🚮</span>,
-        });
-      } else {
-        toast.error(result?.error || "Failed to delete application.");
-      }
-    } catch (error) {
-      console.error("Delete failed:", error);
-      toast.error("An error occurred. Please try again.");
-    }
-  };
-
   const handleEditModalClose = () => {
     setIsEditModalOpen(false);
     setEditingApplication(null);
@@ -80,15 +57,15 @@ export default function ApplicationAccordionItem({
       className={`border-b last:border-b-0 dark:border-gray-700 ${statusStyling!.background} ${statusStyling!.border}`}
     >
       <AccordionTrigger
-        className={`group items-center gap-2 rounded-none px-4 py-3 hover:no-underline ${statusStyling!.hover} ${statusStyling!.text}`}
+        className={`group items-center gap-2 rounded-none px-4 py-6 hover:no-underline ${statusStyling!.hover} ${statusStyling!.text}`}
       >
         {/* Mobile layout */}
         <div className="flex w-full items-center justify-between sm:hidden">
           <div className="flex flex-col items-start">
-            <span className="truncate font-semibold">
+            <span className="flex items-center gap-1 truncate font-semibold break-words">
               {application.company}
             </span>
-            <span className="truncate text-sm text-gray-600 dark:text-gray-400">
+            <span className="truncate text-sm break-words text-gray-600 dark:text-gray-400">
               {application.position}
             </span>
           </div>
@@ -123,7 +100,7 @@ export default function ApplicationAccordionItem({
 
         {/* Desktop layout */}
         <div className="hidden w-full flex-1 items-center justify-around gap-4 overflow-hidden sm:flex">
-          <span className="truncate font-semibold text-gray-900 sm:w-1/5 dark:text-gray-100">
+          <span className="flex items-center gap-1 truncate font-semibold text-gray-900 sm:w-1/5 dark:text-gray-100">
             {application.company}
           </span>
           <span className="truncate text-gray-700 sm:w-1/5 dark:text-gray-300">
@@ -170,7 +147,6 @@ export default function ApplicationAccordionItem({
           <ApplicationActions
             application={application}
             onEdit={handleEditClick}
-            onDelete={() => handleDeleteClick(application.id)}
           />
         </div>
       </AccordionTrigger>
@@ -185,13 +161,6 @@ export default function ApplicationAccordionItem({
           >
             <Pencil className="size-3" />
             Edit
-          </button>
-          <button
-            onClick={() => handleDeleteClick(application.id)}
-            className="inline-flex cursor-pointer items-center gap-1 rounded-md bg-red-50 px-3 py-1.5 text-xs font-medium text-red-600 transition-colors hover:bg-red-300 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30"
-          >
-            <Trash2 className="size-3" />
-            Delete
           </button>
         </div>
       </AccordionContent>
