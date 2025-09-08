@@ -28,28 +28,27 @@ export default function ApplicationDetails({
   };
 
   return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-      <div className="lg:col-span-2">
-        <div className="bg-card h-full rounded-lg border border-gray-100 p-4 shadow-sm dark:border-gray-700">
-          <h4 className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-            <NotebookPen className="size-4" />
-            Notes
-          </h4>
-          {notes ? (
-            <div className="pl-1 break-words whitespace-pre-wrap text-gray-700 dark:text-gray-300">
-              {notes}
-            </div>
-          ) : (
-            <p className="pl-1 text-sm text-gray-500 italic dark:text-gray-400">
-              No notes added.
-            </p>
-          )}
-        </div>
+    <div className="flex flex-col gap-4">
+      <div className="bg-card h-full rounded-lg border border-gray-100 p-4 shadow-sm dark:border-gray-700">
+        <h4 className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+          <NotebookPen className="size-4" />
+          Notes
+        </h4>
+        {notes ? (
+          <div className="pl-1 break-words whitespace-pre-wrap text-gray-700 dark:text-gray-300">
+            {notes}
+          </div>
+        ) : (
+          <p className="pl-1 text-sm text-gray-500 italic dark:text-gray-400">
+            No notes added.
+          </p>
+        )}
       </div>
-      <div className="flex flex-col gap-4">
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {status === "Interview" && interviewDate && (
-          <div className="bg-card rounded-lg border border-gray-100 p-4 shadow-sm dark:border-gray-700">
-            <h4 className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+          <div className="bg-card rounded-lg border border-gray-100 p-2 shadow-sm dark:border-gray-700 flex items-center justify-between">
+            <h4 className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100">
               <CalendarClock className="size-4" />
               Interview Details
             </h4>
@@ -86,8 +85,8 @@ export default function ApplicationDetails({
           </div>
         )}
         {salary && (
-          <div className="bg-card rounded-lg border border-gray-100 p-4 shadow-sm dark:border-gray-700">
-            <h4 className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+          <div className="bg-card rounded-lg border border-gray-100 p-2 shadow-sm dark:border-gray-700 flex items-center justify-between">
+            <h4 className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100">
               <DollarSign className="size-4" />
               Salary
             </h4>
@@ -96,14 +95,14 @@ export default function ApplicationDetails({
             </p>
           </div>
         )}
-        <div className="bg-card rounded-lg border border-gray-100 p-4 shadow-sm dark:border-gray-700">
-          <div className="space-y-3">
+        <div className="bg-card rounded-lg border border-gray-100 p-2 shadow-sm dark:border-gray-700 flex flex-col gap-2">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100">
               <FileText className="size-4" />
               <span>Resume</span>
             </div>
             {resumeUrl ? (
-              <div className="flex items-center justify-between">
+              <div className="flex items-center">
                 <a
                   href={resumeUrl}
                   target="_blank"
@@ -125,7 +124,7 @@ export default function ApplicationDetails({
               </p>
             )}
           </div>
-          <div className="mt-4 space-y-3">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100">
               <LinkIcon className="size-4" />
               <span>Job Link</span>
