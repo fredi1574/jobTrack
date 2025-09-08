@@ -54,12 +54,12 @@ export default function ScheduleView({
           }) => {
             const hasInterview = modifiers.interview;
             return (
-              <div {...props} className={`relative ${props.className}`}>
+              <td {...props} className={`relative ${props.className}`}>
                 {props.children}
                 {hasInterview && (
                   <span className="absolute bottom-1 left-1/2 z-10 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-purple-500" />
                 )}
-              </div>
+              </td>
             );
           },
         }}
