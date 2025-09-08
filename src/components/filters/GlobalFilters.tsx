@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { POSSIBLE_APPLICATION_STATUSES } from "@/lib/constants";
+import { POSSIBLE_APPLICATION_STATUSES, STATUS_ICONS } from "@/lib/constants";
 import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import { Input } from "../ui/input";
@@ -100,7 +100,14 @@ export default function GlobalFilters({
       </div>
       <Select onValueChange={handleStatusChange} value={selectedStatus}>
         <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Status" />
+          {selectedStatus ? (
+            <div className="flex items-center">
+              {STATUS_ICONS[selectedStatus.toLowerCase()]}
+              <SelectValue placeholder="Status">{selectedStatus}</SelectValue>
+            </div>
+          ) : (
+            <SelectValue placeholder="Status" />
+          )}
         </SelectTrigger>
         <SelectContent className={undefined}>
           <SelectItem value="all" className={undefined}>
@@ -108,7 +115,10 @@ export default function GlobalFilters({
           </SelectItem>
           {POSSIBLE_APPLICATION_STATUSES.map((status) => (
             <SelectItem key={status} value={status} className={undefined}>
-              {status}
+              <div className="flex items-center">
+                {STATUS_ICONS[status.toLowerCase()]}
+                {status}
+              </div>
             </SelectItem>
           ))}
         </SelectContent>
