@@ -47,7 +47,7 @@ export default function ApplicationDetails({
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {status === "Interview" && interviewDate && (
-          <div className="bg-card rounded-lg border border-gray-100 p-2 shadow-sm dark:border-gray-700 flex items-center justify-between">
+          <div className="bg-card flex items-center justify-between rounded-lg border border-gray-100 p-2 shadow-sm dark:border-gray-700">
             <h4 className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100">
               <CalendarClock className="size-4" />
               Interview Details
@@ -85,7 +85,7 @@ export default function ApplicationDetails({
           </div>
         )}
         {salary && (
-          <div className="bg-card rounded-lg border border-gray-100 p-2 shadow-sm dark:border-gray-700 flex items-center justify-between">
+          <div className="bg-card flex items-center justify-between rounded-lg border border-gray-100 p-2 shadow-sm dark:border-gray-700">
             <h4 className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100">
               <DollarSign className="size-4" />
               Salary
@@ -95,7 +95,7 @@ export default function ApplicationDetails({
             </p>
           </div>
         )}
-        <div className="bg-card rounded-lg border border-gray-100 p-2 shadow-sm dark:border-gray-700 flex flex-col gap-2">
+        <div className="bg-card flex flex-col gap-2 rounded-lg border border-gray-100 p-2 shadow-sm dark:border-gray-700">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100">
               <FileText className="size-4" />
@@ -134,7 +134,7 @@ export default function ApplicationDetails({
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="break-all text-blue-600 transition-colors hover:text-blue-700 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
+                className="truncate text-blue-600 transition-colors hover:text-blue-700 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
               >
                 {url}
               </a>
