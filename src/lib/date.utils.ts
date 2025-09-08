@@ -1,7 +1,9 @@
-export const formatDate = (dateString: string | Date) => {
+import { format } from "date-fns";
+
+export const formatDate = (
+  dateString: string | Date,
+  formatStr: string = "dd/MM/yyyy",
+) => {
   const date = new Date(dateString);
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
-  const year = date.getFullYear();
-  return `${day}-${month}-${year}`;
+  return format(date, formatStr);
 };
