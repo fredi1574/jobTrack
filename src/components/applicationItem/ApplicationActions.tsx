@@ -1,7 +1,7 @@
 import { toggleApplicationPin } from "@/app/actions/application";
 import DeleteApplicationModal from "@/components/modal/DeleteApplicationModal";
 import { Application as PrismaApplication } from "@prisma/client";
-import { Pencil, Star, Trash2 } from "lucide-react";
+import { Pencil, Pin, PinOff, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -18,6 +18,7 @@ export default function ApplicationActions({
   const [applicationToDeleteId, setApplicationToDeleteId] = useState<
     string | null
   >(null);
+  const [isHoveringPin, setIsHoveringPin] = useState(false);
 
   const handleEditClick = (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -52,15 +53,28 @@ export default function ApplicationActions({
 
   return (
     <div className="hidden shrink-0 items-center gap-2 pl-1 sm:gap-3 sm:pl-2 md:flex">
-      <Star
-        onClick={handlePinClick}
-        className={`size-4 cursor-pointer ${
-          application.pinned
-            ? "fill-yellow-400 text-yellow-400"
-            : "text-gray-500"
-        } hover:text-yellow-600 dark:hover:text-yellow-400`}
-        aria-label="Pin Application"
-      />
+      <div
+        onMouseEnter={() => setIsHoveringPin(true)}
+        onMouseLeave={() => setIsHoveringPin(false)}
+      >
+        {application.pinned && isHoveringPin ? (
+          <PinOff
+            onClick={handlePinClick}
+            className="size-4 cursor-pointer text-green-400 dark:hover:text-green-400"
+            aria-label="Unpin Application"
+          />
+        ) : (
+          <Pin
+            onClick={handlePinClick}
+            className={`size-4 cursor-pointer ${
+              application.pinned
+                ? "fill-green-400 text-green-400"
+                : "text-gray-500"
+            } hover:text-green-600 dark:hover:text-green-400`}
+            aria-label="Pin Application"
+          />
+        )}
+      </div>
       <Pencil
         onClick={handleEditClick}
         className="size-4 cursor-pointer text-gray-500 hover:text-yellow-600 dark:hover:text-yellow-400"
