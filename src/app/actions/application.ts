@@ -223,27 +223,33 @@ export async function updateApplication(
       };
     }
 
+    const updateData: any = {
+      company,
+      position,
+      status,
+      url: url || null,
+      appliedAt: (() => {
+        const [year, month, day] = appliedAt.split("-").map(Number);
+        return new Date(Date.UTC(year, month - 1, day));
+      })(),
+      location,
+      notes: notes || null,
+      resumeUrl:
+        newResumeBlobUrl !== undefined
+          ? newResumeBlobUrl
+          : application.resumeUrl,
+      jobSource: jobSource || null,
+      salary: salary ? parseInt(salary) : null,
+      interviewDate: interviewDate ? new Date(interviewDate) : null,
+    };
+
+    if (application.status !== status) {
+      updateData.lastStatusChangeDate = new Date();
+    }
+
     await prisma.application.update({
       where: { id: application.id },
-      data: {
-        company,
-        position,
-        status,
-        url: url || null,
-        appliedAt: (() => {
-          const [year, month, day] = appliedAt.split("-").map(Number);
-          return new Date(Date.UTC(year, month - 1, day));
-        })(),
-        location,
-        notes: notes || null,
-        resumeUrl:
-          newResumeBlobUrl !== undefined
-            ? newResumeBlobUrl
-            : application.resumeUrl,
-        jobSource: jobSource || null,
-        salary: salary ? parseInt(salary) : null,
-        interviewDate: interviewDate ? new Date(interviewDate) : null,
-      },
+      data: updateData,
     });
   } catch (dbError) {
     console.error("Database error during update:", dbError);
@@ -356,7 +362,7 @@ export async function updateApplicationStatus(
 
     await prisma.application.update({
       where: { id: application.id },
-      data: { status: status },
+      data: { status: status, lastStatusChangeDate: new Date() },
     });
     revalidatePath("/");
     return { success: true };
@@ -419,5 +425,42 @@ export async function getApplicationLocations(): Promise<string[]> {
   } catch (error) {
     console.error("Failed to fetch application locations:", error);
     return [];
+  }
+}
+
+export async function resetLastStatusChangeDate(
+  id: string,
+): Promise<{ success: boolean; error?: string }> {
+  const session = await getServerAuthSession();
+  if (!session?.user?.id) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  try {
+    const application = await prisma.application.findFirst({
+      where: { id: id, UserId: session.user.id },
+      select: {
+        id: true,
+      },
+    });
+    if (!application) {
+      return {
+        success: false,
+        error: "Application not found or permission denied.",
+      };
+    }
+
+    await prisma.application.update({
+      where: { id: application.id },
+      data: { lastStatusChangeDate: new Date() },
+    });
+    revalidatePath("/");
+    return { success: true };
+  } catch (dbError) {
+    console.error("Database error during resetLastStatusChangeDate:", dbError);
+    return {
+      success: false,
+      error: "Database error during resetLastStatusChangeDate",
+    };
   }
 }

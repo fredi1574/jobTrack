@@ -1,16 +1,14 @@
 import { Calendar, DayModifiers } from "@/components/ui/calendar";
 import type { Application as PrismaApplication } from "@prisma/client";
 import { format, formatDuration, intervalToDuration, isToday } from "date-fns";
-import { Calendar1, Clock } from "lucide-react";
-import { useMemo, useState } from "react";
+import { Calendar as CalendarIcon, Clock } from "lucide-react";
+import { useMemo } from "react";
 
 export default function ScheduleView({
   applications,
 }: {
   applications: PrismaApplication[];
 }) {
-  const [date, setDate] = useState<Date | null>(new Date());
-
   const interviewApplications = useMemo(() => {
     return applications.filter((application) => {
       return application.status === "Interview" && application.interviewDate;
@@ -40,8 +38,8 @@ export default function ScheduleView({
       <Calendar
         mode="single"
         className="w-full rounded-md border"
-        selected={date}
-        onSelect={setDate}
+        selected={undefined}
+        onSelect={undefined}
         components={{
           Day: ({
             date,
@@ -89,9 +87,9 @@ export default function ScheduleView({
                 {application.interviewDate && (
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-1 text-xs">
-                      <Calendar1 className="h-3 w-3" />
-                      {format(application.interviewDate, "d/M/y")}
-                      {isToday(application.interviewDate) && (
+                      <CalendarIcon className="h-3 w-3" />
+                      {format(new Date(application.interviewDate), "d/M/y")}
+                      {isToday(new Date(application.interviewDate)) && (
                         <p className="text-xs text-red-600 dark:text-red-400">
                           {" (Today)"}
                         </p>
@@ -99,15 +97,15 @@ export default function ScheduleView({
                     </div>
                     <div className="flex items-center gap-1 text-xs">
                       <Clock className="h-3 w-3" />
-                      {format(application.interviewDate, "HH:mm")}
-                      {isToday(application.interviewDate) &&
-                        application.interviewDate > new Date() && (
+                      {format(new Date(application.interviewDate), "HH:mm")}
+                      {isToday(new Date(application.interviewDate)) &&
+                        new Date(application.interviewDate) > new Date() && (
                           <p className="text-red-600 dark:text-red-400">
                             (
                             {formatDuration(
                               intervalToDuration({
                                 start: new Date(),
-                                end: application.interviewDate,
+                                end: new Date(application.interviewDate),
                               }),
                               { format: ["hours", "minutes"] },
                             )}{" "}

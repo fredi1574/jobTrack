@@ -1,4 +1,5 @@
 "use client";
+import { resetLastStatusChangeDate } from "@/app/actions/application";
 import StatusDropdown from "@/components/applicationItem/StatusDropdown";
 import {
   Tooltip,
@@ -6,10 +7,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { getDaysSince } from "@/lib/date.utils";
 import { getAccordionContentStyling, getStatusStyling } from "@/lib/utils";
 import { Application as PrismaApplication } from "@prisma/client";
 import { format } from "date-fns";
-import { Bell, Pencil, Trash2 } from "lucide-react";
+import { Bell, ClockAlert, Pencil, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import DeleteApplicationModal from "../modal/DeleteApplicationModal";
 import EditApplicationModal from "../modal/EditApplicationModal";
@@ -18,6 +21,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../ui/accordion";
+import { Button } from "../ui/button";
 import ApplicationActions from "./ApplicationActions";
 import ApplicationDetails from "./ApplicationDetails";
 import ApplicationURL from "./ApplicationURL";
@@ -33,6 +37,7 @@ export default function ApplicationAccordionItem({
   const accordionContentStyling = getAccordionContentStyling(
     application.status,
   );
+  const router = useRouter();
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingApplication, setEditingApplication] =
@@ -66,6 +71,12 @@ export default function ApplicationAccordionItem({
     ? new Date(application.appliedAt).toLocaleDateString("en-IL")
     : "N/A";
 
+  const daysSinceLastStatusChange = application.lastStatusChangeDate
+    ? getDaysSince(application.lastStatusChangeDate)
+    : 0;
+
+  const showNoResponseWarning = daysSinceLastStatusChange > 7;
+
   return (
     <AccordionItem
       value={application.id}
@@ -96,13 +107,43 @@ export default function ApplicationAccordionItem({
                       <Bell className="h-4 w-4 text-yellow-500" />
                     </span>
                   </TooltipTrigger>
-                  <TooltipContent className={undefined}>
+                  <TooltipContent color="purple" className={undefined}>
                     <p>
                       {format(
                         new Date(application.interviewDate),
                         "d/M/yy 'at' HH:mm",
                       )}
                     </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ) : showNoResponseWarning ? (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span
+                      className="mr-2 flex items-center"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <ClockAlert className="size-4 text-red-500" />
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent color="red" className={undefined}>
+                    <p>
+                      {daysSinceLastStatusChange} days since last status change
+                    </p>
+                    <Button
+                      onClick={(event: React.MouseEvent) => {
+                        event.stopPropagation();
+                        resetLastStatusChangeDate(application.id);
+                        router.refresh();
+                      }}
+                      variant="ghost"
+                      size="sm"
+                      className="mt-2 text-white"
+                    >
+                      Wait More
+                    </Button>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -139,13 +180,46 @@ export default function ApplicationAccordionItem({
                       <Bell className="h-4 w-4 text-yellow-500" />
                     </span>
                   </TooltipTrigger>
-                  <TooltipContent className={undefined}>
+                  <TooltipContent color="purple" className={undefined}>
                     <p>
                       {format(
                         new Date(application.interviewDate),
                         "d/M/yy 'at' HH:mm",
                       )}
                     </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ) : showNoResponseWarning ? (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span
+                      className="mr-2 flex items-center"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <ClockAlert className="h-4 w-4 text-red-500" />
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    color="red"
+                    className="flex items-center gap-1"
+                  >
+                    <p>
+                      {daysSinceLastStatusChange} days since last status change
+                    </p>
+                    <Button
+                      onClick={(event: React.MouseEvent) => {
+                        event.stopPropagation();
+                        resetLastStatusChangeDate(application.id);
+                        router.refresh();
+                      }}
+                      variant="ghost"
+                      size="xs"
+                      className="bg-transparent px-1 font-semibold text-white"
+                    >
+                      Wait More
+                    </Button>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

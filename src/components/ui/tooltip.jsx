@@ -27,20 +27,44 @@ function TooltipTrigger({ ...props }) {
   return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
 }
 
-function TooltipContent({ className, sideOffset = 0, children, ...props }) {
+function TooltipContent({
+  className,
+  sideOffset = 0,
+  children,
+  color = "purple",
+  ...props
+}) {
+  const bgColorClass =
+    color === "red"
+      ? "bg-red-500 dark:bg-red-700"
+      : "bg-purple-300 dark:bg-purple-500";
+  const textColorClass =
+    color === "red" ? "text-white" : "text-gray-700 dark:text-gray-200";
+  const arrowBgColorClass =
+    color === "red"
+      ? "bg-red-500 fill-red-500 dark:bg-red-700 dark:fill-red-700"
+      : "bg-purple-300 fill-purple-300 dark:bg-purple-500 dark:fill-purple-500";
+
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
         data-slot="tooltip-content"
         sideOffset={sideOffset}
         className={cn(
-          "animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md bg-purple-300 px-3 py-1.5 text-xs font-semibold text-balance text-gray-700 dark:bg-purple-500 dark:text-gray-200",
+          "animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-xs font-semibold text-balance",
+          bgColorClass,
+          textColorClass,
           className,
         )}
         {...props}
       >
         {children}
-        <TooltipPrimitive.Arrow className="z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px] bg-purple-300 fill-purple-300 dark:bg-purple-500 dark:fill-purple-500" />
+        <TooltipPrimitive.Arrow
+          className={cn(
+            "z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]",
+            arrowBgColorClass,
+          )}
+        />
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
   );
