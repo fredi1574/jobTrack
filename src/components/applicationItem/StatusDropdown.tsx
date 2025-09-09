@@ -77,7 +77,7 @@ export default function StatusDropdown({
             )}
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="overflow-auto bg-sky-50 p-2 dark:bg-indigo-950">
+        <DropdownMenuContent className="dark:bg-primary-foreground overflow-auto bg-sky-50 p-2">
           <div className="flex flex-col space-y-2 md:flex-row md:space-y-0">
             {POSSIBLE_APPLICATION_STATUSES.map((statusOption) => (
               <DropdownMenuItem

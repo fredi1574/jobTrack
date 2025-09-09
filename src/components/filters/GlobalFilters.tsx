@@ -9,8 +9,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { POSSIBLE_APPLICATION_STATUSES, STATUS_ICONS } from "@/lib/constants";
-import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 
 interface GlobalFiltersProps {
@@ -91,7 +91,7 @@ export default function GlobalFilters({
         <Input
           type="text"
           placeholder="Search applications..."
-          className="bg-white pl-10"
+          className="pl-10"
           value={searchTerm}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             handleSearchChange(event.target.value)
@@ -140,7 +140,7 @@ export default function GlobalFilters({
         </SelectContent>
       </Select>
       <Button
-        variant="outline"
+        variant="secondary"
         onClick={handleResetFilters}
         className={undefined}
         size={undefined}

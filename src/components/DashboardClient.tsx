@@ -11,12 +11,12 @@ import { useSortableData } from "@/hooks/useSortableData";
 import { prepareApplicationsForCsv } from "@/lib/csv.utils";
 import type { Application } from "@prisma/client";
 import { Calendar } from "lucide-react";
+import { motion } from "motion/react";
 import { useState } from "react";
 import ApplicationList from "./ApplicationList";
 import DashboardHeader from "./DashboardHeader";
 import ScheduleView from "./ScheduleView";
 import GlobalFilters from "./filters/GlobalFilters";
-import { motion } from "motion/react";
 
 interface FilterState {
   status: string;
@@ -120,7 +120,7 @@ export default function DashboardClient({
         >
           <DrawerTrigger asChild>
             <Button
-              variant="outline"
+              variant="secondary"
               className="fixed top-1/2 -right-2 z-10 flex h-14 w-24 -translate-y-1/2 gap-2 rounded-l-md rounded-r-none border-r-0"
               size={undefined}
             >

@@ -60,7 +60,7 @@ export default function ApplicationActions({
         {application.pinned && isHoveringPin ? (
           <PinOff
             onClick={handlePinClick}
-            className="size-4 cursor-pointer text-green-400 dark:hover:text-green-400"
+            className="size-4 cursor-pointer text-blue-400 dark:hover:text-blue-400"
             aria-label="Unpin Application"
           />
         ) : (
@@ -68,9 +68,9 @@ export default function ApplicationActions({
             onClick={handlePinClick}
             className={`size-4 cursor-pointer ${
               application.pinned
-                ? "fill-green-400 text-green-400"
+                ? "fill-blue-400 text-blue-400"
                 : "text-gray-500"
-            } hover:text-green-600 dark:hover:text-green-400`}
+            } hover:text-blue-600 dark:hover:text-blue-400`}
             aria-label="Pin Application"
           />
         )}

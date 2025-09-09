@@ -12,31 +12,31 @@ export const getStatusStyling = (status: string) => {
   switch (statusLower) {
     case "applied":
       return {
-        background: "bg-sky-100 dark:bg-sky-900/30",
+        background: "bg-sky-100 dark:bg-sky-950",
         border: "border-l-4 border-l-sky-500 dark:border-l-sky-700",
         hover: "hover:bg-sky-200/60 dark:hover:bg-sky-900/40",
       };
     case "assessment":
       return {
-        background: "bg-yellow-100 dark:bg-yellow-900/30",
+        background: "bg-yellow-100 dark:bg-yellow-950",
         border: "border-l-4 border-l-yellow-500 dark:border-l-yellow-700",
         hover: "hover:bg-yellow-200/60 dark:hover:bg-yellow-900/40",
       };
     case "interview":
       return {
-        background: "bg-purple-100 dark:bg-purple-900/30",
+        background: "bg-purple-100 dark:bg-purple-950",
         border: "border-l-4 border-l-purple-500 dark:border-l-purple-700",
         hover: "hover:bg-purple-200/60 dark:hover:bg-purple-900/40",
       };
     case "offer":
       return {
-        background: "bg-green-100 dark:bg-green-900/30",
+        background: "bg-green-100 dark:bg-green-950",
         border: "border-l-4 border-l-green-500 dark:border-l-green-700",
         hover: "hover:bg-green-200/60 dark:hover:bg-green-900/40",
       };
     case "rejected":
       return {
-        background: "bg-red-100 dark:bg-red-900/30",
+        background: "bg-red-100 dark:bg-red-950",
         border: "border-l-4 border-l-red-500 dark:border-l-red-700",
         hover: "hover:bg-red-200/60 dark:hover:bg-red-900/40",
         text: "text-red-500 line-through opacity-80 dark:text-red-500",
@@ -64,7 +64,9 @@ export const getAccordionContentStyling = (status: string) => {
   }
 };
 
-export function ensureUrlProtocol(url: string | null | undefined): string | null {
+export function ensureUrlProtocol(
+  url: string | null | undefined,
+): string | null {
   const trimmedUrl = url?.trim();
   if (!trimmedUrl) {
     return null;
