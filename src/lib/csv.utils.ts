@@ -10,7 +10,6 @@ export const prepareApplicationsForCsv = (
       UserId,
       resumeUrl,
       appliedAt,
-      updatedAt,
       interviewDate,
       pinned,
       ...restOfData
@@ -22,7 +21,6 @@ export const prepareApplicationsForCsv = (
         ? formatDate(interviewDate, "dd/MM/yyyy HH:mm")
         : "",
       appliedAt: appliedAt ? formatDate(appliedAt) : "",
-      updatedAt: updatedAt ? formatDate(updatedAt) : "",
     };
   });
 };

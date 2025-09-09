@@ -1,4 +1,9 @@
-export type ApplicationStatus = "Applied" | "Assessment" | "Interview" | "Offer" | "Rejected";
+export type ApplicationStatus =
+  | "Applied"
+  | "Assessment"
+  | "Interview"
+  | "Offer"
+  | "Rejected";
 
 export type Application = {
   id: string;
@@ -11,7 +16,6 @@ export type Application = {
   notes?: string | null;
   resumeUrl?: string | null;
   appliedAt?: Date | null;
-  updatedAt?: Date | null;
   jobSource?: string | null;
   salary?: number | null;
   interviewDate?: Date | null;
