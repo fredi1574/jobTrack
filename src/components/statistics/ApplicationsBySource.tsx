@@ -1,6 +1,5 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ChartContainer,
   ChartTooltip,
@@ -22,7 +21,7 @@ type ChartConfig = {
 const chartConfig = {
   count: {
     label: "Applications",
-    color: "#abcdef",
+    color: "hsl(var(--chart-source))",
   },
 } satisfies ChartConfig;
 
@@ -60,7 +59,7 @@ export function ApplicationsBySource({ data }: ApplicationsBySourceProps) {
             />
           }
         />
-        <Bar dataKey="count" fill="var(--color-count)" radius={8} />
+        <Bar dataKey="count" fill={chartConfig.count.color} radius={8} />
       </BarChart>
     </ChartContainer>
   );

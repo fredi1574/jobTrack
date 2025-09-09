@@ -1,7 +1,7 @@
 import { generateChartDataByDate } from "@/lib/chart.utils";
 import { Application } from "@prisma/client";
 import { useMemo } from "react";
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart";
 
 type ChartConfig = {
@@ -14,7 +14,7 @@ type ChartConfig = {
 const chartConfig = {
   count: {
     label: "Applications",
-    color: "#1E90FF",
+    color: "hsl(var(--chart-date))",
   },
 } satisfies ChartConfig;
 
@@ -33,7 +33,7 @@ export default function ApplicationsByDate({
       config={chartConfig}
       className="w-full"
     >
-      <LineChart
+      <AreaChart
         data={chartData}
         margin={{
           top: 0,
@@ -42,6 +42,20 @@ export default function ApplicationsByDate({
           bottom: 0,
         }}
       >
+        <defs>
+          <linearGradient id="fillCount" x1="0" y1="0" x2="0" y2="1">
+            <stop
+              offset="5%"
+              stopColor="hsl(var(--chart-date))"
+              stopOpacity={1}
+            />
+            <stop
+              offset="95%"
+              stopColor="hsl(var(--chart-date))"
+              stopOpacity={0.1}
+            />
+          </linearGradient>
+        </defs>
         <CartesianGrid strokeDasharray="3 3" vertical={false} />
         <XAxis dataKey="date" />
         <YAxis allowDecimals={false} />
@@ -54,22 +68,22 @@ export default function ApplicationsByDate({
               className={undefined}
               label={undefined}
               labelFormatter={undefined}
-              labelClassName={undefined}
               formatter={undefined}
               color={undefined}
               nameKey={undefined}
               labelKey={undefined}
+              labelClassName={undefined}
             />
           }
         />
-        <Line
+        <Area
           type="monotone"
           dataKey="count"
-          stroke={chartConfig.count.color}
-          strokeWidth={2}
-          dot={false}
+          fill="url(#fillCount)"
+          stroke="var(--color-count)"
+          stackId="a"
         />
-      </LineChart>
+      </AreaChart>
     </ChartContainer>
   );
 }

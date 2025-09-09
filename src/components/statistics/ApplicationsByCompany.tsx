@@ -13,7 +13,7 @@ type ChartConfig = {
 const chartConfig = {
   count: {
     label: "Applications",
-    color: "#22C55E",
+    color: "hsl(var(--chart-company))",
   },
 } satisfies ChartConfig;
 

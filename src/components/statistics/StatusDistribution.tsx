@@ -96,7 +96,14 @@ export default function StatusDistribution({
             />
           }
         />
-        <Pie data={pieData} nameKey="status" dataKey="count">
+        <Pie
+          data={pieData}
+          nameKey="status"
+          dataKey="count"
+          innerRadius={10}
+          outerRadius={120}
+          isAnimationActive={true}
+        >
           {pieData.map((entry) => (
             <Cell
               key={`cell-${entry.status}`}

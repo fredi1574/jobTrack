@@ -99,21 +99,29 @@
 
 @layer base {
   :root {
-    --chart-applied: 210 90% 55%;
-    --chart-assessment: 45 100% 50%;
-    --chart-interview: 270 70% 50%;
-    --chart-offer: 120 80% 40%;
-    --chart-rejected: 0 90% 50%;
-    --chart-primary: 200.6 94.4% 86.1%;
+    --chart-applied: 210 60% 70%;
+    --chart-assessment: 45 70% 75%;
+    --chart-interview: 270 50% 70%;
+    --chart-offer: 120 50% 65%;
+    --chart-rejected: 10 60% 70%;
+    --chart-company: 334, 100%, 50%;
+    --chart-date: 217, 100%, 61%;
+    --chart-position: 265, 83%, 57%;
+    --chart-source: 19, 97%, 51%;
+    --chart-location: 44, 100%, 52%;
   }
 
   .dark {
-    --chart-applied: 204 94% 35%;
-    --chart-assessment: 48 96% 45%;
-    --chart-interview: 269 100% 55%;
-    --chart-offer: 141 84% 40%;
-    --chart-rejected: 0 93% 45%;
-    --chart-primary: 201 90% 27.5%;
+    --chart-applied: 210 50% 40%;
+    --chart-assessment: 45 60% 45%;
+    --chart-interview: 270 40% 40%;
+    --chart-offer: 120 40% 35%;
+    --chart-rejected: 10 50% 40%;
+    --chart-company: 334, 100%, 40%;
+    --chart-date: 217, 100%, 34%;
+    --chart-position: 265, 83%, 40%;
+    --chart-source: 19, 97%, 40%;
+    --chart-location: 44, 100%, 40%;
   }
 
   * {
