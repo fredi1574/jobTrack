@@ -57,7 +57,13 @@ export default function LandingPage() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-10 flex flex-col justify-center gap-4 sm:flex-row"
         >
-          <motion.div whileHover={{ scale: 1.05, boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)" }}>
+          <motion.div
+            whileHover={{
+              scale: 1.05,
+              boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)",
+            }}
+            className="rounded-full"
+          >
             <Button
               variant="default"
               size="lg"
@@ -67,7 +73,13 @@ export default function LandingPage() {
               <Link href="/register">Get Started - It&apos;s Free!</Link>
             </Button>
           </motion.div>
-          <motion.div whileHover={{ scale: 1.05, boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)" }}>
+          <motion.div
+            whileHover={{
+              scale: 1.05,
+              boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)",
+            }}
+            className="rounded-full"
+          >
             <Button
               variant="outline"
               size="lg"
