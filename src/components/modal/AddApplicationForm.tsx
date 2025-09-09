@@ -2,20 +2,22 @@
 import { createApplication } from "@/app/actions/application";
 import { scrapeJob } from "@/app/actions/scrape";
 import {
+  BadgeX,
   Briefcase,
   Calendar,
   CircleCheck,
   CirclePlus,
+  ClipboardList,
   FileText,
+  Handshake,
   LinkIcon,
-  Loader,
+  MailCheck,
   MapPin,
   MessageSquare,
-  Search,
+  MessagesSquare,
 } from "lucide-react";
 import { useActionState, useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
-import { Button } from "../ui/button";
 import FormField from "../ui/FormField";
 import { Input } from "../ui/input";
 import {
@@ -307,20 +309,28 @@ export default function AddApplicationForm({
             >
               <SelectValue placeholder="Select status" />
             </SelectTrigger>
-            <SelectContent className={undefined}>
-              <SelectItem value="Applied" className={undefined}>
+            <SelectContent className="">
+              <SelectItem className="flex items-center gap-2" value="Applied">
+                <MailCheck className="size-4" />
                 Applied
               </SelectItem>
-              <SelectItem value="Assessment" className={undefined}>
+              <SelectItem
+                className="flex items-center gap-2"
+                value="Assessment"
+              >
+                <ClipboardList className="size-4" />
                 Assessment
               </SelectItem>
-              <SelectItem value="Interview" className={undefined}>
+              <SelectItem className="flex items-center gap-2" value="Interview">
+                <MessagesSquare className="size-4" />
                 Interview
               </SelectItem>
-              <SelectItem value="Offer" className={undefined}>
+              <SelectItem className="flex items-center gap-2" value="Offer">
+                <Handshake className="size-4" />
                 Offer
               </SelectItem>
-              <SelectItem value="Rejected" className={undefined}>
+              <SelectItem className="flex items-center gap-2" value="Rejected">
+                <BadgeX className="size-4" />
                 Rejected
               </SelectItem>
             </SelectContent>
