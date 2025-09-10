@@ -85,7 +85,7 @@ export default function GlobalFilters({
   };
 
   return (
-    <div className="mb-4 flex items-center justify-end gap-4">
+    <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-end">
       <div className="relative w-full sm:w-64 md:w-72">
         <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
         <Input
@@ -99,7 +99,7 @@ export default function GlobalFilters({
         />
       </div>
       <Select onValueChange={handleStatusChange} value={selectedStatus}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-full sm:w-[180px]">
           {selectedStatus ? (
             <div className="flex items-center">
               {STATUS_ICONS[selectedStatus.toLowerCase()]}
@@ -125,7 +125,7 @@ export default function GlobalFilters({
       </Select>
 
       <Select onValueChange={handleLocationChange} value={selectedLocation}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-full sm:w-[180px]">
           <SelectValue placeholder="Location" />
         </SelectTrigger>
         <SelectContent className={undefined}>
@@ -142,7 +142,7 @@ export default function GlobalFilters({
       <Button
         variant="secondary"
         onClick={handleResetFilters}
-        className={undefined}
+        className="w-full sm:w-auto"
         size={undefined}
       >
         Reset Filters
