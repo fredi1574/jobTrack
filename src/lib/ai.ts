@@ -1,6 +1,7 @@
 import { ScrapeResult } from "@/app/actions/scrape";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { chromium } from "playwright";
+import chromium from "@sparticuz/chromium";
+import { chromium as playwrightChromium } from "playwright-core";
 
 if (!process.env.GEMINI_API_KEY) {
   throw new Error("GEMINI_API_KEY is not set");
@@ -13,7 +14,12 @@ export async function scrapeJobDetailsWithAI(
 ): Promise<ScrapeResult> {
   let browser = null;
   try {
-    browser = await chromium.launch();
+    browser = await playwrightChromium.launch({
+      args: chromium.args,
+      executablePath: await chromium.executablePath(),
+      headless: true,
+    });
+
     const context = await browser.newContext({
       userAgent:
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
@@ -33,7 +39,7 @@ export async function scrapeJobDetailsWithAI(
 
     const textContent = await page.textContent("body");
 
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `
       Extract the following job details from the text below:
@@ -56,10 +62,10 @@ export async function scrapeJobDetailsWithAI(
     for (let i = 0; i < maxRetries; i++) {
       try {
         result = await model.generateContent(prompt);
-        break; // If successful, break the loop
+        break;
       } catch (error) {
-        if (i === maxRetries - 1) throw error; // If it's the last retry, throw the error
-        await new Promise((res) => setTimeout(res, 1000 * (i + 1))); // Exponential backoff
+        if (i === maxRetries - 1) throw error;
+        await new Promise((res) => setTimeout(res, 1000 * (i + 1)));
       }
     }
 
