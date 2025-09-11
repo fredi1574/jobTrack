@@ -11,10 +11,12 @@ import {
   FileText,
   Handshake,
   LinkIcon,
+  Loader,
   MailCheck,
   MapPin,
   MessageSquare,
   MessagesSquare,
+  Search,
 } from "lucide-react";
 import { useActionState, useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
@@ -28,6 +30,11 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import FileUploadDropzone from "./FileUploadDropzone";
 import { CancelButton, SubmitButton } from "./FormButtons";
 
@@ -54,6 +61,7 @@ const initialFormData: ApplicationFormData = {
 };
 
 import { ActionResult } from "@/types/actions";
+import { Button } from "../ui/button";
 
 const initialState: ActionResult = {
   success: false,
@@ -208,21 +216,33 @@ export default function AddApplicationForm({
               onChange={handleChange}
               className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
             />
-            {/* TEMP - Removed while being fixed */}
-            {/* <Button
-              type="button"
-              onClick={handleScrape}
-              disabled={isScraping}
-              className="p-2"
-              variant="outline"
-              size={undefined}
-            >
-              {isScraping ? (
-                <Loader className="h-4 w-4 animate-spin" />
-              ) : (
-                <Search className="h-4 w-4" />
-              )}
-            </Button> */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  type="button"
+                  onClick={() => {
+                    handleScrape();
+                  }}
+                  disabled={isScraping}
+                  className="p-2"
+                  variant="outline"
+                  size={undefined}
+                >
+                  {isScraping ? (
+                    <Loader className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Search className="h-4 w-4" />
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="top" className={undefined}>
+                <p>
+                  Pasting a job link and clicking the search icon will attempt
+                  to automatically fill in the form. This may not work for all
+                  websites.
+                </p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </FormField>
 

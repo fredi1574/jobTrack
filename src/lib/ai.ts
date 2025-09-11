@@ -14,8 +14,13 @@ export async function scrapeJobDetailsWithAI(
   let browser = null;
   try {
     browser = await chromium.launch();
-    const page = await browser.newPage();
-    await page.goto(url, { waitUntil: "load", timeout: 60000 });
+    const context = await browser.newContext({
+      userAgent:
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    });
+
+    const page = await context.newPage();
+    await page.goto(url, { waitUntil: "networkidle", timeout: 60000 });
 
     const pageUrl = page.url();
     if (pageUrl.includes("linkedin.com")) {
@@ -46,7 +51,25 @@ export async function scrapeJobDetailsWithAI(
       Text: ${textContent}
     `;
 
-    const result = await model.generateContent(prompt);
+    const maxRetries = 3;
+    let result;
+    for (let i = 0; i < maxRetries; i++) {
+      try {
+        result = await model.generateContent(prompt);
+        break; // If successful, break the loop
+      } catch (error) {
+        if (i === maxRetries - 1) throw error; // If it's the last retry, throw the error
+        await new Promise((res) => setTimeout(res, 1000 * (i + 1))); // Exponential backoff
+      }
+    }
+
+    if (!result) {
+      return {
+        success: false,
+        error: "AI model failed to generate content after multiple retries.",
+      };
+    }
+
     const jsonResponse = result.response
       .text()
       .replace(/```json|```/g, "")
