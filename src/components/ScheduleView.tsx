@@ -190,7 +190,7 @@ export default function ScheduleView({
                     </div>
                   )}
                 {application.status !== "Interview" && (
-                  <>
+                  <div className="mt-2 flex gap-2 sm:flex-row sm:gap-2">
                     <Button
                       onClick={(event: React.MouseEvent) => {
                         event.stopPropagation();
@@ -199,7 +199,7 @@ export default function ScheduleView({
                       }}
                       variant="ghost"
                       size="sm"
-                      className="mt-1 mr-2 text-xs text-red-500"
+                      className="text-xs text-red-500"
                     >
                       <Timer className="h-4 w-4" />
                       Wait More
@@ -216,10 +216,10 @@ export default function ScheduleView({
                       <Trash2 className="h-4 w-4" />
                       Delete
                     </Button>
-                  </>
+                  </div>
                 )}
               </div>
-              <p className="text-sm">{application.location}</p>
+              <p className="text-xs break-all">{application.location}</p>
             </li>
           ))}
         </ul>
