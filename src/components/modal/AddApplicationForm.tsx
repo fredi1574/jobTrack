@@ -218,7 +218,8 @@ export default function AddApplicationForm({
               onChange={handleChange}
               className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
             />
-            <Tooltip>
+            {/* Temporarily disabled the scrape button */}
+            {/* <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   type="button"
@@ -244,7 +245,7 @@ export default function AddApplicationForm({
                   websites.
                 </p>
               </TooltipContent>
-            </Tooltip>
+            </Tooltip> */}
           </div>
         </FormField>
 
