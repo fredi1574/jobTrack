@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -23,6 +24,7 @@ export default function DeleteApplicationModal({
   onClose,
 }: DeleteApplicationModalProps) {
   const [isDeleting, setIsDeleting] = useState(false);
+  const router = useRouter();
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -30,6 +32,7 @@ export default function DeleteApplicationModal({
       await deleteApplication(applicationId);
       toast.success("Application deleted successfully.");
       onClose();
+      router.refresh();
     } catch (error) {
       toast.error("Failed to delete application.");
       console.error("Failed to delete application:", error);
