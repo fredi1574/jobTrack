@@ -110,6 +110,7 @@ export default function AddApplicationForm({
           Location: location,
           "Job Source": jobSource,
           Salary: salary,
+          Notes: notes,
         } = result.data;
 
         setFormData((prev) => ({
@@ -119,6 +120,7 @@ export default function AddApplicationForm({
           location: location || prev.location,
           jobSource: jobSource || prev.jobSource,
           salary: salary || prev.salary,
+          notes: notes || prev.notes,
         }));
         toast.success("Job details fetched successfully!");
       } else {
