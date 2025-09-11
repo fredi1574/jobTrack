@@ -49,16 +49,18 @@ export default function ScheduleView({
   }, [interviewApplications]);
 
   const upcomingInterviews = useMemo(() => {
-    return interviewApplications
+    return applications
       .filter(
         (application) =>
-          application.interviewDate && application.interviewDate >= new Date(),
+          application.status === "Interview" &&
+          application.interviewDate &&
+          application.interviewDate >= new Date(),
       )
       .sort(
         (a, b) =>
           (a.interviewDate?.getTime() || 0) - (b.interviewDate?.getTime() || 0),
       );
-  }, [interviewApplications]);
+  }, [applications]);
 
   const noResponseApplications = useMemo(() => {
     return applications.filter((application) => {
@@ -68,6 +70,29 @@ export default function ScheduleView({
       return daysSinceLastStatusChange > 7;
     });
   }, [applications]);
+
+  const mergedApplications = useMemo(() => {
+    const combined = [...upcomingInterviews, ...noResponseApplications];
+    const uniqueApplications = Array.from(
+      new Map(combined.map((app) => [app.id, app])).values(),
+    );
+
+    return uniqueApplications.sort((a, b) => {
+      const dateA = a.interviewDate || a.lastStatusChangeDate;
+      const dateB = b.interviewDate || b.lastStatusChangeDate;
+
+      if (dateA && dateB) {
+        return dateA.getTime() - dateB.getTime();
+      }
+      if (dateA) return -1;
+      if (dateB) return 1;
+
+      return (
+        a.company.localeCompare(b.company) ||
+        a.position.localeCompare(b.position)
+      );
+    });
+  }, [upcomingInterviews, noResponseApplications]);
 
   return (
     <div className="mx-2 flex h-[95dvh] flex-col">
@@ -104,108 +129,95 @@ export default function ScheduleView({
         formatters={undefined}
       />
 
-      <h2 className="my-2 text-center text-lg font-bold">
-        Upcoming interviews
-      </h2>
-      {upcomingInterviews.length === 0 ? (
-        <p className="text-center text-gray-500">No upcoming interviews</p>
+      <h2 className="my-2 text-center text-lg font-bold">Updates</h2>
+      {mergedApplications.length === 0 ? (
+        <p className="text-center text-gray-500">No updates to show.</p>
       ) : (
         <ul className="flex-grow overflow-auto pr-1">
-          {upcomingInterviews.map((application) => (
+          {mergedApplications.map((application) => (
             <li
               key={application.id}
-              className="my-2 flex w-full items-center justify-between rounded-md border bg-purple-100 p-4 text-purple-800 dark:bg-purple-500/20 dark:text-purple-300"
+              className={`my-2 flex w-full items-center justify-between rounded-md border p-4 ${
+                application.status === "Interview"
+                  ? "bg-purple-100 text-purple-800 dark:bg-purple-500/20 dark:text-purple-300"
+                  : "bg-red-100 text-red-800 dark:bg-red-500/20 dark:text-red-300"
+              }`}
             >
               <div>
                 <p className="font-semibold break-all">
                   {application.company} - {application.position}
                 </p>
-                {application.interviewDate && (
-                  <div className="flex flex-col gap-1">
-                    <div className="flex items-center gap-1 text-xs">
-                      <CalendarIcon className="h-3 w-3" />
-                      {format(new Date(application.interviewDate), "d/M/y")}
-                      {isToday(new Date(application.interviewDate)) && (
-                        <p className="text-xs text-red-600 dark:text-red-400">
-                          {" (Today)"}
-                        </p>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-1 text-xs">
-                      <Clock className="h-3 w-3" />
-                      {format(new Date(application.interviewDate), "HH:mm")}
-                      {isToday(new Date(application.interviewDate)) &&
-                        new Date(application.interviewDate) > new Date() && (
-                          <p className="text-red-600 dark:text-red-400">
-                            (
-                            {formatDuration(
-                              intervalToDuration({
-                                start: new Date(),
-                                end: new Date(application.interviewDate),
-                              }),
-                              { format: ["hours", "minutes"] },
-                            )}{" "}
-                            remaining)
+                {application.status === "Interview" &&
+                  application.interviewDate && (
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-1 text-xs">
+                        <CalendarIcon className="h-3 w-3" />
+                        {format(new Date(application.interviewDate), "d/M/y")}
+                        {isToday(new Date(application.interviewDate)) && (
+                          <p className="text-xs text-red-600 dark:text-red-400">
+                            {" (Today)"}
                           </p>
                         )}
+                      </div>
+                      <div className="flex items-center gap-1 text-xs">
+                        <Clock className="h-3 w-3" />
+                        {format(new Date(application.interviewDate), "HH:mm")}
+                        {isToday(new Date(application.interviewDate)) &&
+                          new Date(application.interviewDate) > new Date() && (
+                            <p className="text-red-600 dark:text-red-400">
+                              (
+                              {formatDuration(
+                                intervalToDuration({
+                                  start: new Date(),
+                                  end: new Date(application.interviewDate),
+                                }),
+                                { format: ["hours", "minutes"] },
+                              )}{" "}
+                              remaining)
+                            </p>
+                          )}
+                      </div>
                     </div>
-                  </div>
+                  )}
+                {application.status !== "Interview" &&
+                  application.lastStatusChangeDate && (
+                    <div className="flex items-center gap-1 text-xs">
+                      <ClockAlert className="h-3 w-3" />
+                      {getDaysSince(
+                        application.lastStatusChangeDate as Date,
+                      )}{" "}
+                      days since last status change
+                    </div>
+                  )}
+                {application.status !== "Interview" && (
+                  <>
+                    <Button
+                      onClick={(event: React.MouseEvent) => {
+                        event.stopPropagation();
+                        resetLastStatusChangeDate(application.id);
+                        router.refresh();
+                      }}
+                      variant="ghost"
+                      size="sm"
+                      className="mt-1 mr-2 text-xs text-red-500"
+                    >
+                      <Timer className="h-4 w-4" />
+                      Wait More
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size={"sm"}
+                      onClick={(event: React.MouseEvent) => {
+                        event.stopPropagation();
+                        handleDeleteClick(application);
+                      }}
+                      className="text-xs"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      Delete
+                    </Button>
+                  </>
                 )}
-              </div>
-              <p className="text-sm">{application.location}</p>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <h2 className="my-2 text-center text-lg font-bold">
-        Applications with no recent status change
-      </h2>
-      {noResponseApplications.length === 0 ? (
-        <p className="text-center text-gray-500">
-          All applications have recent status changes.
-        </p>
-      ) : (
-        <ul className="flex-grow overflow-auto pr-1">
-          {noResponseApplications.map((application) => (
-            <li
-              key={application.id}
-              className="my-2 flex w-full items-center justify-between rounded-md border bg-red-100 p-4 text-red-800 dark:bg-red-500/20 dark:text-red-300"
-            >
-              <div>
-                <p className="font-semibold break-all">
-                  {application.company} - {application.position}
-                </p>
-                <div className="flex items-center gap-1 text-xs">
-                  <ClockAlert className="h-3 w-3" />
-                  {getDaysSince(application.lastStatusChangeDate as Date)} days
-                  since last status change
-                </div>
-                <Button
-                  onClick={(event: React.MouseEvent) => {
-                    event.stopPropagation();
-                    resetLastStatusChangeDate(application.id);
-                    router.refresh();
-                  }}
-                  variant="ghost"
-                  size="sm"
-                  className="mt-1 mr-2 text-xs text-red-500"
-                >
-                  <Timer className="h-4 w-4" />
-                  Wait More
-                </Button>
-                <Button
-                  variant="destructive"
-                  size={"sm"}
-                  onClick={(event: React.MouseEvent) => {
-                    event.stopPropagation();
-                    handleDeleteClick(application);
-                  }}
-                  className="text-xs"
-                >
-                  <Trash2 className="h-4 w-4" />
-                  Delete
-                </Button>
               </div>
               <p className="text-sm">{application.location}</p>
             </li>
