@@ -107,7 +107,11 @@ export default function ApplicationAccordionItem({
                       <Bell className="h-4 w-4 text-yellow-500" />
                     </span>
                   </TooltipTrigger>
-                  <TooltipContent color="purple" className={undefined}>
+                  <TooltipContent
+                    side="left"
+                    color="purple"
+                    className={undefined}
+                  >
                     <p>
                       {format(
                         new Date(application.interviewDate),
@@ -180,7 +184,11 @@ export default function ApplicationAccordionItem({
                       <Bell className="h-4 w-4 text-yellow-500" />
                     </span>
                   </TooltipTrigger>
-                  <TooltipContent color="purple" className={undefined}>
+                  <TooltipContent
+                    side="left"
+                    color="purple"
+                    className={undefined}
+                  >
                     <p>
                       {format(
                         new Date(application.interviewDate),

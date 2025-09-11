@@ -29,26 +29,32 @@ function TooltipTrigger({ ...props }) {
 
 function TooltipContent({
   className,
-  sideOffset = 0,
+  sideOffset = 4,
+  side = "left",
   children,
-  color = "purple",
+  color = "blue",
   ...props
 }) {
   const bgColorClass =
     color === "red"
       ? "bg-red-500 dark:bg-red-700"
-      : "bg-purple-300 dark:bg-purple-500";
+      : color === "purple"
+        ? "bg-purple-300 dark:bg-purple-500"
+        : "bg-blue-300 dark:bg-blue-500";
   const textColorClass =
     color === "red" ? "text-white" : "text-gray-700 dark:text-gray-200";
   const arrowBgColorClass =
     color === "red"
       ? "bg-red-500 fill-red-500 dark:bg-red-700 dark:fill-red-700"
-      : "bg-purple-300 fill-purple-300 dark:bg-purple-500 dark:fill-purple-500";
+      : color === "purple"
+        ? "bg-purple-300 fill-purple-300 dark:bg-purple-500 dark:fill-purple-500"
+        : "bg-blue-300 fill-blue-300 dark:bg-blue-500 dark:fill-blue-500";
 
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
         data-slot="tooltip-content"
+        side={side}
         sideOffset={sideOffset}
         className={cn(
           "animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-xs font-semibold text-balance",
