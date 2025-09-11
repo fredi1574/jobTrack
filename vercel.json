@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "src/app/api/scrape-job/route.ts": {
+      "maxDuration": 60
+    }
+  }
+}
