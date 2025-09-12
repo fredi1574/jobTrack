@@ -1,5 +1,8 @@
 "use client";
-import { resetLastStatusChangeDate } from "@/app/actions/application";
+import {
+  resetLastStatusChangeDate,
+  toggleApplicationPin,
+} from "@/app/actions/application";
 import StatusDropdown from "@/components/applicationItem/StatusDropdown";
 import {
   Tooltip,
@@ -11,9 +14,10 @@ import { getDaysSince } from "@/lib/date.utils";
 import { getAccordionContentStyling, getStatusStyling } from "@/lib/utils";
 import { Application as PrismaApplication } from "@prisma/client";
 import { format } from "date-fns";
-import { Bell, ClockAlert, Pencil, Trash2 } from "lucide-react";
+import { Bell, ClockAlert, Pencil, Pin, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 import DeleteApplicationModal from "../modal/DeleteApplicationModal";
 import EditApplicationModal from "../modal/EditApplicationModal";
 import {
@@ -67,6 +71,21 @@ export default function ApplicationAccordionItem({
     setDeletingApplication(null);
   };
 
+  const handlePinClick = async (event: React.MouseEvent) => {
+    event.stopPropagation();
+    const result = await toggleApplicationPin(
+      application.id,
+      application.pinned,
+    );
+    if (result.success) {
+      toast.success(
+        application.pinned ? "Application unpinned" : "Application pinned",
+      );
+    } else {
+      toast.error(result.error);
+    }
+  };
+
   const formattedDate = application.appliedAt
     ? new Date(application.appliedAt).toLocaleDateString("en-IL")
     : "N/A";
@@ -80,20 +99,31 @@ export default function ApplicationAccordionItem({
   return (
     <AccordionItem
       value={application.id}
-      className={`dark:border-gray-700 ${statusStyling!.background} ${statusStyling!.border}`}
+      className={`${statusStyling!.background} ${statusStyling!.border}`}
     >
       <AccordionTrigger
         className={`group items-center gap-2 rounded-none p-3 hover:no-underline ${statusStyling!.hover} ${statusStyling!.text}`}
       >
         {/* Mobile layout */}
         <div className="flex w-full items-center justify-between sm:hidden">
-          <div className="flex min-w-0 flex-col items-start">
-            <span className="flex items-center gap-1 font-semibold break-all">
-              {application.company}
-            </span>
-            <span className="text-sm break-all text-gray-600 dark:text-gray-400">
-              {application.position}
-            </span>
+          <div className="flex min-w-0 items-center">
+            <Pin
+              onClick={handlePinClick}
+              className={`mr-4 size-4 shrink-0 cursor-pointer ${
+                application.pinned
+                  ? "rotate-45 fill-blue-500 text-blue-500"
+                  : "text-gray-500"
+              } hover:text-blue-500 dark:hover:text-blue-400`}
+              aria-label="Pin Application"
+            />
+            <div className="flex flex-col">
+              <span className="flex items-center gap-1 break-all">
+                {application.company}
+              </span>
+              <span className="text-sm break-all text-gray-600 dark:text-gray-400">
+                {application.position}
+              </span>
+            </div>
           </div>
           <div className="flex items-center">
             {application.status === "Interview" && application.interviewDate ? (
@@ -160,9 +190,20 @@ export default function ApplicationAccordionItem({
 
         {/* Desktop layout */}
         <div className="hidden w-full flex-1 items-center justify-around gap-4 overflow-hidden sm:flex">
-          <span className="flex items-center gap-1 font-semibold break-all text-gray-900 sm:w-1/5 dark:text-gray-100">
-            {application.company}
-          </span>
+          <div className="flex items-center gap-1 sm:w-1/5">
+            <Pin
+              onClick={handlePinClick}
+              className={`hover:bg-accent-foreground/10 mr-2 size-4 shrink-0 cursor-pointer rounded-full transition-colors ${
+                application.pinned
+                  ? "rotate-45 fill-blue-500 text-blue-500"
+                  : "text-gray-500"
+              } hover:text-blue-500 dark:hover:text-blue-400`}
+              aria-label="Pin Application"
+            />
+            <span className="break-all text-gray-900 dark:text-gray-100">
+              {application.company}
+            </span>
+          </div>
           <span className="break-all text-gray-700 sm:w-1/5 dark:text-gray-300">
             {application.position}
           </span>
@@ -224,7 +265,7 @@ export default function ApplicationAccordionItem({
                       }}
                       variant="ghost"
                       size="xs"
-                      className="bg-transparent px-1 font-semibold text-white"
+                      className="bg-transparent px-1 text-white"
                     >
                       Wait More
                     </Button>
