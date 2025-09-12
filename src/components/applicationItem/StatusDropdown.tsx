@@ -40,6 +40,7 @@ export default function StatusDropdown({
             style: {
               backgroundColor: TOAST_BACKGROUND_COLORS[newStatus.toLowerCase()],
               color: TOAST_TEXT_COLORS[newStatus.toLowerCase()],
+              border: "none",
             },
           });
           router.refresh();
