@@ -57,8 +57,19 @@ export default function EditApplicationForm({
   const [selectedStatus, setSelectedStatus] = useState<string>(
     applicationData.status,
   );
+  const [interviewDate, setInterviewDate] = useState<string>("");
 
   useEffect(() => {
+    if (applicationData.interviewDate) {
+      const localDate = new Date(applicationData.interviewDate);
+      const year = localDate.getFullYear();
+      const month = (localDate.getMonth() + 1).toString().padStart(2, "0");
+      const day = localDate.getDate().toString().padStart(2, "0");
+      const hours = localDate.getHours().toString().padStart(2, "0");
+      const minutes = localDate.getMinutes().toString().padStart(2, "0");
+      setInterviewDate(`${year}-${month}-${day}T${hours}:${minutes}`);
+    }
+
     if (state?.success) {
       if (onClose) {
         onClose();
@@ -71,7 +82,22 @@ export default function EditApplicationForm({
     if (state?.error && !state.fieldErrors) {
       toast.error(state.error);
     }
-  }, [state?.success, state?.error, state?.fieldErrors, router, onClose]);
+  }, [state?.success, state?.error, state?.fieldErrors, router, onClose, applicationData.interviewDate]);
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (value) {
+      const date = new Date(value);
+      const formattedDate = date.getFullYear() + '-' +
+        (date.getMonth() + 1).toString().padStart(2, '0') + '-' +
+        date.getDate().toString().padStart(2, '0') + 'T' +
+        date.getHours().toString().padStart(2, '0') + ':' +
+        date.getMinutes().toString().padStart(2, '0');
+      setInterviewDate(formattedDate);
+    } else {
+      setInterviewDate("");
+    }
+  };
 
   if (!applicationData) {
     return (
@@ -313,13 +339,8 @@ export default function EditApplicationForm({
               type="datetime-local"
               id="interviewDate"
               name="interviewDate"
-              defaultValue={
-                applicationData.interviewDate
-                  ? new Date(applicationData.interviewDate)
-                      .toISOString()
-                      .slice(0, 16)
-                  : ""
-              }
+              value={interviewDate}
+              onChange={handleDateChange}
               className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
             />
           </FormField>
