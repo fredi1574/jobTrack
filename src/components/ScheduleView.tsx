@@ -152,7 +152,13 @@ export default function ScheduleView({
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center gap-1 text-xs">
                         <CalendarIcon className="h-3 w-3" />
-                        {format(new Date(application.interviewDate), "d/M/y")}
+                        {(() => {
+                          const date = new Date(application.interviewDate);
+                          const day = date.getUTCDate().toString().padStart(2, '0');
+                          const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+                          const year = date.getUTCFullYear();
+                          return `${day}/${month}/${year}`;
+                        })()}
                         {isToday(new Date(application.interviewDate)) && (
                           <p className="text-xs text-red-600 dark:text-red-400">
                             {" (Today)"}
@@ -161,7 +167,12 @@ export default function ScheduleView({
                       </div>
                       <div className="flex items-center gap-1 text-xs">
                         <Clock className="h-3 w-3" />
-                        {format(new Date(application.interviewDate), "HH:mm")}
+                        {(() => {
+                          const date = new Date(application.interviewDate);
+                          const hours = date.getUTCHours().toString().padStart(2, '0');
+                          const minutes = date.getUTCMinutes().toString().padStart(2, '0');
+                          return `${hours}:${minutes}`;
+                        })()}
                         {isToday(new Date(application.interviewDate)) &&
                           new Date(application.interviewDate) > new Date() && (
                             <p className="text-red-600 dark:text-red-400">

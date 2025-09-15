@@ -52,35 +52,50 @@ export default function ApplicationDetails({
               <CalendarClock className="size-4" />
               Interview Details
             </h4>
-            <div className="flex gap-1 pl-1 text-gray-700 dark:text-gray-300">
-              <div className="flex items-center gap-1 text-sm">
+            <div className="flex flex-wrap items-center justify-end gap-2 text-sm">
+              <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
                 <Calendar className="h-4 w-4" />
-                {format(new Date(interviewDate), "d/M/y")}
+                <span>
+                  {(() => {
+                    const date = new Date(interviewDate);
+                    const day = String(date.getUTCDate()).padStart(2, "0");
+                    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+                    const year = date.getUTCFullYear();
+                    return `${day}/${month}/${year}`;
+                  })()}
+                </span>
                 {isToday(new Date(interviewDate)) && (
-                  <p className="text-sm text-red-600 dark:text-red-400">
-                    {" (Today)"}
-                  </p>
+                  <span className="ml-1 text-red-600 dark:text-red-400">
+                    (Today)
+                  </span>
                 )}
               </div>
-              <p className="text-sm">at</p>
-              <div className="flex items-center gap-1 text-sm">
+              <span className="text-gray-500">at</span>
+              <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
                 <Clock className="h-4 w-4" />
-                {format(new Date(interviewDate), "HH:mm")}
-                {isToday(new Date(interviewDate)) &&
-                  interviewDate > new Date() && (
-                    <p className="text-red-600 dark:text-red-400">
-                      (
-                      {formatDuration(
-                        intervalToDuration({
-                          start: new Date(),
-                          end: new Date(interviewDate),
-                        }),
-                        { format: ["hours", "minutes"] },
-                      )}{" "}
-                      remaining)
-                    </p>
-                  )}
+                <span>
+                  {(() => {
+                    const date = new Date(interviewDate);
+                    const hours = String(date.getUTCHours()).padStart(2, "0");
+                    const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+                    return `${hours}:${minutes}`;
+                  })()}
+                </span>
               </div>
+              {isToday(new Date(interviewDate)) &&
+                new Date(interviewDate) > new Date() && (
+                  <div className="text-xs text-red-600 dark:text-red-400">
+                    (
+                    {formatDuration(
+                      intervalToDuration({
+                        start: new Date(),
+                        end: new Date(interviewDate),
+                      }),
+                      { format: ["hours", "minutes"] }
+                    )}
+                    &nbsp;remaining)
+                  </div>
+                )}
             </div>
           </div>
         )}

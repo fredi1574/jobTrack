@@ -96,20 +96,7 @@ export default function AddApplicationForm({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (value) {
-      const date = new Date(value);
-      const formattedDate = date.getFullYear() + '-' +
-        (date.getMonth() + 1).toString().padStart(2, '0') + '-' +
-        date.getDate().toString().padStart(2, '0') + 'T' +
-        date.getHours().toString().padStart(2, '0') + ':' +
-        date.getMinutes().toString().padStart(2, '0');
-      setFormData((prev) => ({ ...prev, [name]: formattedDate }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
+  
 
   const handleScrape = () => {
     if (!formData.url) {
@@ -390,7 +377,9 @@ export default function AddApplicationForm({
               id="interviewDate"
               name="interviewDate"
               value={formData.interviewDate}
-              onChange={handleDateChange}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, interviewDate: e.target.value }))
+              }
               className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
             />
           </FormField>

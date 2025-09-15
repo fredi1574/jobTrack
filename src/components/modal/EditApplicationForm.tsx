@@ -61,12 +61,12 @@ export default function EditApplicationForm({
 
   useEffect(() => {
     if (applicationData.interviewDate) {
-      const localDate = new Date(applicationData.interviewDate);
-      const year = localDate.getFullYear();
-      const month = (localDate.getMonth() + 1).toString().padStart(2, "0");
-      const day = localDate.getDate().toString().padStart(2, "0");
-      const hours = localDate.getHours().toString().padStart(2, "0");
-      const minutes = localDate.getMinutes().toString().padStart(2, "0");
+      const d = new Date(applicationData.interviewDate);
+      const year = d.getUTCFullYear();
+      const month = (d.getUTCMonth() + 1).toString().padStart(2, "0");
+      const day = d.getUTCDate().toString().padStart(2, "0");
+      const hours = d.getUTCHours().toString().padStart(2, "0");
+      const minutes = d.getUTCMinutes().toString().padStart(2, "0");
       setInterviewDate(`${year}-${month}-${day}T${hours}:${minutes}`);
     }
 
@@ -83,21 +83,6 @@ export default function EditApplicationForm({
       toast.error(state.error);
     }
   }, [state?.success, state?.error, state?.fieldErrors, router, onClose, applicationData.interviewDate]);
-
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (value) {
-      const date = new Date(value);
-      const formattedDate = date.getFullYear() + '-' +
-        (date.getMonth() + 1).toString().padStart(2, '0') + '-' +
-        date.getDate().toString().padStart(2, '0') + 'T' +
-        date.getHours().toString().padStart(2, '0') + ':' +
-        date.getMinutes().toString().padStart(2, '0');
-      setInterviewDate(formattedDate);
-    } else {
-      setInterviewDate("");
-    }
-  };
 
   if (!applicationData) {
     return (
@@ -340,7 +325,9 @@ export default function EditApplicationForm({
               id="interviewDate"
               name="interviewDate"
               value={interviewDate}
-              onChange={handleDateChange}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setInterviewDate(e.target.value)
+              }
               className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
             />
           </FormField>
