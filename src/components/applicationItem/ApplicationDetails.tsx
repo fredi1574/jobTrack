@@ -1,6 +1,6 @@
 import { removeResume } from "@/app/actions/application";
 import { Application as PrismaApplication } from "@prisma/client";
-import { format, formatDuration, intervalToDuration, isToday } from "date-fns";
+import { formatDuration, intervalToDuration, isToday } from "date-fns";
 import {
   Calendar,
   CalendarClock,
@@ -59,7 +59,10 @@ export default function ApplicationDetails({
                   {(() => {
                     const date = new Date(interviewDate);
                     const day = String(date.getUTCDate()).padStart(2, "0");
-                    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+                    const month = String(date.getUTCMonth() + 1).padStart(
+                      2,
+                      "0",
+                    );
                     const year = date.getUTCFullYear();
                     return `${day}/${month}/${year}`;
                   })()}
@@ -77,7 +80,10 @@ export default function ApplicationDetails({
                   {(() => {
                     const date = new Date(interviewDate);
                     const hours = String(date.getUTCHours()).padStart(2, "0");
-                    const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+                    const minutes = String(date.getUTCMinutes()).padStart(
+                      2,
+                      "0",
+                    );
                     return `${hours}:${minutes}`;
                   })()}
                 </span>
@@ -91,7 +97,7 @@ export default function ApplicationDetails({
                         start: new Date(),
                         end: new Date(interviewDate),
                       }),
-                      { format: ["hours", "minutes"] }
+                      { format: ["hours", "minutes"] },
                     )}
                     &nbsp;remaining)
                   </div>

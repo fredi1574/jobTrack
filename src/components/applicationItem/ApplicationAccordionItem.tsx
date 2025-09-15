@@ -13,7 +13,6 @@ import {
 import { getDaysSince } from "@/lib/date.utils";
 import { getAccordionContentStyling, getStatusStyling } from "@/lib/utils";
 import { Application as PrismaApplication } from "@prisma/client";
-import { format } from "date-fns";
 import { Bell, ClockAlert, Pencil, Pin, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -145,11 +144,22 @@ export default function ApplicationAccordionItem({
                     <p>
                       {(() => {
                         const date = new Date(application.interviewDate);
-                        const day = date.getUTCDate().toString().padStart(2, '0');
-                        const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+                        const day = date
+                          .getUTCDate()
+                          .toString()
+                          .padStart(2, "0");
+                        const month = (date.getUTCMonth() + 1)
+                          .toString()
+                          .padStart(2, "0");
                         const year = date.getUTCFullYear().toString().slice(-2);
-                        const hours = date.getUTCHours().toString().padStart(2, '0');
-                        const minutes = date.getUTCMinutes().toString().padStart(2, '0');
+                        const hours = date
+                          .getUTCHours()
+                          .toString()
+                          .padStart(2, "0");
+                        const minutes = date
+                          .getUTCMinutes()
+                          .toString()
+                          .padStart(2, "0");
                         return `${day}/${month}/${year} at ${hours}:${minutes}`;
                       })()}
                     </p>
@@ -238,11 +248,22 @@ export default function ApplicationAccordionItem({
                     <p>
                       {(() => {
                         const date = new Date(application.interviewDate);
-                        const day = date.getUTCDate().toString().padStart(2, '0');
-                        const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+                        const day = date
+                          .getUTCDate()
+                          .toString()
+                          .padStart(2, "0");
+                        const month = (date.getUTCMonth() + 1)
+                          .toString()
+                          .padStart(2, "0");
                         const year = date.getUTCFullYear().toString().slice(-2);
-                        const hours = date.getUTCHours().toString().padStart(2, '0');
-                        const minutes = date.getUTCMinutes().toString().padStart(2, '0');
+                        const hours = date
+                          .getUTCHours()
+                          .toString()
+                          .padStart(2, "0");
+                        const minutes = date
+                          .getUTCMinutes()
+                          .toString()
+                          .padStart(2, "0");
                         return `${day}/${month}/${year} at ${hours}:${minutes}`;
                       })()}
                     </p>

@@ -96,8 +96,6 @@ export default function AddApplicationForm({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  
-
   const handleScrape = () => {
     if (!formData.url) {
       toast.error("Please enter a URL to scrape.");
@@ -377,8 +375,11 @@ export default function AddApplicationForm({
               id="interviewDate"
               name="interviewDate"
               value={formData.interviewDate}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, interviewDate: e.target.value }))
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  interviewDate: e.target.value,
+                }))
               }
               className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
             />
