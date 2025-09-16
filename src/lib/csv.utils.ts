@@ -12,6 +12,7 @@ export const prepareApplicationsForCsv = (
       appliedAt,
       interviewDate,
       pinned,
+      lastStatusChangeDate,
       ...restOfData
     } = application;
 
