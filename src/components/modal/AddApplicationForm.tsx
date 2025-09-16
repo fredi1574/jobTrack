@@ -377,7 +377,7 @@ export default function AddApplicationForm({
             id="appliedAt"
             name="appliedAt"
             defaultValue={new Date().toISOString().split("T")[0]}
-            className="w-40 border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
+            className="w-fit border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
         </FormField>
 

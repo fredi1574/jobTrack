@@ -82,7 +82,14 @@ export default function EditApplicationForm({
     if (state?.error && !state.fieldErrors) {
       toast.error(state.error);
     }
-  }, [state?.success, state?.error, state?.fieldErrors, router, onClose, applicationData.interviewDate]);
+  }, [
+    state?.success,
+    state?.error,
+    state?.fieldErrors,
+    router,
+    onClose,
+    applicationData.interviewDate,
+  ]);
 
   if (!applicationData) {
     return (
@@ -208,7 +215,7 @@ export default function EditApplicationForm({
                   })()
                 : ""
             }
-            className="w-40 border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
+            className="w-fit border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
         </FormField>
 
