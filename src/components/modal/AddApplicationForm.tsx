@@ -492,7 +492,7 @@ export default function AddApplicationForm({
         </FormField>
       </div>
 
-      <div className="flex flex-col pt-4 sm:flex-row sm:justify-end sm:gap-2">
+      <div className="flex flex-col pt-4 sm:justify-end sm:gap-2">
         <SubmitButton
           text="Add Application"
           pendingText="Adding..."
