@@ -25,17 +25,14 @@ export default function AddApplicationModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="flex max-h-[85vh] flex-col overflow-auto rounded-r-none">
-        <DialogHeader>
-          <DialogTitle>Add new Application</DialogTitle>
-          <DialogDescription>
+        <DialogHeader className={undefined}>
+          <DialogTitle className={undefined}>Add new Application</DialogTitle>
+          <DialogDescription className={undefined}>
             Fill in the details for the job application you are applying for
           </DialogDescription>
         </DialogHeader>
 
-        <AddApplicationForm
-          onSuccess={onClose}
-          initialData={initialData}
-        />
+        <AddApplicationForm onSuccess={onClose} initialData={initialData} />
       </DialogContent>
     </Dialog>
   );
