@@ -1,7 +1,4 @@
 "use server";
-
-export const maxDuration = 60;
-
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 if (!process.env.GEMINI_API_KEY) {
@@ -29,7 +26,7 @@ export async function parseJobDetails(text: string) {
     If the Job Source not found, return Company Website for that field.
     The JSON should have the following keys: company, position, location, url, jobSource, salary, and notes.
 
-    Text: ${text}
+        Text: ${text.substring(0, 5000)}
   `;
 
   const maxRetries = 3;
