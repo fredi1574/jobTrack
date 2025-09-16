@@ -137,8 +137,10 @@ export default function AddApplicationForm({
           }));
           toast.success("Job details parsed successfully!");
         }
-      } catch (error) {
-        toast.error("An unknown error occurred while parsing.");
+      } catch (error: any) {
+        const errorMessage =
+          error.message || "An unknown error occurred while parsing.";
+        toast.error(errorMessage);
       }
     });
   };
@@ -192,30 +194,32 @@ export default function AddApplicationForm({
         }
         className="md:col-span-2"
       >
-        <Textarea
-          id="jobDescription"
-          name="jobDescription"
-          rows={6}
-          value={formData.jobDescription}
-          onChange={handleChange}
-          placeholder="Paste the full job description here to be parsed by AI."
-          className="max-h-96 resize-y border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
-        />
-        <Button
-          type="button"
-          onClick={handleParse}
-          disabled={isParsing}
-          className="mt-2"
-          variant="outline"
-          size={undefined}
-        >
-          {isParsing ? (
-            <Loader className="h-4 w-4 animate-spin" />
-          ) : (
-            <Search className="h-4 w-4" />
-          )}
-          Parse Details
-        </Button>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
+          <Textarea
+            id="jobDescription"
+            name="jobDescription"
+            rows={6}
+            value={formData.jobDescription}
+            onChange={handleChange}
+            placeholder="Paste the full job description here to be parsed by AI."
+            className="max-h-96 resize-y border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
+          />
+          <Button
+            type="button"
+            onClick={handleParse}
+            disabled={isParsing}
+            className="sm:mt-0"
+            variant="outline"
+            size={undefined}
+          >
+            {isParsing ? (
+              <Loader className="h-4 w-4 animate-spin" />
+            ) : (
+              <Search className="h-4 w-4" />
+            )}
+            Parse Details
+          </Button>
+        </div>
       </FormField>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <FormField
@@ -488,7 +492,7 @@ export default function AddApplicationForm({
         </FormField>
       </div>
 
-      <div className="flex flex-col gap-4 pt-4">
+      <div className="flex flex-col pt-4 sm:flex-row sm:justify-end sm:gap-2">
         <SubmitButton
           text="Add Application"
           pendingText="Adding..."
