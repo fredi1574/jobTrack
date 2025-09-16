@@ -1,8 +1,13 @@
 "use server";
+
+export const maxDuration = 60;
+
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 if (!process.env.GEMINI_API_KEY) {
-  throw new Error("GEMINI_API_KEY is not set");
+  throw new Error(
+    "Gemini API key is not configured. Please ensure GEMINI_API_KEY is set in your environment variables.",
+  );
 }
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -33,8 +38,13 @@ export async function parseJobDetails(text: string) {
     try {
       result = await model.generateContent(prompt);
       break;
-    } catch (error) {
-      if (i === maxRetries - 1) throw error;
+    } catch (error: any) {
+      console.error(`Attempt ${i + 1} failed to generate content:`, error);
+      if (i === maxRetries - 1) {
+        throw new Error(
+          `Failed to communicate with Gemini API after ${maxRetries} attempts. Error: ${error.message || "Unknown error"}`,
+        );
+      }
       await new Promise((res) => setTimeout(res, 1000 * (i + 1)));
     }
   }
