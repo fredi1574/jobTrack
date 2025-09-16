@@ -9,6 +9,7 @@ import {
 import { AdapterUser } from "next-auth/adapters";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "./prisma";
 
 export const authOptions: AuthOptions = {
@@ -17,6 +18,10 @@ export const authOptions: AuthOptions = {
     strategy: "jwt",
   },
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -52,6 +57,49 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
+    async signIn({ user, account, profile }) {
+      console.log("signIn callback - user:", user);
+      if (account?.type === "oauth" && user.email) {
+        const existingDbUser = await prisma.user.findUnique({
+          where: { email: user.email },
+        });
+
+        if (existingDbUser) {
+          const existingAccount = await prisma.account.findFirst({
+            where: {
+              provider: account.provider,
+              providerAccountId: account.providerAccountId,
+            },
+          });
+
+          if (!existingAccount) {
+            // If no account exists for this provider, link it to the existing user
+            await prisma.account.create({
+              data: {
+                userId: existingDbUser.id,
+                type: account.type,
+                provider: account.provider,
+                providerAccountId: account.providerAccountId,
+                access_token: account.access_token,
+                expires_at: account.expires_at,
+                id_token: account.id_token,
+                refresh_token: account.refresh_token,
+                scope: account.scope,
+                session_state: account.session_state,
+                token_type: account.token_type,
+              },
+            });
+
+            // Update emailVerified for the existing user
+            await prisma.user.update({
+              where: { id: existingDbUser.id },
+              data: { emailVerified: new Date() },
+            });
+          }
+        }
+      }
+      return true;
+    },
     async jwt({
       token,
       user,
@@ -90,6 +138,17 @@ export const authOptions: AuthOptions = {
   pages: {
     signIn: "/login",
     error: "/login",
+  },
+  events: {
+    async linkAccount({ user, account, profile }) {
+      console.log("linkAccount event triggered!");
+      if (user.email) {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { emailVerified: new Date() },
+        });
+      }
+    },
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

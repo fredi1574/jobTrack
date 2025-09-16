@@ -17,13 +17,14 @@ CREATE TABLE "public"."Application" (
     "location" TEXT NOT NULL,
     "url" TEXT,
     "status" TEXT NOT NULL,
+    "lastStatusChangeDate" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "notes" TEXT,
     "resumeUrl" TEXT,
-    "appliedAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3),
+    "appliedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "jobSource" TEXT,
     "salary" INTEGER,
     "interviewDate" TIMESTAMP(3),
+    "pinned" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Application_pkey" PRIMARY KEY ("id")
 );
