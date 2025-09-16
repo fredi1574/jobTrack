@@ -26,7 +26,7 @@ export async function parseJobDetails(text: string) {
     If the Job Source not found, return Company Website for that field.
     The JSON should have the following keys: company, position, location, url, jobSource, salary, and notes.
 
-        Text: ${text.substring(0, 5000)}
+        Text: ${text}
   `;
 
   const maxRetries = 3;
