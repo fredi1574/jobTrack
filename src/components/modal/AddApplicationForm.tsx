@@ -83,6 +83,8 @@ export default function AddApplicationForm({
   const [formData, setFormData] =
     useState<ApplicationFormData>(initialFormData);
   const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [showJobDescriptionInput, setShowJobDescriptionInput] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (state.success) {
@@ -180,48 +182,76 @@ export default function AddApplicationForm({
   };
 
   return (
-    <form action={formAction} className="space-y-6 pt-4">
+    <form
+      action={formAction}
+      className="mx-auto w-full space-y-6 pt-4 md:max-w-3xl lg:max-w-4xl"
+    >
       {state.error && !state.fieldErrors && (
         <div className="rounded-md bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
           {state.error}
         </div>
       )}
-      <FormField
-        id="jobDescription"
-        name="jobDescription"
-        label="Paste Job Description"
-        icon={
-          <ClipboardList className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-        }
-        className="md:col-span-2"
-      >
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
-          <Textarea
-            id="jobDescription"
-            name="jobDescription"
-            rows={6}
-            value={formData.jobDescription}
-            onChange={handleChange}
-            placeholder="Paste the full job description here to be parsed by AI."
-            className="max-h-96 resize-y border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
-          />
+
+      {!showJobDescriptionInput && (
+        <Button
+          type="button"
+          onClick={() => setShowJobDescriptionInput(true)}
+          variant="outline"
+          className="w-full"
+          size={undefined}
+        >
+          <ClipboardList className="mr-2 h-4 w-4" /> Get from Description with
+          AI
+        </Button>
+      )}
+
+      {showJobDescriptionInput && (
+        <FormField
+          id="jobDescription"
+          name="jobDescription"
+          label="Paste Job Description"
+          icon={
+            <ClipboardList className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+          }
+          className="md:col-span-2"
+        >
+          <div className="flex flex-col gap-2">
+            <Textarea
+              id="jobDescription"
+              name="jobDescription"
+              rows={6}
+              value={formData.jobDescription}
+              onChange={handleChange}
+              placeholder="Paste the full job description here to be parsed by AI."
+              className="max-h-96 resize-y border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
+            />
+            <Button
+              type="button"
+              onClick={handleParse}
+              disabled={isParsing}
+              className="sm:mt-0"
+              variant="outline"
+              size={undefined}
+            >
+              {isParsing ? (
+                <Loader className="h-4 w-4 animate-spin" />
+              ) : (
+                <Search className="h-4 w-4" />
+              )}
+              Parse Details
+            </Button>
+          </div>
           <Button
             type="button"
-            onClick={handleParse}
-            disabled={isParsing}
-            className="sm:mt-0"
-            variant="outline"
+            onClick={() => setShowJobDescriptionInput(false)}
+            variant="ghost"
+            className="mt-2 w-full"
             size={undefined}
           >
-            {isParsing ? (
-              <Loader className="h-4 w-4 animate-spin" />
-            ) : (
-              <Search className="h-4 w-4" />
-            )}
-            Parse Details
+            <ClipboardList className="mr-2 h-4 w-4" /> Hide Job Description
           </Button>
-        </div>
-      </FormField>
+        </FormField>
+      )}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <FormField
           id="company"
