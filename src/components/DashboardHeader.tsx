@@ -2,10 +2,10 @@
 import { Button } from "@/components/ui/button";
 import { DrawerTrigger } from "@/components/ui/drawer";
 import { Calendar } from "lucide-react";
-import ExportCSVButton from "./ExportCSVButton";
-import AddApplicationModal from "./modal/AddApplicationModal";
-import ImportApplicationModal from "./modal/ImportApplicationModal";
 import { motion } from "motion/react";
+import ExportCSVButton from "./ExportCSVButton";
+import AddApplication from "./modal/AddApplication";
+import ImportApplicationModal from "./modal/ImportApplicationModal";
 
 interface DashboardHeaderProps {
   dataForCsv: any[];
@@ -49,7 +49,7 @@ export default function DashboardHeader({ dataForCsv }: DashboardHeaderProps) {
         </div>
 
         {/* Add application modal */}
-        <AddApplicationModal />
+        <AddApplication />
       </motion.div>
     </div>
   );

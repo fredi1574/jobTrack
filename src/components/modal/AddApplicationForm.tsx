@@ -1,5 +1,6 @@
 "use client";
 import { createApplication } from "@/app/actions/application";
+import { parseJobDetails } from "@/app/actions/parse";
 import { scrapeJob } from "@/app/actions/scrape";
 import {
   BadgeX,
@@ -30,11 +31,6 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import FileUploadDropzone from "./FileUploadDropzone";
 import { CancelButton, SubmitButton } from "./FormButtons";
 
@@ -47,6 +43,7 @@ interface ApplicationFormData {
   salary: string;
   notes: string;
   interviewDate?: string;
+  jobDescription?: string;
 }
 
 const initialFormData: ApplicationFormData = {
@@ -58,6 +55,7 @@ const initialFormData: ApplicationFormData = {
   salary: "",
   notes: "",
   interviewDate: "",
+  jobDescription: "",
 };
 
 import { ActionResult } from "@/types/actions";
@@ -67,15 +65,20 @@ const initialState: ActionResult = {
   success: false,
 };
 
+import { Application } from "@prisma/client";
+
 interface AddApplicationFormProps {
   onSuccess?: () => void;
+  initialData?: Partial<Application> | null;
 }
 
 export default function AddApplicationForm({
   onSuccess,
+  initialData,
 }: AddApplicationFormProps) {
   const [state, formAction] = useActionState(createApplication, initialState);
   const [isScraping, startScraping] = useTransition();
+  const [isParsing, startParsing] = useTransition();
   const [formData, setFormData] =
     useState<ApplicationFormData>(initialFormData);
   const [selectedStatus, setSelectedStatus] = useState<string>("");
@@ -89,11 +92,55 @@ export default function AddApplicationForm({
     }
   }, [state.success, onSuccess]);
 
+  useEffect(() => {
+    if (initialData) {
+      setFormData((prev) => ({
+        ...prev,
+        company: initialData.company || prev.company,
+        position: initialData.position || prev.position,
+        location: initialData.location || prev.location,
+        url: initialData.url || prev.url,
+        jobSource: initialData.jobSource || prev.jobSource,
+        salary: initialData.salary?.toString() || prev.salary,
+        notes: initialData.notes || prev.notes,
+      }));
+    }
+  }, [initialData]);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleParse = async () => {
+    if (!formData.jobDescription) {
+      toast.error("Please paste the job description to parse.");
+      return;
+    }
+    startParsing(async () => {
+      try {
+        const result = await parseJobDetails(formData.jobDescription as string);
+        if (result) {
+          setFormData((prev) => ({
+            ...prev,
+            company: result.company || prev.company,
+            position: result.position || prev.position,
+            location: result.location || prev.location,
+            url: result.url || prev.url,
+            jobSource: result.jobSource || prev.jobSource,
+            salary: result.salary?.toString() || prev.salary,
+            notes: Array.isArray(result.notes)
+              ? result.notes.join("\n")
+              : result.notes || prev.notes,
+          }));
+          toast.success("Job details parsed successfully!");
+        }
+      } catch (error) {
+        toast.error("An unknown error occurred while parsing.");
+      }
+    });
   };
 
   const handleScrape = () => {
@@ -136,7 +183,40 @@ export default function AddApplicationForm({
           {state.error}
         </div>
       )}
-
+      <FormField
+        id="jobDescription"
+        name="jobDescription"
+        label="Paste Job Description"
+        icon={
+          <ClipboardList className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+        }
+        className="md:col-span-2"
+      >
+        <Textarea
+          id="jobDescription"
+          name="jobDescription"
+          rows={6}
+          value={formData.jobDescription}
+          onChange={handleChange}
+          placeholder="Paste the full job description here to be parsed by AI."
+          className="max-h-96 resize-y border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
+        />
+        <Button
+          type="button"
+          onClick={handleParse}
+          disabled={isParsing}
+          className="mt-2"
+          variant="outline"
+          size={undefined}
+        >
+          {isParsing ? (
+            <Loader className="h-4 w-4 animate-spin" />
+          ) : (
+            <Search className="h-4 w-4" />
+          )}
+          Parse Details
+        </Button>
+      </FormField>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <FormField
           id="company"
@@ -403,7 +483,7 @@ export default function AddApplicationForm({
             value={formData.notes}
             onChange={handleChange}
             placeholder="Add any relevant details about the application..."
-            className="resize-none border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
+            className="resize-y border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
         </FormField>
       </div>
