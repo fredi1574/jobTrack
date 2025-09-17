@@ -30,6 +30,8 @@
     "clsx": "^2.1.1",
     "csv-parse": "^6.1.0",
     "date-fns": "^3.6.0",
+    "date-fns-tz": "^3.2.0",
+    "googleapis": "^129.0.0",
     "lucide-react": "^0.488.0",
     "motion": "^12.23.12",
     "next": "15.3.0",

@@ -11,9 +11,18 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { getDaysSince } from "@/lib/date.utils";
+import { formatDate, getUserTimeZone } from "@/lib/time.utils";
 import { getAccordionContentStyling, getStatusStyling } from "@/lib/utils";
 import { Application as PrismaApplication } from "@prisma/client";
-import { Bell, ClockAlert, Pencil, Pin, Trash2 } from "lucide-react";
+import {
+  Bell,
+  CalendarPlus,
+  ClockAlert,
+  Pencil,
+  Pin,
+  Trash2,
+} from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -41,6 +50,8 @@ export default function ApplicationAccordionItem({
     application.status,
   );
   const router = useRouter();
+
+  const { data: session } = useSession();
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingApplication, setEditingApplication] =
@@ -82,6 +93,50 @@ export default function ApplicationAccordionItem({
       );
     } else {
       toast.error(result.error);
+    }
+  };
+
+  const handleAddToCalendar = async (event: React.MouseEvent) => {
+    event.stopPropagation();
+
+    if (!session) {
+      toast.error("You need to be logged in to add to calendar.");
+      return;
+    }
+
+    if (application.status !== "Interview" || !application.interviewDate) {
+      toast.error("Only interviews with a set date can be added to calendar.");
+      return;
+    }
+
+    const interviewDate = new Date(application.interviewDate);
+    const startDate = interviewDate;
+    const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
+
+    try {
+      const response = await fetch("/api/reminders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          summary: `Interview - ${application.company} - ${application.position}`,
+          description: `Interview for ${application.position} at ${application.company}.\nURL: ${application.url || "N/A"}`,
+          startDateTime: startDate.toISOString(),
+          endDateTime: endDate.toISOString(),
+          timeZone: getUserTimeZone(),
+        }),
+      });
+
+      if (response.ok) {
+        toast.success("Interview added to Google Calendar!");
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.message || "Failed to add to Google Calendar.");
+      }
+    } catch (error) {
+      console.error("Error adding to calendar:", error);
+      toast.error("An unexpected error occurred.");
     }
   };
 
@@ -142,26 +197,12 @@ export default function ApplicationAccordionItem({
                     className={undefined}
                   >
                     <p>
-                      {(() => {
-                        const date = new Date(application.interviewDate);
-                        const day = date
-                          .getUTCDate()
-                          .toString()
-                          .padStart(2, "0");
-                        const month = (date.getUTCMonth() + 1)
-                          .toString()
-                          .padStart(2, "0");
-                        const year = date.getUTCFullYear().toString().slice(-2);
-                        const hours = date
-                          .getUTCHours()
-                          .toString()
-                          .padStart(2, "0");
-                        const minutes = date
-                          .getUTCMinutes()
-                          .toString()
-                          .padStart(2, "0");
-                        return `${day}/${month}/${year} at ${hours}:${minutes}`;
-                      })()}
+                      <p>
+                        {formatDate(
+                          new Date(application.interviewDate),
+                          "dd/MM/yy HH:mm",
+                        )}
+                      </p>
                     </p>
                   </TooltipContent>
                 </Tooltip>
@@ -246,26 +287,12 @@ export default function ApplicationAccordionItem({
                     className={undefined}
                   >
                     <p>
-                      {(() => {
-                        const date = new Date(application.interviewDate);
-                        const day = date
-                          .getUTCDate()
-                          .toString()
-                          .padStart(2, "0");
-                        const month = (date.getUTCMonth() + 1)
-                          .toString()
-                          .padStart(2, "0");
-                        const year = date.getUTCFullYear().toString().slice(-2);
-                        const hours = date
-                          .getUTCHours()
-                          .toString()
-                          .padStart(2, "0");
-                        const minutes = date
-                          .getUTCMinutes()
-                          .toString()
-                          .padStart(2, "0");
-                        return `${day}/${month}/${year} at ${hours}:${minutes}`;
-                      })()}
+                      <p>
+                        {formatDate(
+                          new Date(application.interviewDate),
+                          "dd/MM/yy HH:mm",
+                        )}
+                      </p>
                     </p>
                   </TooltipContent>
                 </Tooltip>
@@ -316,6 +343,7 @@ export default function ApplicationAccordionItem({
           <ApplicationActions
             application={application}
             onEdit={handleEditClick}
+            onAddToCalendar={handleAddToCalendar}
           />
         </div>
       </AccordionTrigger>
@@ -324,6 +352,15 @@ export default function ApplicationAccordionItem({
       >
         <ApplicationDetails application={application} />
         <div className="mt-4 flex justify-end gap-2 pt-2 md:hidden">
+          {application.status === "Interview" && application.interviewDate && (
+            <button
+              onClick={handleAddToCalendar}
+              className="inline-flex cursor-pointer items-center gap-1 rounded-md bg-green-50 px-3 py-1.5 text-xs font-medium text-green-600 transition-colors hover:bg-green-300 dark:bg-green-900/20 dark:text-green-400 dark:hover:bg-green-900/30"
+            >
+              <CalendarPlus className="size-3" />
+              Calendar
+            </button>
+          )}
           <button
             onClick={() => handleEditClick(application)}
             className="inline-flex cursor-pointer items-center gap-1 rounded-md bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-600 transition-colors hover:bg-blue-300 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30"

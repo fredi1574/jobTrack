@@ -1,5 +1,5 @@
 import type { Application as PrismaApplication } from "@prisma/client";
-import { formatDate } from "./date.utils";
+import { formatDate } from "./time.utils";
 
 export const prepareApplicationsForCsv = (
   applications: PrismaApplication[],

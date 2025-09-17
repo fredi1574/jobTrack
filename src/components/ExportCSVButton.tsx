@@ -1,4 +1,4 @@
-import { formatDate } from "@/lib/date.utils";
+import { formatDate } from "@/lib/time.utils";
 import { Download } from "lucide-react";
 import { CSVLink } from "react-csv";
 import { Button } from "./ui/button";

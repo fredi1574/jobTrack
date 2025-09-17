@@ -55,18 +55,17 @@ export default function ApplicationDetails({
             <div className="flex flex-wrap items-center justify-end gap-2 text-sm">
               <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
                 <Calendar className="h-4 w-4" />
+
                 <span>
                   {(() => {
                     const date = new Date(interviewDate);
-                    const day = String(date.getUTCDate()).padStart(2, "0");
-                    const month = String(date.getUTCMonth() + 1).padStart(
-                      2,
-                      "0",
-                    );
-                    const year = date.getUTCFullYear();
+                    const day = String(date.getDate()).padStart(2, "0");
+                    const month = String(date.getMonth() + 1).padStart(2, "0");
+                    const year = date.getFullYear();
                     return `${day}/${month}/${year}`;
                   })()}
                 </span>
+
                 {isToday(new Date(interviewDate)) && (
                   <span className="ml-1 text-red-600 dark:text-red-400">
                     (Today)
@@ -79,11 +78,8 @@ export default function ApplicationDetails({
                 <span>
                   {(() => {
                     const date = new Date(interviewDate);
-                    const hours = String(date.getUTCHours()).padStart(2, "0");
-                    const minutes = String(date.getUTCMinutes()).padStart(
-                      2,
-                      "0",
-                    );
+                    const hours = String(date.getHours()).padStart(2, "0");
+                    const minutes = String(date.getMinutes()).padStart(2, "0");
                     return `${hours}:${minutes}`;
                   })()}
                 </span>

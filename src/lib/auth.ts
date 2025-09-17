@@ -1,6 +1,8 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { compare } from "bcryptjs";
+import { google } from "googleapis";
 import {
+  Account,
   getServerSession as originalGetServerSession,
   Session,
   type AuthOptions,
@@ -12,6 +14,31 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "./prisma";
 
+async function refreshAccessToken(token: JWT) {
+  try {
+    const oauth2Client = new google.auth.OAuth2(
+      process.env.GOOGLE_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_SECRET,
+    );
+
+    oauth2Client.setCredentials({
+      refresh_token: token.refreshToken as string,
+    });
+
+    const { credentials } = await oauth2Client.refreshAccessToken();
+
+    return {
+      ...token,
+      accessToken: credentials.access_token,
+      accessTokenExpires: credentials.expiry_date,
+      refreshToken: credentials.refresh_token ?? token.refreshToken, // Fall back to old refresh token
+    };
+  } catch (error) {
+    console.error("Error refreshing access token:", error);
+    return { ...token, error: "RefreshAccessTokenError" as const };
+  }
+}
+
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   session: {
@@ -21,6 +48,12 @@ export const authOptions: AuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      authorization: {
+        params: {
+          scope:
+            "openid email profile https://www.googleapis.com/auth/calendar.events",
+        },
+      },
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -103,11 +136,13 @@ export const authOptions: AuthOptions = {
     async jwt({
       token,
       user,
+      account,
       trigger,
       session,
     }: {
       token: JWT;
       user?: NextAuthUser | AdapterUser;
+      account?: Account | null;
       session?: any;
       trigger?: "signIn" | "signUp" | "update" | "jwt";
     }): Promise<JWT> {
@@ -116,10 +151,22 @@ export const authOptions: AuthOptions = {
         token.name = user.name;
         token.email = user.email;
       }
-      if (trigger === "update" && session?.name) {
-        token.name = session.name;
+      if (account) {
+        token.accessToken = account.access_token;
+        token.refreshToken = account.refresh_token;
+        token.accessTokenExpires = account.expires_at;
       }
-      return token;
+
+      // Return previous token if the access token has not expired yet
+      if (
+        token.accessTokenExpires &&
+        Date.now() < (token.accessTokenExpires as number) * 1000
+      ) {
+        return token;
+      }
+
+      // Access token has expired, try to update it
+      return refreshAccessToken(token);
     },
     async session({
       session,
@@ -131,6 +178,9 @@ export const authOptions: AuthOptions = {
       if (token && session.user) {
         session.user.id = token.id as string;
         session.user.name = token.name;
+        session.accessToken = token.accessToken; // Add access token to session
+        session.refreshToken = token.refreshToken; // Add refresh token to session
+        session.accessTokenExpires = token.accessTokenExpires; // Add expiry to session
       }
       return session;
     },

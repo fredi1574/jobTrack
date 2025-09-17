@@ -6,17 +6,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Application as PrismaApplication } from "@prisma/client";
-import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { MoreHorizontal, Pencil, Trash2, CalendarPlus } from "lucide-react";
 import { useState } from "react";
 
 interface ApplicationActionsProps {
   application: PrismaApplication;
   onEdit: (application: PrismaApplication) => void;
+  onAddToCalendar: (event: React.MouseEvent) => void;
 }
 
 export default function ApplicationActions({
   application,
   onEdit,
+  onAddToCalendar,
 }: ApplicationActionsProps): React.ReactElement {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [applicationToDeleteId, setApplicationToDeleteId] = useState<
@@ -63,6 +65,16 @@ export default function ApplicationActions({
             <Pencil className="mr-2 size-4" />
             Edit
           </DropdownMenuItem>
+          {application.status === "Interview" && application.interviewDate && (
+            <DropdownMenuItem
+              onClick={onAddToCalendar}
+              className={undefined}
+              inset={undefined}
+            >
+              <CalendarPlus className="mr-2 size-4" />
+              Add to Calendar
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem
             onClick={handleDeleteClick}
             className="text-red-500"

@@ -138,7 +138,7 @@ export async function createApplication(
         resumeUrl: resumeBlobUrl,
         jobSource: jobSource || null,
         salary: salary ? parseInt(salary) : null,
-        interviewDate: interviewDate ? new Date(interviewDate + "Z") : null,
+        interviewDate: interviewDate ? new Date(interviewDate) : null,
         User: { connect: { id: session.user.id } },
       },
     });
@@ -240,7 +240,7 @@ export async function updateApplication(
           : application.resumeUrl,
       jobSource: jobSource || null,
       salary: salary ? parseInt(salary) : null,
-      interviewDate: interviewDate ? new Date(interviewDate + "Z") : null,
+      interviewDate: interviewDate ? new Date(interviewDate) : null,
     };
 
     if (application.status !== status) {

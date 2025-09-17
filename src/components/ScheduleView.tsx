@@ -2,7 +2,7 @@ import { resetLastStatusChangeDate } from "@/app/actions/application";
 import { Calendar, DayModifiers } from "@/components/ui/calendar";
 import { getDaysSince } from "@/lib/date.utils";
 import type { Application as PrismaApplication } from "@prisma/client";
-import { format, formatDuration, intervalToDuration, isToday } from "date-fns";
+import { formatDuration, intervalToDuration, isToday } from "date-fns";
 import {
   Calendar as CalendarIcon,
   Clock,
@@ -154,9 +154,14 @@ export default function ScheduleView({
                         <CalendarIcon className="h-3 w-3" />
                         {(() => {
                           const date = new Date(application.interviewDate);
-                          const day = date.getUTCDate().toString().padStart(2, '0');
-                          const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-                          const year = date.getUTCFullYear();
+                          const day = date
+                            .getDate()
+                            .toString()
+                            .padStart(2, "0");
+                          const month = (date.getMonth() + 1)
+                            .toString()
+                            .padStart(2, "0");
+                          const year = date.getFullYear();
                           return `${day}/${month}/${year}`;
                         })()}
                         {isToday(new Date(application.interviewDate)) && (
@@ -168,9 +173,29 @@ export default function ScheduleView({
                       <div className="flex items-center gap-1 text-xs">
                         <Clock className="h-3 w-3" />
                         {(() => {
+                          {
+                            (() => {
+                              const date = new Date(application.interviewDate);
+                              const hours = date
+                                .getHours()
+                                .toString()
+                                .padStart(2, "0");
+                              const minutes = date
+                                .getMinutes()
+                                .toString()
+                                .padStart(2, "0");
+                              return `${hours}:${minutes}`;
+                            })();
+                          }
                           const date = new Date(application.interviewDate);
-                          const hours = date.getUTCHours().toString().padStart(2, '0');
-                          const minutes = date.getUTCMinutes().toString().padStart(2, '0');
+                          const hours = date
+                            .getHours()
+                            .toString()
+                            .padStart(2, "0");
+                          const minutes = date
+                            .getMinutes()
+                            .toString()
+                            .padStart(2, "0");
                           return `${hours}:${minutes}`;
                         })()}
                         {isToday(new Date(application.interviewDate)) &&
