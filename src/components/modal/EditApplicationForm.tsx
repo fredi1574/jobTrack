@@ -183,7 +183,7 @@ export default function EditApplicationForm({
             type="url"
             id="url"
             name="url"
-            defaultValue={applicationData.url}
+            defaultValue={applicationData.url || ""}
             className="border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
           />
         </FormField>
@@ -203,13 +203,9 @@ export default function EditApplicationForm({
             name="appliedAt"
             defaultValue={
               applicationData.appliedAt
-                ? (() => {
-                    const date = new Date(applicationData.appliedAt);
-                    const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, "0");
-                    const day = String(date.getDate()).padStart(2, "0");
-                    return `${year}-${month}-${day}`;
-                  })()
+                ? new Date(applicationData.appliedAt)
+                    .toISOString()
+                    .split("T")[0]
                 : ""
             }
             className="w-fit border-gray-300 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-700"
