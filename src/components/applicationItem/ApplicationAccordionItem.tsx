@@ -10,9 +10,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { STATUS_ICONS } from "@/lib/constants";
 import { getDaysSince } from "@/lib/date.utils";
 import { formatDate, getUserTimeZone } from "@/lib/time.utils";
-import { getAccordionContentStyling, getStatusStyling } from "@/lib/utils";
+import { getAccordionContentStyling } from "@/lib/utils";
 import { Application as PrismaApplication } from "@prisma/client";
 import {
   Bell,
@@ -45,7 +46,6 @@ interface ApplicationAccordionItemProps {
 export default function ApplicationAccordionItem({
   application,
 }: ApplicationAccordionItemProps) {
-  const statusStyling = getStatusStyling(application.status);
   const accordionContentStyling = getAccordionContentStyling(
     application.status,
   );
@@ -151,12 +151,11 @@ export default function ApplicationAccordionItem({
   const showNoResponseWarning = daysSinceLastStatusChange > 7;
 
   return (
-    <AccordionItem
-      value={application.id}
-      className={`${statusStyling!.background} ${statusStyling!.border}`}
-    >
+    <AccordionItem value={application.id} className="bg-white dark:bg-gray-900">
       <AccordionTrigger
-        className={`group items-center gap-2 rounded-none p-3 hover:no-underline ${statusStyling!.hover} ${statusStyling!.text}`}
+        className={
+          "group items-center gap-2 rounded-none p-3 hover:no-underline"
+        }
       >
         {/* Mobile layout */}
         <div className="flex w-full items-center justify-between sm:hidden">
@@ -172,6 +171,7 @@ export default function ApplicationAccordionItem({
             />
             <div className="flex flex-col">
               <span className="flex items-center gap-1 break-all">
+                {STATUS_ICONS[application.status.toLowerCase()]}
                 {application.company}
               </span>
               <span className="text-sm break-all text-gray-600 dark:text-gray-400">
@@ -240,7 +240,6 @@ export default function ApplicationAccordionItem({
             ) : (
               <div className="mr-2 h-4 w-6" />
             )}
-            <StatusDropdown application={application} />
           </div>
         </div>
 
@@ -270,6 +269,9 @@ export default function ApplicationAccordionItem({
             {formattedDate}
           </span>
           <div className="flex items-center justify-center sm:w-1/6">
+            <StatusDropdown application={application} />
+          </div>
+          <div className="flex items-center">
             {application.status === "Interview" && application.interviewDate ? (
               <TooltipProvider>
                 <Tooltip>
@@ -305,13 +307,10 @@ export default function ApplicationAccordionItem({
                       className="mr-2 flex items-center"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <ClockAlert className="h-4 w-4 text-red-500" />
+                      <ClockAlert className="size-4 text-red-500" />
                     </span>
                   </TooltipTrigger>
-                  <TooltipContent
-                    color="red"
-                    className="flex items-center gap-1"
-                  >
+                  <TooltipContent color="red" className="flex flex-col gap-1">
                     <p>
                       {daysSinceLastStatusChange} days since last status change
                     </p>
@@ -321,9 +320,9 @@ export default function ApplicationAccordionItem({
                         resetLastStatusChangeDate(application.id);
                         router.refresh();
                       }}
-                      variant="ghost"
+                      variant="default"
                       size="xs"
-                      className="bg-transparent px-1 text-white"
+                      className="p-1.5"
                     >
                       Wait More
                     </Button>
@@ -331,9 +330,8 @@ export default function ApplicationAccordionItem({
                 </Tooltip>
               </TooltipProvider>
             ) : (
-              <div className="mr-2 h-4 w-6" />
+              <div className="h-4 w-6" />
             )}
-            <StatusDropdown application={application} />
           </div>
           <div className="w-auto shrink-0">
             <ApplicationURL applicationUrl={application.url} />
