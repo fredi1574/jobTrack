@@ -50,6 +50,9 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
       authorization: {
         params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
           scope:
             "openid email profile https://www.googleapis.com/auth/calendar.events",
         },
@@ -165,8 +168,13 @@ export const authOptions: AuthOptions = {
         return token;
       }
 
-      // Access token has expired, try to update it
-      return refreshAccessToken(token);
+      // If the access token has expired and we have a refresh token, try to refresh it
+      if (token.refreshToken) {
+        return refreshAccessToken(token);
+      }
+
+      // For credentials provider, or if we don't have a refresh token, just return the token
+      return token;
     },
     async session({
       session,
