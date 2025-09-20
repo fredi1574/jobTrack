@@ -233,7 +233,7 @@ export default function ScheduleView({
                         resetLastStatusChangeDate(application.id);
                         router.refresh();
                       }}
-                      variant="ghost"
+                      variant="secondary"
                       size="sm"
                       className="text-xs text-red-500"
                     >
