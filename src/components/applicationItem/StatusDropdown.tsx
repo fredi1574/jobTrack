@@ -55,21 +55,16 @@ export default function StatusDropdown({
   };
 
   return (
-    <div
-      className="flex items-center justify-center sm:mt-0"
-      onClick={(e) => e.stopPropagation()}
-    >
+    <div className="flex items-center justify-center sm:mt-0">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <div
             className={cn(
-              buttonVariants({ variant: "outline", size: "sm" }),
-              `h-auto w-full justify-center border-none px-2.5 py-0.5 text-sm font-semibold ${isPending ? "animate-pulse cursor-default" : "cursor-pointer"}`,
+              `group hover:bg-accent-foreground/10 flex h-auto w-full items-center justify-center rounded-lg px-2.5 py-0.5 text-sm font-semibold transition-colors ${isPending ? "animate-pulse cursor-default" : "cursor-pointer"}`,
             )}
           >
-            <div className="flex flex-1 items-center justify-center gap-1">
+            <div className="flex flex-1 items-center justify-center">
               {STATUS_ICONS[application.status.toLowerCase()]}
-              {/* <span>{application.status}</span> */}
             </div>
             {isPending ? (
               <span className="ml-1 animate-spin">⏳</span>
@@ -78,7 +73,7 @@ export default function StatusDropdown({
             )}
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="dark:bg-primary-foreground overflow-auto p-2">
+        <DropdownMenuContent className="overflow-auto p-2">
           <div className="flex flex-col space-y-2">
             {POSSIBLE_APPLICATION_STATUSES.map((statusOption) => (
               <DropdownMenuItem

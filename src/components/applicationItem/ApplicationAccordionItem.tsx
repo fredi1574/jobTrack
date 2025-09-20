@@ -92,12 +92,11 @@ export default function ApplicationAccordionItem({
   const showNoResponseWarning = daysSinceLastStatusChange > 7;
 
   return (
-    <AccordionItem value={application.id} className="bg-white dark:bg-gray-900">
-      <AccordionTrigger
-        className={
-          "group items-center gap-2 rounded-none p-3 hover:no-underline"
-        }
-      >
+    <AccordionItem
+      value={application.id}
+      className="bg-white py-2 transition-colors hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900"
+    >
+      <AccordionTrigger className="group items-center gap-2 rounded-none p-3 hover:no-underline">
         <MobileLayout
           application={application}
           handlePinClick={handlePinClick}

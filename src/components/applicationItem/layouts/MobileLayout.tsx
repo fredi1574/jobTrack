@@ -5,6 +5,7 @@ import { Application as PrismaApplication } from "@prisma/client";
 import { Pin } from "lucide-react";
 import InterviewTooltip from "../tooltips/InterviewTooltip";
 import NoResponseWarningTooltip from "../tooltips/NoResponseWarningTooltip";
+import StatusDropdown from "../StatusDropdown";
 
 interface MobileLayoutProps {
   application: PrismaApplication;
@@ -51,7 +52,7 @@ export default function MobileLayout({
         ) : (
           <div className="mr-2 h-4 w-6" />
         )}
-        {STATUS_ICONS[application.status.toLowerCase()]}
+        <StatusDropdown application={application} />
       </div>
     </div>
   );
