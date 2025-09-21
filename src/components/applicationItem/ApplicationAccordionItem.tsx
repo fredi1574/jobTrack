@@ -123,7 +123,8 @@ export default function ApplicationAccordionItem({
       >
         <ApplicationDetails application={application} />
         <div className="mt-4 flex justify-end gap-2 pt-2 md:hidden">
-          {application.status === "Interview" && application.interviewDate && (
+          {/* Temporarily disabled until verified */}
+          {/* {application.status === "Interview" && application.interviewDate && (
             <button
               onClick={handleAddToCalendar}
               className="inline-flex cursor-pointer items-center gap-1 rounded-md bg-green-50 px-3 py-1.5 text-xs font-medium text-green-600 transition-colors hover:bg-green-300 dark:bg-green-900/20 dark:text-green-400 dark:hover:bg-green-900/30"
@@ -131,7 +132,7 @@ export default function ApplicationAccordionItem({
               <CalendarPlus className="size-3" />
               Calendar
             </button>
-          )}
+          )} */}
           <button
             onClick={() => handleEditClick(application)}
             className="inline-flex cursor-pointer items-center gap-1 rounded-md bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-600 transition-colors hover:bg-blue-300 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30"
