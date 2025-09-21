@@ -8,6 +8,7 @@ import {
   List,
   Menu,
   Moon,
+  Shield,
   Sun,
   X,
 } from "lucide-react";
@@ -121,6 +122,18 @@ export default function Header() {
                 </Link>
               </Button>
 
+              <Button
+                variant="ghost"
+                asChild
+                className="bg-slate-300 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
+                size={undefined}
+              >
+                <Link href="/privacy">
+                  <Shield className="size-4" />
+                  Privacy
+                </Link>
+              </Button>
+
               {renderThemeToggle()}
 
               <div>
@@ -188,12 +201,24 @@ export default function Header() {
               <Button
                 variant="ghost"
                 asChild
-                className="bg-slate-300 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
+                className="w-full bg-slate-300 p-6 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
                 size={undefined}
               >
                 <Link href="/support">
                   <Coffee className="size-4" />
                   Support
+                </Link>
+              </Button>
+
+              <Button
+                variant="ghost"
+                asChild
+                className="w-full bg-slate-300 p-6 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
+                size={undefined}
+              >
+                <Link href="/privacy">
+                  <Shield className="size-4" />
+                  Privacy
                 </Link>
               </Button>
 
