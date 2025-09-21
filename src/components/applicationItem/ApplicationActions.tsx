@@ -65,7 +65,8 @@ export default function ApplicationActions({
             <Pencil className="mr-2 size-4" />
             Edit
           </DropdownMenuItem>
-          {application.status === "Interview" && application.interviewDate && (
+          {/* Temporarily disabled until verified */}
+          {/* {application.status === "Interview" && application.interviewDate && (
             <DropdownMenuItem
               onClick={onAddToCalendar}
               className={undefined}
@@ -74,7 +75,7 @@ export default function ApplicationActions({
               <CalendarPlus className="mr-2 size-4" />
               Add to Calendar
             </DropdownMenuItem>
-          )}
+          )} */}
           <DropdownMenuItem
             onClick={handleDeleteClick}
             className="text-red-500"

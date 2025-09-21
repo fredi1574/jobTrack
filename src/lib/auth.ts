@@ -53,8 +53,9 @@ export const authOptions: AuthOptions = {
           prompt: "consent",
           access_type: "offline",
           response_type: "code",
-          scope:
-            "openid email profile https://www.googleapis.com/auth/calendar.events",
+          // Temporarily disable until verified
+          // scope:
+          // "openid email profile https://www.googleapis.com/auth/calendar.events",
         },
       },
     }),
