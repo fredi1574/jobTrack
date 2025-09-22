@@ -35,14 +35,14 @@ export default function StatusDropdown({
       try {
         const result = await updateApplicationStatus(application.id, newStatus);
         if (result?.success) {
-          toast.success(`Status updated to ${newStatus}`, {
-            icon: STATUS_ICONS[newStatus.toLowerCase()],
-            style: {
-              backgroundColor: TOAST_BACKGROUND_COLORS[newStatus.toLowerCase()],
-              color: TOAST_TEXT_COLORS[newStatus.toLowerCase()],
-              border: "none",
-            },
-          });
+          // toast.success(`Status updated to ${newStatus}`, {
+          //   icon: STATUS_ICONS[newStatus.toLowerCase()],
+          //   style: {
+          //     backgroundColor: TOAST_BACKGROUND_COLORS[newStatus.toLowerCase()],
+          //     color: TOAST_TEXT_COLORS[newStatus.toLowerCase()],
+          //     border: "none",
+          //   },
+          // });
           router.refresh();
         } else {
           toast.error(result?.error || "Failed to update status.");
