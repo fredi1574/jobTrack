@@ -91,9 +91,9 @@ export default function ApplicationsHeader({
           className="sm:w-1/6"
           justify="justify-center"
         />
-        <span className="w-auto shrink-0">
+        <div className="w-auto shrink-0">
           <div className="size-4" />
-        </span>
+        </div>
       </div>
       <div className="flex shrink-0 items-center gap-3 pl-2">
         <span className="text-right">Actions</span>
