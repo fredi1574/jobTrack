@@ -10,7 +10,9 @@ export default function RecommendationsPage() {
       transition={{ duration: 0.5 }}
       className="container mx-auto p-4 md:p-6 lg:p-10"
     >
-      <h1 className="text-3xl font-bold mb-6">Job Recommendations</h1>
+      <h1 className="mb-6 text-3xl font-bold">
+        AI Generated Job Recommendations
+      </h1>
       <JobRecommendationList />
     </motion.div>
   );
