@@ -1,4 +1,12 @@
-import { Calendar, ChartArea, Target } from "lucide-react";
+import {
+  BarChart,
+  Calendar,
+  CalendarCheck,
+  ListChecks,
+  PieChart,
+  Target,
+  Upload,
+} from "lucide-react";
 import Link from "next/link";
 import { ElementType } from "react";
 import AnimatedButtons from "./AnimatedButtons";
@@ -13,9 +21,11 @@ export default function LandingPage() {
       <main className="flex flex-grow flex-col items-center justify-center">
         <div className="relative z-10 mx-auto max-w-7xl text-center">
           <AnimatedHeader />
+          <AnimatedButtons />
         </div>
 
-        <div className="my-16 text-gray-800 dark:text-gray-200">
+        <div className="my-16 text-center text-gray-800 dark:text-gray-200">
+          <h2 className="text-2xl font-bold">Why use JobTrack?</h2>
           <div className="mt-4 flex flex-wrap justify-center gap-8">
             <FeatureCard
               icon={Target}
@@ -25,17 +35,40 @@ export default function LandingPage() {
             <FeatureCard
               icon={Calendar}
               title="Never miss a deadline"
-              description="Get timely reminders for your upcoming interviews and deadlines."
+              description="Get timely reminders for your upcoming interviews and deadlines. Sync with your favorite calendar to stay organized and prepared."
             />
             <FeatureCard
-              icon={ChartArea}
+              icon={BarChart}
               title="Visualize your progress"
-              description="Beautiful charts and statistics to visualize your job search journey."
+              description="Beautiful charts and statistics to visualize your job search journey. Understand your application trends and improve your strategy."
             />
           </div>
         </div>
-        <div className="relative z-10 mx-auto max-w-7xl text-center">
-          <AnimatedButtons />
+
+        <div className="my-16 text-center text-gray-800 dark:text-gray-200">
+          <h2 className="text-2xl font-bold">How it works</h2>
+          <div className="mt-4 flex flex-wrap justify-center gap-8">
+            <FeatureCard
+              icon={Upload}
+              title="Import your applications"
+              description="Easily import your job applications from a CSV file or add them manually."
+            />
+            <FeatureCard
+              icon={ListChecks}
+              title="Track your progress"
+              description="Update the status of your applications as you move through the hiring process."
+            />
+            <FeatureCard
+              icon={CalendarCheck}
+              title="Stay on top of your interviews"
+              description="Get reminders for your upcoming interviews and never miss an opportunity."
+            />
+            <FeatureCard
+              icon={PieChart}
+              title="Analyze your job search"
+              description="Use the statistics to understand your job search and make better decisions."
+            />
+          </div>
         </div>
       </main>
 
