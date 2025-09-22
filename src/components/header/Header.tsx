@@ -113,11 +113,11 @@ export default function Header() {
               <Button
                 variant="link"
                 asChild
-                className="bg-transparent"
+                className="group bg-transparent"
                 size={undefined}
               >
                 <Link href="/recommendations">
-                  <ThumbsUp className="size-4" />
+                  <ThumbsUp className="size-4 group-hover:fill-yellow-200 dark:group-hover:fill-yellow-500" />
                   AI Recommendations
                 </Link>
               </Button>
@@ -125,11 +125,11 @@ export default function Header() {
               <Button
                 variant="link"
                 asChild
-                className="bg-transparent"
+                className="group bg-transparent"
                 size={undefined}
               >
                 <Link href="/support">
-                  <Coffee className="size-4" />
+                  <Coffee className="size-4 group-hover:fill-red-200 dark:group-hover:fill-red-900" />
                   Support
                 </Link>
               </Button>
@@ -137,11 +137,11 @@ export default function Header() {
               <Button
                 variant="link"
                 asChild
-                className="bg-transparent"
+                className="group bg-transparent"
                 size={undefined}
               >
                 <Link href="/privacy">
-                  <Shield className="size-4" />
+                  <Shield className="size-4 group-hover:fill-blue-200 dark:group-hover:fill-blue-900" />
                   Privacy
                 </Link>
               </Button>
