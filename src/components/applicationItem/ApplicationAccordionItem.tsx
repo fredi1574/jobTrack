@@ -94,7 +94,7 @@ export default function ApplicationAccordionItem({
   return (
     <AccordionItem
       value={application.id}
-      className="bg-white transition-colors hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900"
+      className="bg-card transition-colors hover:bg-gray-100 dark:hover:bg-neutral-800"
     >
       <AccordionTrigger className="group items-center gap-2 rounded-none px-3 py-4 hover:no-underline">
         <MobileLayout
