@@ -464,3 +464,54 @@ export async function resetLastStatusChangeDate(
     };
   }
 }
+
+interface AddRecommendedApplicationInput {
+  company: string;
+  position: string;
+  location: string;
+  url: string;
+  notes?: string;
+}
+
+export async function addRecommendedApplication(
+  input: AddRecommendedApplicationInput,
+): Promise<ActionResult> {
+  const session = await getServerAuthSession();
+
+  if (!session?.user?.id) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  const { company, position, location, url, notes } = input;
+
+  if (!company || !position || !location || !url) {
+    return {
+      error: "Company, Position, Location, and URL are required.",
+      success: false,
+    };
+  }
+
+  try {
+    await prisma.application.create({
+      data: {
+        company,
+        position,
+        status: "Applied",
+        url,
+        location,
+        appliedAt: new Date(),
+        notes: notes || null,
+        jobSource: "AI Recommendation",
+        User: { connect: { id: session.user.id } },
+      },
+    });
+  } catch (dbError) {
+    console.error("Database error during addRecommendedApplication:", dbError);
+    return { success: false, error: "Failed to save recommended application" };
+  }
+
+  return {
+    message: "Recommended application saved successfully",
+    success: true,
+  };
+}

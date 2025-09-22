@@ -109,6 +109,16 @@ export default function Header() {
                   Statistics
                 </Link>
               </Button>
+              <Button
+                variant="link"
+                asChild
+                className="bg-transparent"
+                size={undefined}
+              >
+                <Link href="/recommendations">
+                  <ThumbsUp className="size-4" /> Recommendations
+                </Link>
+              </Button>
 
               <Button
                 variant="ghost"
@@ -195,6 +205,17 @@ export default function Header() {
                 <Link href="/statistics">
                   <ChartLine className="mr-2 size-4" />
                   Statistics
+                </Link>
+              </Button>
+              <Button
+                variant="ghost"
+                asChild
+                className="w-full bg-slate-300 p-6 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
+                onClick={() => setIsMenuOpen(false)}
+                size={undefined}
+              >
+                <Link href="/recommendations">
+                  <ThumbsUp className="mr-2 size-4" /> Recommendations
                 </Link>
               </Button>
 
