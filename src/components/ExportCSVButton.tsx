@@ -9,7 +9,7 @@ interface ExportCSVButtonProps {
 
 export default function ExportCSVButton({ data }: ExportCSVButtonProps) {
   return (
-    <Button variant="ghost" asChild className={undefined} size={undefined}>
+    <Button variant="outline" asChild className={undefined} size={undefined}>
       <CSVLink
         data={data}
         filename={`job-applications - ${formatDate(new Date())}.csv`}

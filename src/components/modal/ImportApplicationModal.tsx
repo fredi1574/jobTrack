@@ -16,7 +16,7 @@ export default function ImportApplicationModal() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" className={undefined} size={undefined}>
+        <Button variant="outline" className={undefined} size={undefined}>
           <Upload className="h-4 w-4" />
           Import
         </Button>
