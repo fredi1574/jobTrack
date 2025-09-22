@@ -2,7 +2,7 @@
 import { Application as PrismaApplication } from "@prisma/client";
 import { Accordion } from "@radix-ui/react-accordion";
 import ApplicationAccordionItem from "./applicationItem/ApplicationAccordionItem";
-import ApplicationsHeader from "./ApplicationsHeader";
+import ApplicationsHeader from "./TableHeader";
 import NoJobApplications from "./NoJobApplications";
 import { useMemo } from "react";
 import { motion } from "motion/react";
@@ -39,7 +39,7 @@ export default function ApplicationList({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="mx-[-1rem] shadow-lg/10 sm:mx-auto sm:w-full"
+          className="shadow-lg/10 sm:mx-auto sm:w-full"
         >
           <ApplicationsHeader
             sortColumn={sortColumn}
