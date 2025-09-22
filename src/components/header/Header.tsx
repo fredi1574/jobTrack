@@ -10,6 +10,7 @@ import {
   Moon,
   Shield,
   Sun,
+  ThumbsUp,
   X,
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
@@ -62,10 +63,10 @@ export default function Header() {
         size="icon"
         onClick={() => setTheme(isDarkMode ? "light" : "dark")}
         aria-label="Toggle theme"
-        className={undefined}
+        className="bg-transparent"
       >
-        <Sun className="h-6 w-6 scale-100 rotate-0 transform transition-all duration-500 dark:scale-0 dark:-rotate-90" />
-        <Moon className="absolute h-6 w-6 scale-0 rotate-90 transform transition-all duration-500 dark:scale-100 dark:rotate-0" />
+        <Sun className="h-6 w-6 scale-100 fill-yellow-500 transition-all duration-500 dark:scale-0" />
+        <Moon className="absolute h-6 w-6 scale-0 rotate-90 transform fill-blue-200 transition-all duration-500 dark:scale-100 dark:rotate-45" />
         <span className="sr-only">Toggle theme</span>
       </Button>
     );
@@ -88,24 +89,24 @@ export default function Header() {
                 Hi, {session.user.name || session.user.email?.split("@")[0]}
               </p>
               <Button
-                variant="ghost"
+                variant="link"
                 asChild
-                className="bg-slate-300 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
+                className="bg-transparent"
                 size={undefined}
               >
                 <Link href="/">
-                  <List className="mr-2 size-4" />
-                  Table
+                  <List className="size-4" />
+                  Applications
                 </Link>
               </Button>
               <Button
-                variant="ghost"
+                variant="link"
                 asChild
-                className="bg-slate-300 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
+                className="bg-transparent"
                 size={undefined}
               >
                 <Link href="/statistics">
-                  <ChartLine className="mr-2 size-4" />
+                  <ChartLine className="size-4" />
                   Statistics
                 </Link>
               </Button>
@@ -121,9 +122,9 @@ export default function Header() {
               </Button>
 
               <Button
-                variant="ghost"
+                variant="link"
                 asChild
-                className="bg-slate-300 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
+                className="bg-transparent"
                 size={undefined}
               >
                 <Link href="/support">
@@ -133,9 +134,9 @@ export default function Header() {
               </Button>
 
               <Button
-                variant="ghost"
+                variant="link"
                 asChild
-                className="bg-slate-300 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
+                className="bg-transparent"
                 size={undefined}
               >
                 <Link href="/privacy">
@@ -223,6 +224,7 @@ export default function Header() {
                 variant="ghost"
                 asChild
                 className="w-full bg-slate-300 p-6 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
+                onClick={() => setIsMenuOpen(false)}
                 size={undefined}
               >
                 <Link href="/support">
@@ -235,6 +237,7 @@ export default function Header() {
                 variant="ghost"
                 asChild
                 className="w-full bg-slate-300 p-6 hover:bg-slate-400 dark:bg-slate-700 dark:hover:bg-slate-600"
+                onClick={() => setIsMenuOpen(false)}
                 size={undefined}
               >
                 <Link href="/privacy">
