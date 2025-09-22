@@ -95,7 +95,6 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account, profile }) {
-      console.log("signIn callback - user:", user);
       if (account?.type === "oauth" && user.email) {
         const existingDbUser = await prisma.user.findUnique({
           where: { email: user.email },
@@ -200,7 +199,6 @@ export const authOptions: AuthOptions = {
   },
   events: {
     async linkAccount({ user, account, profile }) {
-      console.log("linkAccount event triggered!");
       if (user.email) {
         await prisma.user.update({
           where: { id: user.id },
