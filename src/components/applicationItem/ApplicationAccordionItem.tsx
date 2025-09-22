@@ -94,9 +94,9 @@ export default function ApplicationAccordionItem({
   return (
     <AccordionItem
       value={application.id}
-      className="bg-white py-2 transition-colors hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900"
+      className="bg-white transition-colors hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900"
     >
-      <AccordionTrigger className="group items-center gap-2 rounded-none p-3 hover:no-underline">
+      <AccordionTrigger className="group items-center gap-2 rounded-none px-3 py-4 hover:no-underline">
         <MobileLayout
           application={application}
           handlePinClick={handlePinClick}
@@ -159,6 +159,7 @@ export default function ApplicationAccordionItem({
         onClose={handleDeleteModalClose}
         applicationId={deletingApplication?.id || ""}
       />
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-gray-300 to-transparent dark:via-gray-600" />
     </AccordionItem>
   );
 }

@@ -1,5 +1,4 @@
 import { updateApplicationStatus } from "@/app/actions/application";
-import { buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -73,7 +72,10 @@ export default function StatusDropdown({
             )}
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="overflow-auto p-2">
+        <DropdownMenuContent
+          className="overflow-auto p-2"
+          onClick={(e: React.MouseEvent) => e.stopPropagation()}
+        >
           <div className="flex flex-col space-y-2">
             {POSSIBLE_APPLICATION_STATUSES.map((statusOption) => (
               <DropdownMenuItem
