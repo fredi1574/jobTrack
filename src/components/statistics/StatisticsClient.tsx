@@ -1,6 +1,7 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Application as PrismaApplication } from "@prisma/client";
+import { motion } from "motion/react";
 import { useMemo, useState } from "react";
 import { Label } from "../ui/label";
 import {
@@ -13,11 +14,10 @@ import {
 import ApplicationNumbers from "./ApplicationNumbers";
 import ApplicationsByCompany from "./ApplicationsByCompany";
 import ApplicationsByDate from "./ApplicationsByDate";
+import LocationDistribution from "./ApplicationsByLocation";
 import ApplicationsByPosition from "./ApplicationsByPosition";
 import { ApplicationsBySource } from "./ApplicationsBySource";
-import LocationDistribution from "./LocationDistribution";
 import StatusDistribution from "./StatusDistribution";
-import { motion } from "motion/react";
 
 export default function StatisticsClient({
   initialApplications,
@@ -49,6 +49,7 @@ export default function StatisticsClient({
       const days = parseInt(dateRangeFilter, 10);
       const cutoffDate = new Date();
       cutoffDate.setDate(cutoffDate.getDate() - days);
+      cutoffDate.setHours(0, 0, 0, 0);
 
       filtered = filtered.filter((app) => {
         if (!app.appliedAt) return false;
