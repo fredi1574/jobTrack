@@ -217,7 +217,8 @@ export default function Header() {
                 size={undefined}
               >
                 <Link href="/recommendations">
-                  <ThumbsUp className="mr-2 size-4" /> Recommendations
+                  <ThumbsUp className="mr-2 size-4" />
+                  AI Recommendations
                 </Link>
               </Button>
 
