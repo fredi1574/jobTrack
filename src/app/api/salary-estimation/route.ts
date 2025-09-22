@@ -78,12 +78,12 @@ export async function GET(request: NextRequest) {
       currency,
       message:
         message ||
-        "Salary benchmark provided by Gemini AI based on web search.",
+        "Salary estimation provided by Gemini AI based on web search.",
     });
   } catch (error) {
-    console.error("Error fetching salary benchmark:", error);
+    console.error("Error fetching salary estimation:", error);
     return NextResponse.json(
-      { error: "Failed to fetch salary benchmark." },
+      { error: "Failed to fetch salary estimation." },
       { status: 500 },
     );
   }

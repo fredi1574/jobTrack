@@ -13,14 +13,14 @@ interface ApplicationActionsProps {
   application: PrismaApplication;
   onEdit: (application: PrismaApplication) => void;
   onAddToCalendar: (event: React.MouseEvent) => void;
-  onSalaryBenchmark: (application: PrismaApplication) => void;
+  onSalaryEstimation: (application: PrismaApplication) => void;
 }
 
 export default function ApplicationActions({
   application,
   onEdit,
   onAddToCalendar,
-  onSalaryBenchmark,
+  onSalaryEstimation,
 }: ApplicationActionsProps): React.ReactElement {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [applicationToDeleteId, setApplicationToDeleteId] = useState<
@@ -68,7 +68,7 @@ export default function ApplicationActions({
             Edit
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => onSalaryBenchmark(application)}
+            onClick={() => onSalaryEstimation(application)}
             className={undefined}
             inset={undefined}
           >

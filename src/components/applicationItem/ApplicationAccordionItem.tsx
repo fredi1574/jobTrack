@@ -41,11 +41,11 @@ export default function ApplicationAccordionItem({
   const [deletingApplication, setDeletingApplication] =
     useState<PrismaApplication | null>(null);
 
-  const [showSalaryBenchmark, setShowSalaryBenchmark] = useState(false);
-  const [salaryBenchmarkData, setSalaryBenchmarkData] = useState<any>(null);
-  const [isLoadingSalaryBenchmark, setIsLoadingSalaryBenchmark] =
+  const [showSalaryEstimation, setShowSalaryEstimation] = useState(false);
+  const [salaryEstimationData, setSalaryEstimationData] = useState<any>(null);
+  const [isLoadingSalaryEstimation, setIsLoadingSalaryEstimation] =
     useState(false);
-  const [salaryBenchmarkError, setSalaryBenchmarkError] = useState<
+  const [salaryEstimationError, setSalaryEstimationError] = useState<
     string | null
   >(null);
 
@@ -89,25 +89,25 @@ export default function ApplicationAccordionItem({
     addInterviewToCalendar(application, session);
   };
 
-  const handleSalaryBenchmarkClick = async () => {
-    setShowSalaryBenchmark((prev) => !prev);
-    if (!showSalaryBenchmark && !salaryBenchmarkData) {
-      setIsLoadingSalaryBenchmark(true);
-      setSalaryBenchmarkError(null);
+  const handleSalaryEstimationClick = async () => {
+    setShowSalaryEstimation((prev) => !prev);
+    if (!showSalaryEstimation && !salaryEstimationData) {
+      setIsLoadingSalaryEstimation(true);
+      setSalaryEstimationError(null);
       try {
         const response = await fetch(
-          `/api/salary-benchmarking?position=${encodeURIComponent(application.position)}&location=${encodeURIComponent(application.location)}&company=${encodeURIComponent(application.company)}`,
+          `/api/salary-estimation?position=${encodeURIComponent(application.position)}&location=${encodeURIComponent(application.location)}&company=${encodeURIComponent(application.company)}`,
         );
         if (!response.ok) {
-          throw new Error("Failed to fetch salary benchmark");
+          throw new Error("Failed to fetch salary estimation");
         }
         const data = await response.json();
-        setSalaryBenchmarkData(data);
+        setSalaryEstimationData(data);
       } catch (error: any) {
-        setSalaryBenchmarkError(error.message || "An unknown error occurred");
-        toast.error("Failed to fetch salary benchmark.");
+        setSalaryEstimationError(error.message || "An unknown error occurred");
+        toast.error("Failed to fetch salary estimation.");
       } finally {
-        setIsLoadingSalaryBenchmark(false);
+        setIsLoadingSalaryEstimation(false);
       }
     }
   };
@@ -146,7 +146,7 @@ export default function ApplicationAccordionItem({
             application={application}
             onEdit={handleEditClick}
             onAddToCalendar={handleAddToCalendar}
-            onSalaryBenchmark={handleSalaryBenchmarkClick}
+            onSalaryEstimation={handleSalaryEstimationClick}
           />
         </div>
       </AccordionTrigger>
@@ -154,33 +154,33 @@ export default function ApplicationAccordionItem({
         className={`px-4 pt-2 pb-4 text-sm ${accordionContentStyling}`}
       >
         <ApplicationDetails application={application} />
-        {showSalaryBenchmark && (
+        {showSalaryEstimation && (
           <div className="bg-card mt-4 rounded-md border p-4">
             <div className="flex gap-2">
               <HandCoins className="size-4" />
               <h4 className="mb-2 font-semibold">Salary Estimation</h4>
             </div>
-            {isLoadingSalaryBenchmark && <p>Loading salary benchmark...</p>}
-            {salaryBenchmarkError && (
-              <p className="text-red-500">Error: {salaryBenchmarkError}</p>
+            {isLoadingSalaryEstimation && <p>Loading salary estimation...</p>}
+            {salaryEstimationError && (
+              <p className="text-red-500">Error: {salaryEstimationError}</p>
             )}
-            {salaryBenchmarkData && (
+            {salaryEstimationData && (
               <div>
                 <p>
-                  <strong>Position:</strong> {salaryBenchmarkData.position}
+                  <strong>Position:</strong> {salaryEstimationData.position}
                 </p>
                 <p>
-                  <strong>Location:</strong> {salaryBenchmarkData.location}
+                  <strong>Location:</strong> {salaryEstimationData.location}
                 </p>
                 <p>
-                  <strong>Company:</strong> {salaryBenchmarkData.company}
+                  <strong>Company:</strong> {salaryEstimationData.company}
                 </p>
                 <p>
                   <strong>Estimated Range:</strong>{" "}
-                  {salaryBenchmarkData.salaryRange}
+                  {salaryEstimationData.salaryRange}
                 </p>
                 <p className="mt-1 text-xs text-gray-500">
-                  {salaryBenchmarkData.message}
+                  {salaryEstimationData.message}
                 </p>
                 <p className="mt-2 text-xs text-neutral-500">
                   Please note: This salary estimation is based on available data
@@ -193,7 +193,7 @@ export default function ApplicationAccordionItem({
         )}
         <div className="mt-4 flex justify-end gap-2 pt-2 md:hidden">
           <button
-            onClick={handleSalaryBenchmarkClick}
+            onClick={handleSalaryEstimationClick}
             className="inline-flex cursor-pointer items-center gap-1 rounded-md bg-yellow-50 px-3 py-1.5 text-xs font-medium text-yellow-600 transition-colors hover:bg-yellow-300 dark:bg-yellow-900/20 dark:text-yellow-400 dark:hover:bg-yellow-900/30"
           >
             <Sparkles className="size-3" />
