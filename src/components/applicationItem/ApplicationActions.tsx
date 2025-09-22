@@ -6,19 +6,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Application as PrismaApplication } from "@prisma/client";
-import { MoreHorizontal, Pencil, Trash2, CalendarPlus } from "lucide-react";
+import { MoreHorizontal, Pencil, Sparkles, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 interface ApplicationActionsProps {
   application: PrismaApplication;
   onEdit: (application: PrismaApplication) => void;
   onAddToCalendar: (event: React.MouseEvent) => void;
+  onSalaryBenchmark: (application: PrismaApplication) => void;
 }
 
 export default function ApplicationActions({
   application,
   onEdit,
   onAddToCalendar,
+  onSalaryBenchmark,
 }: ApplicationActionsProps): React.ReactElement {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [applicationToDeleteId, setApplicationToDeleteId] = useState<
@@ -64,6 +66,14 @@ export default function ApplicationActions({
           >
             <Pencil className="mr-2 size-4" />
             Edit
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => onSalaryBenchmark(application)}
+            className={undefined}
+            inset={undefined}
+          >
+            <Sparkles className="mr-2 size-4" />
+            AI Salary Estimation
           </DropdownMenuItem>
           {/* Temporarily disabled until verified */}
           {/* {application.status === "Interview" && application.interviewDate && (

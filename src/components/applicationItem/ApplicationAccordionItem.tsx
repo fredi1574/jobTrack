@@ -4,7 +4,7 @@ import { addInterviewToCalendar } from "@/lib/calendar";
 import { getDaysSince } from "@/lib/date.utils";
 import { getAccordionContentStyling } from "@/lib/utils";
 import { Application as PrismaApplication } from "@prisma/client";
-import { CalendarPlus, Pencil, Trash2 } from "lucide-react";
+import { HandCoins, Pencil, Sparkles, Trash2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -40,6 +40,14 @@ export default function ApplicationAccordionItem({
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deletingApplication, setDeletingApplication] =
     useState<PrismaApplication | null>(null);
+
+  const [showSalaryBenchmark, setShowSalaryBenchmark] = useState(false);
+  const [salaryBenchmarkData, setSalaryBenchmarkData] = useState<any>(null);
+  const [isLoadingSalaryBenchmark, setIsLoadingSalaryBenchmark] =
+    useState(false);
+  const [salaryBenchmarkError, setSalaryBenchmarkError] = useState<
+    string | null
+  >(null);
 
   const handleEditClick = (app: PrismaApplication) => {
     setEditingApplication(app);
@@ -81,6 +89,29 @@ export default function ApplicationAccordionItem({
     addInterviewToCalendar(application, session);
   };
 
+  const handleSalaryBenchmarkClick = async () => {
+    setShowSalaryBenchmark((prev) => !prev);
+    if (!showSalaryBenchmark && !salaryBenchmarkData) {
+      setIsLoadingSalaryBenchmark(true);
+      setSalaryBenchmarkError(null);
+      try {
+        const response = await fetch(
+          `/api/salary-benchmarking?position=${encodeURIComponent(application.position)}&location=${encodeURIComponent(application.location)}&company=${encodeURIComponent(application.company)}`,
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch salary benchmark");
+        }
+        const data = await response.json();
+        setSalaryBenchmarkData(data);
+      } catch (error: any) {
+        setSalaryBenchmarkError(error.message || "An unknown error occurred");
+        toast.error("Failed to fetch salary benchmark.");
+      } finally {
+        setIsLoadingSalaryBenchmark(false);
+      }
+    }
+  };
+
   const formattedDate = application.appliedAt
     ? new Date(application.appliedAt).toLocaleDateString("en-IL")
     : "N/A";
@@ -115,6 +146,7 @@ export default function ApplicationAccordionItem({
             application={application}
             onEdit={handleEditClick}
             onAddToCalendar={handleAddToCalendar}
+            onSalaryBenchmark={handleSalaryBenchmarkClick}
           />
         </div>
       </AccordionTrigger>
@@ -122,7 +154,51 @@ export default function ApplicationAccordionItem({
         className={`px-4 pt-2 pb-4 text-sm ${accordionContentStyling}`}
       >
         <ApplicationDetails application={application} />
+        {showSalaryBenchmark && (
+          <div className="bg-card mt-4 rounded-md border p-4">
+            <div className="flex gap-2">
+              <HandCoins className="size-4" />
+              <h4 className="mb-2 font-semibold">Salary Estimation</h4>
+            </div>
+            {isLoadingSalaryBenchmark && <p>Loading salary benchmark...</p>}
+            {salaryBenchmarkError && (
+              <p className="text-red-500">Error: {salaryBenchmarkError}</p>
+            )}
+            {salaryBenchmarkData && (
+              <div>
+                <p>
+                  <strong>Position:</strong> {salaryBenchmarkData.position}
+                </p>
+                <p>
+                  <strong>Location:</strong> {salaryBenchmarkData.location}
+                </p>
+                <p>
+                  <strong>Company:</strong> {salaryBenchmarkData.company}
+                </p>
+                <p>
+                  <strong>Estimated Range:</strong>{" "}
+                  {salaryBenchmarkData.salaryRange}
+                </p>
+                <p className="mt-1 text-xs text-gray-500">
+                  {salaryBenchmarkData.message}
+                </p>
+                <p className="mt-2 text-xs text-neutral-500">
+                  Please note: This salary estimation is based on available data
+                  and may not be entirely accurate. It should be used as a
+                  general guide.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
         <div className="mt-4 flex justify-end gap-2 pt-2 md:hidden">
+          <button
+            onClick={handleSalaryBenchmarkClick}
+            className="inline-flex cursor-pointer items-center gap-1 rounded-md bg-yellow-50 px-3 py-1.5 text-xs font-medium text-yellow-600 transition-colors hover:bg-yellow-300 dark:bg-yellow-900/20 dark:text-yellow-400 dark:hover:bg-yellow-900/30"
+          >
+            <Sparkles className="size-3" />
+            AI Salary Estimation
+          </button>
           {/* Temporarily disabled until verified */}
           {/* {application.status === "Interview" && application.interviewDate && (
             <button
