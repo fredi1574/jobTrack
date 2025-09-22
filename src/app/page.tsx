@@ -1,5 +1,5 @@
 import DashboardClient from "@/components/DashboardClient";
-import LandingPage from "@/components/LandingPage";
+import LandingPage from "@/components/landing/LandingPage";
 import { getServerAuthSession } from "@/lib/auth";
 import type { Session } from "next-auth";
 import { getApplications } from "./actions/application";

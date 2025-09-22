@@ -24,7 +24,7 @@ export default function AnimatedButtons() {
           className="transform rounded-full bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-3 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-blue-800 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none dark:from-blue-700 dark:to-blue-800 dark:hover:from-blue-800 dark:hover:to-blue-900"
           asChild
         >
-          <Link href="/register">Get Started - It&apos;s Free!</Link>
+          <Link href="/register">Get Started</Link>
         </Button>
       </motion.div>
       <motion.div
