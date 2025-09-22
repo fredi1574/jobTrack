@@ -29,7 +29,7 @@ export async function GET() {
       take: 10,
     });
 
-    let prompt = `Given the following job applications from a user, suggest 9 new job recommendations. Focus on similar roles, industries, and locations. Provide the output as a JSON array of objects, where each object has 'company', 'position', 'location', 'url', and 'description' fields. The description should be a brief, 2-3 sentence summary of why this job is a good fit based on the user's history.
+    let prompt = `Given the following job applications from a user, suggest 9 new job recommendations. Focus on similar roles, industries, and locations. Provide the output as a JSON array of objects, where each object has 'company', 'position', 'location', 'url' (full and valid URL), and 'description' fields. The description should be a brief, 2-3 sentence summary of why this job is a good fit based on the user's history.
 
     User's past applications:
     `;
