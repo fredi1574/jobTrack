@@ -1,6 +1,6 @@
 import { Upload } from "lucide-react";
 import { useState } from "react";
-import { CSVImportForm } from "../CSVImportForm";
+import { CSVImportForm } from "../ImportCSVForm";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -16,7 +16,7 @@ export default function ImportApplicationModal() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className={undefined} size={undefined}>
+        <Button variant="default" className={undefined} size={undefined}>
           <Upload className="h-4 w-4" />
           Import
         </Button>
