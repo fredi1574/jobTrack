@@ -102,7 +102,7 @@ export default function AddContactModal({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setPhone(e.target.value)
               }
-              placeholder="+972-50-123-4567"
+              placeholder="+972-50-1234567"
               className={undefined}
               type={undefined}
             />
