@@ -10,20 +10,17 @@ import {
 
 interface DeleteContactModalProps {
   onDeleteContact: () => void;
-  children: React.ReactNode;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
 export default function DeleteContactModal({
   onDeleteContact,
-  children,
   open,
   onOpenChange,
 }: DeleteContactModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className={undefined}>
         <DialogHeader className={undefined}>
           <DialogTitle className={undefined}>

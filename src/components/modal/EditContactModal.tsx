@@ -16,7 +16,6 @@ import { useState } from "react";
 interface EditContactModalProps {
   contact: Contact;
   onEditContact: (id: string, contact: ContactForm) => void;
-  children: React.ReactNode;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -24,7 +23,6 @@ interface EditContactModalProps {
 export default function EditContactModal({
   contact,
   onEditContact,
-  children,
   open,
   onOpenChange,
 }: EditContactModalProps) {
@@ -42,7 +40,6 @@ export default function EditContactModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className={undefined}>
         <DialogHeader className={undefined}>
           <DialogTitle className={undefined}>Edit contact</DialogTitle>

@@ -131,8 +131,7 @@ export default function Contacts({
           open={isEditModalOpen}
           onOpenChange={setIsEditModalOpen}
         >
-          <></>
-        </EditContactModal>
+          </EditContactModal>
       )}
 
       {selectedContact && (
@@ -141,8 +140,7 @@ export default function Contacts({
           open={isDeleteModalOpen}
           onOpenChange={setIsDeleteModalOpen}
         >
-          <></>
-        </DeleteContactModal>
+          </DeleteContactModal>
       )}
     </div>
   );
