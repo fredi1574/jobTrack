@@ -1,10 +1,10 @@
 "use client";
 import { addRecommendedApplication } from "@/app/actions/application";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Skeleton } from "./ui/skeleton";
-import { toast } from "sonner";
 
 interface JobRecommendation {
   company: string;
@@ -20,26 +20,36 @@ export default function JobRecommendationList() {
   );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchRecommendations = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("/api/recommendations");
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to fetch recommendations");
+      }
+      const data: JobRecommendation[] = await response.json();
+      setRecommendations(data);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
 
   useEffect(() => {
-    async function fetchRecommendations() {
-      try {
-        const response = await fetch("/api/recommendations");
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || "Failed to fetch recommendations");
-        }
-        const data: JobRecommendation[] = await response.json();
-        setRecommendations(data);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-
     fetchRecommendations();
   }, []);
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await fetchRecommendations();
+    toast.success("Recommendations refreshed!");
+  };
 
   const handleAddApplication = async (job: JobRecommendation) => {
     const result = await addRecommendedApplication({
@@ -89,42 +99,55 @@ export default function JobRecommendationList() {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {recommendations.map((job, index) => (
-        <Card key={index} className={undefined}>
-          <CardHeader className={undefined}>
-            <CardTitle className={undefined}>{job.position}</CardTitle>
-            <p className="text-sm text-gray-500">
-              {job.company} - {job.location}
-            </p>
-          </CardHeader>
-          <CardContent className={undefined}>
-            <p className="mb-4 text-sm">{job.description}</p>
-            <div className="flex justify-between gap-2">
-              {job.url && (
+    <div className="flex flex-col gap-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {recommendations.map((job, index) => (
+          <Card key={index} className={undefined}>
+            <CardHeader className={undefined}>
+              <CardTitle className={undefined}>{job.position}</CardTitle>
+              <p className="text-sm text-gray-500">
+                {job.company} - {job.location}
+              </p>
+            </CardHeader>
+            <CardContent className={undefined}>
+              <p className="mb-4 text-sm">{job.description}</p>
+              <div className="flex justify-between gap-2">
+                {job.url && (
+                  <Button
+                    asChild
+                    variant="outline"
+                    className={undefined}
+                    size={undefined}
+                  >
+                    <a href={job.url} target="_blank" rel="noopener noreferrer">
+                      Apply
+                    </a>
+                  </Button>
+                )}
                 <Button
-                  asChild
-                  variant="outline"
+                  onClick={() => handleAddApplication(job)}
                   className={undefined}
+                  variant={undefined}
                   size={undefined}
                 >
-                  <a href={job.url} target="_blank" rel="noopener noreferrer">
-                    Apply
-                  </a>
+                  Add to My Applications
                 </Button>
-              )}
-              <Button
-                onClick={() => handleAddApplication(job)}
-                className={undefined}
-                variant={undefined}
-                size={undefined}
-              >
-                Add to My Applications
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      <div className="mt-4 flex justify-center">
+        <Button
+          onClick={handleRefresh}
+          disabled={refreshing}
+          className={undefined}
+          variant={undefined}
+          size={undefined}
+        >
+          {refreshing ? "Refreshing..." : "Refresh Recommendations"}
+        </Button>
+      </div>
     </div>
   );
 }
