@@ -4,8 +4,8 @@ import {
   deleteContact,
   updateContact,
 } from "@/app/actions/contact";
-import ContactList from "@/components/ContactList";
-import ContactTable from "@/components/ContactTable";
+import ContactList from "@/components/contacts/ContactList";
+import ContactTable from "@/components/contacts/ContactTable";
 import AddContactModal from "@/components/modal/AddContactModal";
 import DeleteContactModal from "@/components/modal/DeleteContactModal";
 import EditContactModal from "@/components/modal/EditContactModal";
