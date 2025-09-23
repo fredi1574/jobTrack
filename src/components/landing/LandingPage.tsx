@@ -4,7 +4,7 @@ import {
   CalendarCheck,
   ListChecks,
   PieChart,
-  Target,
+  Route,
   Upload,
 } from "lucide-react";
 import Link from "next/link";
@@ -28,7 +28,7 @@ export default function LandingPage() {
           <h2 className="text-2xl font-bold">Why use JobTrack?</h2>
           <div className="mt-4 flex flex-wrap justify-center gap-8">
             <FeatureCard
-              icon={Target}
+              icon={Route}
               title="Track everything"
               description="Keep track of every job application, from the first contact to the final offer. Add notes, contacts, and salary information to have all the details in one place."
             />
