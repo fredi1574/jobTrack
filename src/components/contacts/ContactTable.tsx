@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table";
 import { Contact } from "@prisma/client";
 import { Pencil, Trash } from "lucide-react";
+import Link from "next/link";
 
 interface ContactTableProps {
   contacts: Contact[];
@@ -44,8 +45,22 @@ export default function ContactTable({
               <TableCell className={undefined}>{contact.name}</TableCell>
               <TableCell className={undefined}>{contact.company}</TableCell>
               <TableCell className={undefined}>{contact.position}</TableCell>
-              <TableCell className={undefined}>{contact.email}</TableCell>
-              <TableCell className={undefined}>{contact.phone}</TableCell>
+              <TableCell className={undefined}>
+                <Link
+                  href={`mailto:${contact.email}`}
+                  className="text-blue-500 hover:underline"
+                >
+                  {contact.email}
+                </Link>
+              </TableCell>
+              <TableCell className={undefined}>
+                <Link
+                  href={`tel:${contact.phone}`}
+                  className="text-blue-500 hover:underline"
+                >
+                  {contact.phone}
+                </Link>
+              </TableCell>
               <TableCell className={undefined}>{contact.notes}</TableCell>
               <TableCell className="flex gap-2">
                 <Button
