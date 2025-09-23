@@ -238,7 +238,7 @@ export default function AddApplicationForm({
               ) : (
                 <Search className="h-4 w-4" />
               )}
-              Parse Details
+              Fetch Details
             </Button>
           </div>
           <Button
