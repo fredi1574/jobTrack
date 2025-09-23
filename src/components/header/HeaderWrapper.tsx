@@ -1,8 +1,7 @@
 "use client";
-
+import Header from "@/components/header/MobileHeader";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import Header from "@/components/header/Header";
 
 const NO_HEADER_PAGES_ALWAYS_HIDE: string[] = ["/login", "/register"];
 

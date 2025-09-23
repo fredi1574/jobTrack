@@ -1,4 +1,5 @@
-import ClientWrapper from "@/components/ClientWrapper";
+import LayoutClient from "@/components/LayoutClient";
+import SessionWrapper from "@/components/SessionWrapper";
 import ThemeProvider from "@/components/ThemeProvider";
 import { Geist, Geist_Mono } from "next/font/google";
 import React from "react";
@@ -34,7 +35,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <ClientWrapper>{children}</ClientWrapper>
+          <SessionWrapper>
+            <LayoutClient>{children}</LayoutClient>
+          </SessionWrapper>
         </ThemeProvider>
       </body>
     </html>

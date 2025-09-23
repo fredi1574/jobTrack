@@ -1,17 +1,15 @@
 "use client";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "sonner";
-import HeaderWrapper from "./header/HeaderWrapper";
 
-interface ClientWrapperProps {
+interface SessionWrapperProps {
   children: React.ReactNode;
 }
 
-export default function ClientWrapper({ children }: ClientWrapperProps) {
+export default function SessionWrapper({ children }: SessionWrapperProps) {
   return (
     <SessionProvider>
       <Toaster theme="system" duration={2000} />
-      <HeaderWrapper />
       {children}
     </SessionProvider>
   );
