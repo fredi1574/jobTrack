@@ -1,4 +1,4 @@
-import Contacts from "@/components/Contacts";
+import Contacts from "@/components/contacts/Contacts";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
