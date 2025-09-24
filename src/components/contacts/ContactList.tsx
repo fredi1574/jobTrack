@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Contact } from "@prisma/client";
 import { Pencil, Trash } from "lucide-react";
+import Link from "next/link";
 
 interface ContactListProps {
   contacts: Contact[];
@@ -44,12 +45,26 @@ export default function ContactList({
           <p className="text-sm text-gray-500 dark:text-gray-400">
             {contact.company} - {contact.position}
           </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            {contact.email}
-          </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            {contact.phone}
-          </p>
+          <div className="my-2 flex flex-col">
+            <p className="text-xs text-gray-500 dark:text-gray-400">Email:</p>
+            <Link
+              href={`mailto:${contact.email}`}
+              target="_blank"
+              className="text-blue-500 hover:underline"
+            >
+              {contact.email}
+            </Link>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Phone:</p>
+            <Link
+              href={`tel:${contact.phone}`}
+              target="_blank"
+              className="text-blue-500 hover:underline"
+            >
+              {contact.phone}
+            </Link>
+          </div>
+          <hr className="my-4 border-gray-200 dark:border-gray-700" />
+          <h3 className="text-md font-bold">Notes</h3>
           <p className="mt-2 break-all">{contact.notes}</p>
         </div>
       ))}
