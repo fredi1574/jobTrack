@@ -10,6 +10,7 @@ import {
   CirclePlus,
   ClipboardList,
   FileText,
+  Globe,
   Handshake,
   LinkIcon,
   Loader,
@@ -385,9 +386,7 @@ export default function AddApplicationForm({
           id="jobSource"
           name="jobSource"
           label="Job Source"
-          icon={
-            <LinkIcon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-          }
+          icon={<Globe className="h-4 w-4 text-gray-500 dark:text-gray-400" />}
           errorMessage={state.fieldErrors?.jobSource?.join(", ")}
         >
           <Input
