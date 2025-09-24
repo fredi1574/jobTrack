@@ -346,9 +346,9 @@ export default function AddApplicationForm({
                   size={undefined}
                 >
                   {isScraping ? (
-                    <Sparkles className="h-4 w-4 animate-spin" />
+                    <Loader className="h-4 w-4 animate-spin" />
                   ) : (
-                    <Search className="h-4 w-4" />
+                    <Sparkles className="h-4 w-4" />
                   )}
                 </Button>
               </TooltipTrigger>
