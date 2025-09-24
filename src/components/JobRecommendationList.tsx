@@ -1,6 +1,6 @@
 "use client";
 import { addRecommendedApplication } from "@/app/actions/application";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
@@ -18,7 +18,7 @@ export default function JobRecommendationList() {
   const [recommendations, setRecommendations] = useState<JobRecommendation[]>(
     [],
   );
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -40,10 +40,6 @@ export default function JobRecommendationList() {
       setRefreshing(false);
     }
   };
-
-  useEffect(() => {
-    fetchRecommendations();
-  }, []);
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -68,19 +64,21 @@ export default function JobRecommendationList() {
 
   if (loading) {
     return (
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {[...Array(9)].map((_, i) => (
-          <Card key={i} className={undefined}>
-            <CardHeader className={undefined}>
-              <Skeleton className="h-6 w-3/4" />
-              <Skeleton className="h-4 w-1/2" />
-            </CardHeader>
-            <CardContent className={undefined}>
-              <Skeleton className="mb-2 h-4 w-full" />
-              <Skeleton className="h-4 w-5/6" />
-            </CardContent>
-          </Card>
-        ))}
+      <div>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {[...Array(9)].map((_, i) => (
+            <Card key={i} className={undefined}>
+              <CardHeader className={undefined}>
+                <Skeleton className="h-6 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
+              </CardHeader>
+              <CardContent className={undefined}>
+                <Skeleton className="mb-2 h-4 w-full" />
+                <Skeleton className="h-4 w-5/6" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     );
   }
@@ -91,9 +89,19 @@ export default function JobRecommendationList() {
 
   if (recommendations.length === 0) {
     return (
-      <div className="text-gray-500">
-        No job recommendations available yet. Apply to more jobs to get
-        personalized recommendations!
+      <div className="flex flex-col items-center justify-center gap-4 rounded-lg border border-dashed p-8 text-center">
+        <h3 className="text-xl font-semibold">
+          Get Personalized Job Recommendations
+        </h3>
+        <Button
+          onClick={fetchRecommendations}
+          disabled={loading}
+          className={undefined}
+          variant={undefined}
+          size={undefined}
+        >
+          {loading ? "Fetching..." : "Fetch Recommendations"}
+        </Button>
       </div>
     );
   }
