@@ -14,11 +14,15 @@ export async function scrapeJobDetailsWithAI(
 ): Promise<ScrapeResult> {
   let browser = null;
   try {
-    browser = await playwrightChromium.launch({
-      args: chromium.args,
-      executablePath: await chromium.executablePath(),
-      headless: true,
-    });
+    const isVercel = process.env.VERCEL;
+
+    browser = isVercel
+      ? await playwrightChromium.launch({
+          args: chromium.args,
+          executablePath: await chromium.executablePath(),
+          headless: true,
+        })
+      : await playwrightChromium.launch({ headless: true });
 
     const context = await browser.newContext({
       userAgent:
@@ -52,7 +56,7 @@ export async function scrapeJobDetailsWithAI(
 
       Return the data in JSON format. If a field is not found, return null for that field.
       If the Job Source not found, return Company Website for that field.
-      Add notes only if they are very important and include technical requirements in bullet points.
+      For the 'Notes' field, provide a single string that includes any important details or technical requirements as a bulleted list within that string.
 
       Text: ${textContent}
     `;
@@ -90,6 +94,11 @@ export async function scrapeJobDetailsWithAI(
 
     try {
       const data = JSON.parse(jsonResponse);
+
+      if (data.notes && typeof data.notes !== "string") {
+        data.notes = JSON.stringify(data.notes, null, 2);
+      }
+
       return { success: true, data };
     } catch (error) {
       console.error("Error parsing JSON from AI response:", error);
