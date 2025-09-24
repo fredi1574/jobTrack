@@ -23,7 +23,7 @@ export default function ContactTable({
   onDeleteContact,
 }: ContactTableProps) {
   return (
-    <Table className="bg-card w-full rounded-lg border shadow-sm">
+    <Table className="bg-card w-full rounded-t-lg border">
       <TableHeader className={undefined}>
         <TableRow className={undefined}>
           <TableHead className={undefined}>Name</TableHead>
@@ -47,6 +47,7 @@ export default function ContactTable({
             <TableCell className="break-words">
               <Link
                 href={`mailto:${contact.email}`}
+                target="_blank"
                 className="text-blue-500 hover:underline"
               >
                 {contact.email}
@@ -55,6 +56,7 @@ export default function ContactTable({
             <TableCell className={undefined}>
               <Link
                 href={`tel:${contact.phone}`}
+                target="_blank"
                 className="text-blue-500 hover:underline"
               >
                 {contact.phone}
