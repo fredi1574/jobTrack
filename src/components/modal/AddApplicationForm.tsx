@@ -18,6 +18,7 @@ import {
   MessageSquare,
   MessagesSquare,
   Search,
+  Sparkles,
 } from "lucide-react";
 import { useActionState, useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
@@ -200,8 +201,7 @@ export default function AddApplicationForm({
           className="w-full"
           size={undefined}
         >
-          <ClipboardList className="mr-2 h-4 w-4" /> Get from Description with
-          AI
+          <Sparkles className="mr-2 h-4 w-4" /> Get from Description with AI
         </Button>
       )}
 
@@ -248,7 +248,7 @@ export default function AddApplicationForm({
             className="mt-2 w-full"
             size={undefined}
           >
-            <ClipboardList className="mr-2 h-4 w-4" /> Hide Job Description
+            <Sparkles className="mr-2 h-4 w-4" /> Hide Job Description
           </Button>
         </FormField>
       )}
@@ -346,7 +346,7 @@ export default function AddApplicationForm({
                   size={undefined}
                 >
                   {isScraping ? (
-                    <Loader className="h-4 w-4 animate-spin" />
+                    <Sparkles className="h-4 w-4 animate-spin" />
                   ) : (
                     <Search className="h-4 w-4" />
                   )}
