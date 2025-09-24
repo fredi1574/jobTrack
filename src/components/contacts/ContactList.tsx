@@ -50,7 +50,7 @@ export default function ContactList({
           <p className="text-sm text-gray-500 dark:text-gray-400">
             {contact.phone}
           </p>
-          <p className="mt-2">{contact.notes}</p>
+          <p className="mt-2 break-all">{contact.notes}</p>
         </div>
       ))}
     </div>

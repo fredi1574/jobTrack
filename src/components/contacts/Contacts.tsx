@@ -12,7 +12,7 @@ import EditContactModal from "@/components/modal/EditContactModal";
 import { Button } from "@/components/ui/button";
 import { ContactForm } from "@/types/contact";
 import { Contact } from "@prisma/client";
-import { List, Plus, Table } from "lucide-react";
+import { List, Table, UserPlus } from "lucide-react";
 import { useState, useTransition } from "react";
 
 export default function Contacts({
@@ -104,7 +104,7 @@ export default function Contacts({
               variant={undefined}
               size={undefined}
             >
-              <Plus className="mr-2 h-4 w-4" />
+              <UserPlus className="mr-2 h-4 w-4" />
               Add Contact
             </Button>
           </AddContactModal>
@@ -130,8 +130,7 @@ export default function Contacts({
           onEditContact={handleEditContact}
           open={isEditModalOpen}
           onOpenChange={setIsEditModalOpen}
-        >
-          </EditContactModal>
+        ></EditContactModal>
       )}
 
       {selectedContact && (
@@ -139,8 +138,7 @@ export default function Contacts({
           onDeleteContact={() => handleDeleteContact(selectedContact.id)}
           open={isDeleteModalOpen}
           onOpenChange={setIsDeleteModalOpen}
-        >
-          </DeleteContactModal>
+        ></DeleteContactModal>
       )}
     </div>
   );

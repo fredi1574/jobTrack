@@ -157,7 +157,7 @@ export default function AddContactModal({
                 setNotes(e.target.value)
               }
               placeholder="Notes about the contact"
-              className={undefined}
+              className="break-all"
             />
           </div>
           <Button

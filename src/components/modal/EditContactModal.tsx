@@ -150,7 +150,7 @@ export default function EditContactModal({
                 setNotes(e.target.value)
               }
               placeholder="Notes about the contact"
-              className="resize-y break-words"
+              className="resize-y break-all"
               rows={4}
             />
           </div>
